@@ -1,0 +1,44 @@
+# 의존성 폴더
+node_modules/
+
+# 빌드 및 배포 관련 폴더
+dist/
+build/
+
+# 로컬 환경 설정 파일
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# MacOS 관련 파일
+.DS_Store
+
+# Windows 관련 파일
+Thumbs.db
+
+# IDE 관련 파일 (VSCode 등)
+.vscode/
+.idea/
+
+# npm/yarn 관련 로그파일
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript 빌드 출력 파일
+*.tsbuildinfo
+
+# 테스트 커버리지 파일
+coverage/
+
+# 로그파일
+*.log
+
+# 시스템 파일
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
