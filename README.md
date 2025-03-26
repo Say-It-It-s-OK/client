@@ -13,5 +13,5 @@ npm install
 ## 프로젝트 시작 방법
 
 ```
-npm start
+npm run dev
 ```
