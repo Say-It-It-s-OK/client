@@ -1,6 +1,7 @@
 # client
 
 -   React + TypeScript
+-   styled-components
 -   STT
 -   TSS
 
