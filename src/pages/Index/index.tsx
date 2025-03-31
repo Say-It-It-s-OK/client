@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Logo from "../../assets/icons/logo_large.png";
+import Audio from "../../assets/icons/audio_icon.png";
 import Vector from "../../assets/images/Vector.png";
-import LongButton from "../../components/Buttons/buttons";
+import { LongButton } from "../../components/Buttons/buttons";
 
 const ImgIndexLogo = styled.img`
     width: 65%;
@@ -11,6 +12,11 @@ const ImgIndexLogo = styled.img`
 const DivIndexText = styled.div`
     color: var(--text-color);
     font-size: var(--font-size);
+`;
+
+const ImgAudio = styled.img`
+    width: 15%;
+    margin: 5%;
 `;
 
 const ImgBackGroundVector = styled.img`
@@ -25,6 +31,7 @@ const Index = () => {
         <div className="container">
             <ImgIndexLogo src={Logo} alt="Logo" />
             <DivIndexText>안녕하세요! 음성으로 주문을 시작하세요!</DivIndexText>
+            <ImgAudio src={Audio} alt="Audio" />
             <ImgBackGroundVector src={Vector} />
             <LongButton
                 children="인기 많은 커피 추천해줘!"
