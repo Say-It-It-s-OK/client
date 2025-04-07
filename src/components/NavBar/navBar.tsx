@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Logo from "../../assets/icons/logo_large.png";
 import { CartButton } from "../Buttons/buttons";
@@ -13,11 +14,23 @@ const ImgNavLogo = styled.img`
     margin: 2% 0 0 0;
 `;
 
-const NavBar = () => {
+interface CategoryProps {
+    activeCategory: string;
+    setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
+}
+
+const NavBar = ({ activeCategory, setActiveCategory }: CategoryProps) => {
+    const handleCategoryClick = (category) => {
+        setActiveCategory(category);
+    };
+
     return (
         <Nav>
             <ImgNavLogo src={Logo} alt="Logo" />
-            <CartButton />
+            <CartButton
+                active={activeCategory === "장바구니"}
+                onClick={() => handleCategoryClick("장바구니")}
+            />
         </Nav>
     );
 };
