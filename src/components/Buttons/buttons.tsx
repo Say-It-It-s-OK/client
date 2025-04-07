@@ -138,12 +138,116 @@ const ButtonPaymentButton = styled.button`
 
     position: absolute;
     top: 75%;
-    left: 75%;
+    left: 78%;
     transform: translateX(-50%);
 `;
 
 const PaymentButton = () => {
     return <ButtonPaymentButton>결제하기</ButtonPaymentButton>;
+};
+
+const ButtonAddCartButton = styled.button`
+    width: 40%;
+    height: 8%;
+    background-color: var(--light-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    border: none;
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--accent-color);
+    }
+
+    position: absolute;
+    top: 85%;
+    left: 78%;
+    transform: translateX(-50%);
+`;
+
+const AddCartButton = () => {
+    return <ButtonAddCartButton>장바구니 담기</ButtonAddCartButton>;
+};
+
+const ButtonOptionButton = styled.button`
+    width: 100%;
+    height: 13%;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--accent-color);
+    }
+`;
+
+const OptionButton = () => {
+    return <ButtonOptionButton>장바구니 담기</ButtonOptionButton>;
+};
+
+const DivOptionButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 13%;
+`;
+
+const ButtonOptionButtonDouble = styled.button`
+    width: 49%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--accent-color);
+    }
+`;
+
+const OptionButtonDouble = () => {
+    return (
+        <DivOptionButtonContainer>
+            <ButtonOptionButtonDouble />
+            <ButtonOptionButtonDouble />
+        </DivOptionButtonContainer>
+    );
+};
+
+const ButtonOptionButtonTriple = styled.button`
+    width: 32%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--accent-color);
+    }
+`;
+
+const OptionButtonTriple = () => {
+    return (
+        <DivOptionButtonContainer>
+            <ButtonOptionButtonTriple />
+            <ButtonOptionButtonTriple />
+            <ButtonOptionButtonTriple />
+        </DivOptionButtonContainer>
+    );
 };
 
 export {
@@ -152,4 +256,7 @@ export {
     MenuButtonPrimary,
     MenuButtonSecondary,
     PaymentButton,
+    AddCartButton,
+    OptionButtonDouble,
+    OptionButtonTriple,
 };

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { PaymentButton } from "../../Buttons/buttons";
+import { CartCard } from "../../Card/card";
 
 const DivCartContainer = styled.div`
     display: flex;
@@ -28,10 +29,33 @@ const DivCartTitle = styled.div`
     transform: translateX(-50%);
 `;
 
+const DivCartContainerBody = styled.div`
+    display: flex;
+    width: 100%;
+    height: 50%;
+    align-content: flex-start;
+    border: none;
+    flex-wrap: wrap;
+    position: absolute;
+    left: 50%;
+    bottom: 37%;
+    transform: translateX(-50%);
+`;
+
 const CartContainer = () => {
     return (
         <DivCartContainer>
             <DivCartTitle>장바구니</DivCartTitle>
+            <DivCartContainerBody>
+                <CartCard />
+                <CartCard />
+                <CartCard />
+                <CartCard />
+                <CartCard />
+                <CartCard />
+                <CartCard />
+                <CartCard />
+            </DivCartContainerBody>
             <PaymentButton />
         </DivCartContainer>
     );

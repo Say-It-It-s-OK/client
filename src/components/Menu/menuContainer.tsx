@@ -1,7 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { MenuButtonPrimary, MenuButtonSecondary } from "../Buttons/buttons";
-import { MenuCard } from "../Card/Card";
+import { MenuCard } from "../Card/card";
+// import CartContainer from "./Cart/cartContainer";
+import OptionContainer from "./Option/optionContainer";
 import CartContainer from "./Cart/cartContainer";
 
 const DivMenuContainer = styled.div`
@@ -74,6 +76,7 @@ const MenuContainer = ({
                 {activeCategory === "장바구니" ? (
                     <CartContainer />
                 ) : (
+                    // <OptionContainer />
                     <>
                         <MenuCard />
                         <MenuCard />
