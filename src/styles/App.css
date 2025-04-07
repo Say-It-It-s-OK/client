@@ -7,8 +7,9 @@
     --font-main: "SCDream", sans-serif;
     --primary-color: #e75656;
     --secondary-color: #c33f3f;
-    --background-color: #f99fa1;
+    --light-color: #f99fa1;
     --accent-color: #541a1a;
+    --border-color: #a73f3f;
     --text-color: #333333;
     --font-size: 300%;
 }
