@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { PaymentButton } from "../../Buttons/buttons";
-import { CartCard } from "../../Card/card";
+import { CartCard } from "../../Card/Card";
 
-const DivCartContainer = styled.div`
+const DivQueryContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-center;
@@ -12,7 +12,7 @@ const DivCartContainer = styled.div`
     padding: 2%;
 `;
 
-const DivCartTitle = styled.div`
+const DivQueryTitle = styled.div`
     display: flex;
     width: 60%;
     height: 8%;
@@ -29,7 +29,7 @@ const DivCartTitle = styled.div`
     transform: translateX(-50%);
 `;
 
-const DivCartContainerBody = styled.div`
+const DivQueryContainerBody = styled.div`
     display: flex;
     width: 100%;
     height: 50%;
@@ -42,23 +42,13 @@ const DivCartContainerBody = styled.div`
     transform: translateX(-50%);
 `;
 
-const CartContainer = () => {
+const QueryContainer = () => {
     return (
-        <DivCartContainer>
-            <DivCartTitle>장바구니</DivCartTitle>
-            <DivCartContainerBody>
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-            </DivCartContainerBody>
-            <PaymentButton />
-        </DivCartContainer>
+        <DivQueryContainer>
+            <DivQueryTitle>요구사항</DivQueryTitle>
+            <DivQueryContainerBody></DivQueryContainerBody>
+        </DivQueryContainer>
     );
 };
 
-export default CartContainer;
+export default QueryContainer;

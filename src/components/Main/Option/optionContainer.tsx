@@ -5,7 +5,7 @@ import {
     OptionButtonDouble,
     OptionButtonTriple,
 } from "../../Buttons/buttons";
-import { OptionCard } from "../../Card/card";
+import { OptionCard } from "../../Card/Card";
 
 const DivOptionContainer = styled.div`
     display: flex;
