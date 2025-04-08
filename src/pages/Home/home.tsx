@@ -1,8 +1,8 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Audio from "../../assets/icons/audio_icon.png";
 import NavBar from "../../components/NavBar/navBar";
-import MenuContainer from "../../components/Menu/menuContainer";
+import MainContainer from "../../components/Main/mainContainer";
 import { InputText, OutputText } from "../../components/TextBar/textBar";
 
 const ImgAudio = styled.img`
@@ -22,7 +22,7 @@ const DivMenuBackground = styled.div`
 `;
 
 const categories = [
-    undefined,
+    "요구사항",
     "장바구니",
     "커피",
     "음료",
@@ -31,9 +31,7 @@ const categories = [
 ];
 
 const Home = () => {
-    const [activeCategory, setActiveCategory] = useState<string | undefined>(
-        undefined
-    );
+    const [activeCategory, setActiveCategory] = useState<string>("요구사항");
 
     return (
         <div className="container">
@@ -45,7 +43,7 @@ const Home = () => {
             <InputText />
             <ImgAudio src={Audio} alt="Audio" />
             <DivMenuBackground />
-            <MenuContainer
+            <MainContainer
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
             />

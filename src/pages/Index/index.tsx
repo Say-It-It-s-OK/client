@@ -3,15 +3,17 @@ import Logo from "../../assets/icons/logo_large.png";
 import Audio from "../../assets/icons/audio_icon.png";
 import Vector from "../../assets/images/Vector.png";
 import { LongButton } from "../../components/Buttons/buttons";
+import { useNavigate } from "react-router-dom";
 
 const ImgIndexLogo = styled.img`
     width: 65%;
-    margin: 15%;
+    margin: 10%;
 `;
 
 const DivIndexText = styled.div`
     color: var(--text-color);
     font-size: var(--font-size);
+    text-align: center;
 `;
 
 const ImgAudio = styled.img`
@@ -27,10 +29,17 @@ const ImgBackGroundVector = styled.img`
 `;
 
 const Index = () => {
+    const navigate = useNavigate();
+
+    const handleScreenClick = () => {
+        navigate("/home");
+    };
     return (
-        <div className="container">
+        <div className="container" onClick={handleScreenClick}>
             <ImgIndexLogo src={Logo} alt="Logo" />
-            <DivIndexText>안녕하세요! 음성으로 주문을 시작하세요!</DivIndexText>
+            <DivIndexText>
+                안녕하세요! 화면을 터치하거나 <br /> 음성으로 주문을 시작하세요!
+            </DivIndexText>
             <ImgAudio src={Audio} alt="Audio" />
             <ImgBackGroundVector src={Vector} />
             <LongButton

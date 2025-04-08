@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { MenuButtonPrimary, MenuButtonSecondary } from "../Buttons/buttons";
-import { MenuCard } from "../Card/card";
-// import CartContainer from "./Cart/cartContainer";
+import QueryContainer from "./Query/queryContainer";
+import MenuContainer from "./Menu/menuContainer";
 import OptionContainer from "./Option/optionContainer";
 import CartContainer from "./Cart/cartContainer";
 
-const DivMenuContainer = styled.div`
+const DivMainContainer = styled.div`
     width: 100%;
     height: 50%;
     position: absolute;
@@ -18,11 +18,11 @@ const DivMenuButtonContainer = styled.div`
     height: 8%;
 `;
 
-const DivMenuContainerBody = styled.div`
+const DivMainContainerBody = styled.div`
     display: flex;
     width: 100%;
     height: 92%;
-    align-content: flex-start;
+
     background: line;
     background: linear-gradient(
         180deg,
@@ -30,7 +30,6 @@ const DivMenuContainerBody = styled.div`
         var(--secondary-color) 100%
     );
     border: none;
-    flex-wrap: wrap;
     position: absolute;
     bottom: 0;
 `;
@@ -40,7 +39,7 @@ interface CategoryProps {
     setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const MenuContainer = ({
+const MainContainer = ({
     activeCategory,
     setActiveCategory,
 }: CategoryProps) => {
@@ -48,8 +47,22 @@ const MenuContainer = ({
         setActiveCategory(category);
     };
 
+    const renderContent = () => {
+        switch (activeCategory) {
+            case "요구사항":
+                return <QueryContainer />;
+            case "장바구니":
+                return <CartContainer />;
+            case "커피":
+            case "음료":
+            case "디카페인":
+            case "디저트":
+                return <MenuContainer />;
+        }
+    };
+
     return (
-        <DivMenuContainer>
+        <DivMainContainer>
             <DivMenuButtonContainer>
                 <MenuButtonSecondary
                     children="커피"
@@ -72,25 +85,9 @@ const MenuContainer = ({
                     onClick={() => handleCategoryClick("디저트")}
                 />
             </DivMenuButtonContainer>
-            <DivMenuContainerBody>
-                {activeCategory === "장바구니" ? (
-                    <CartContainer />
-                ) : (
-                    // <OptionContainer />
-                    <>
-                        <MenuCard />
-                        <MenuCard />
-                        <MenuCard />
-                        <MenuCard />
-                        <MenuCard />
-                        <MenuCard />
-                        <MenuCard />
-                        <MenuCard />
-                    </>
-                )}
-            </DivMenuContainerBody>
-        </DivMenuContainer>
+            <DivMainContainerBody>{renderContent()}</DivMainContainerBody>
+        </DivMainContainer>
     );
 };
 
-export default MenuContainer;
+export default MainContainer;
