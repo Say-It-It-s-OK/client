@@ -75,12 +75,12 @@ const DivCartCardContainer = styled.div`
     flex-direction: column;
     align-items: center;
     width: 25%;
-    height: 55%;
-    margin-top: 2%;
+    height: 50%;
+    margin-top: 1%;
 `;
 
 const DivCartCard = styled.div`
-    width: 73%;
+    width: 60%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
     border: none;
@@ -89,8 +89,8 @@ const DivCartCard = styled.div`
 `;
 
 const DivCartCardName = styled.div`
-    width: 85%;
-    height: 17%;
+    width: 75%;
+    height: 18%;
     background-color: var(--primary-color);
     border-radius: 15px;
     border: 4px solid var(--border-color);
