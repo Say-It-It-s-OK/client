@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PaymentButton } from "../../Buttons/buttons";
+import Details from "../../Details/details";
 import { CartCard } from "../../Card/Card";
 
 const DivCartContainer = styled.div`
@@ -9,7 +9,7 @@ const DivCartContainer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-    padding: 2%;
+    padding-top: 2%;
 `;
 
 const DivCartTitle = styled.div`
@@ -54,9 +54,8 @@ const CartContainer = () => {
                 <CartCard />
                 <CartCard />
                 <CartCard />
-                <CartCard />
             </DivCartContainerBody>
-            <PaymentButton />
+            <Details />
         </DivCartContainer>
     );
 };

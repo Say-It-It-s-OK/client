@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Audio from "../../assets/icons/audio_icon.png";
-import NavBar from "../../components/NavBar/navBar";
+import { NavBar } from "../../components/NavBar/navBar";
 import MainContainer from "../../components/Main/mainContainer";
 import { InputText, OutputText } from "../../components/TextBar/textBar";
 

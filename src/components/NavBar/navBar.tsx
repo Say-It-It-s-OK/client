@@ -35,4 +35,13 @@ const NavBar = ({ activeCategory, setActiveCategory }: CategoryProps) => {
     );
 };
 
-export default NavBar;
+const PaymentNav = () => {
+    return (
+        <Nav>
+            <ImgNavLogo src={Logo} alt="Logo" />
+            <div style={{ width: "20%" }} />
+        </Nav>
+    );
+};
+
+export { NavBar, PaymentNav };

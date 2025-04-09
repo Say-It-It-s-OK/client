@@ -57,7 +57,6 @@ const OptionContainer = () => {
                 <OptionButtonTriple />
                 <OptionButtonTriple />
             </DivOptionButtonContainer>
-            <PaymentButton />
             <AddCartButton />
         </DivOptionContainer>
     );

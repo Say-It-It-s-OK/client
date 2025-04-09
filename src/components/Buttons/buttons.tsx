@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const ButtonLongButton = styled.button`
@@ -121,13 +122,12 @@ const MenuButtonSecondary = ({ children, active, onClick }: buttonProps) => {
 };
 
 const ButtonPaymentButton = styled.button`
-    width: 40%;
-    height: 8%;
-    background-color: var(--secondary-color);
+    width: 90%;
+    height: 38%;
+    background-color: var(--primary-color);
     color: white;
     font-family: var(--font-main);
     font-size: 200%;
-    border: none;
     border-radius: 15px;
     border: 4px solid var(--border-color);
     cursor: pointer;
@@ -135,21 +135,25 @@ const ButtonPaymentButton = styled.button`
     &:hover {
         background-color: var(--accent-color);
     }
-
-    position: absolute;
-    top: 75%;
-    left: 78%;
-    transform: translateX(-50%);
 `;
 
 const PaymentButton = () => {
-    return <ButtonPaymentButton>결제하기</ButtonPaymentButton>;
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate("/payment");
+    };
+    return (
+        <ButtonPaymentButton onClick={handleClick}>
+            결제하기
+        </ButtonPaymentButton>
+    );
 };
 
 const ButtonAddCartButton = styled.button`
     width: 40%;
     height: 8%;
-    background-color: var(--light-color);
+    background-color: var(--primary-color);
     color: white;
     font-family: var(--font-main);
     font-size: 200%;
@@ -170,26 +174,6 @@ const ButtonAddCartButton = styled.button`
 
 const AddCartButton = () => {
     return <ButtonAddCartButton>장바구니 담기</ButtonAddCartButton>;
-};
-
-const ButtonOptionButton = styled.button`
-    width: 100%;
-    height: 13%;
-    background-color: var(--primary-color);
-    color: white;
-    font-family: var(--font-main);
-    font-size: 200%;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: var(--accent-color);
-    }
-`;
-
-const OptionButton = () => {
-    return <ButtonOptionButton>장바구니 담기</ButtonOptionButton>;
 };
 
 const DivOptionButtonContainer = styled.div`
