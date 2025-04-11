@@ -1,20 +1,26 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import fetchMenus from "./api/menu";
 import Index from "./pages/Index/index";
 import Home from "./pages/Home/home";
 import Payment from "./pages/Payment/payment";
 import "./styles/App.css";
 
 const App = () => {
+    useEffect(() => {
+        const loadMenus = async () => {
+            const menus = await fetchMenus();
+            console.log("초기 로딩된 메뉴 목록:", menus);
+        };
+        loadMenus();
+    }, []);
+
     return (
         <Router>
             <div>
                 <Routes>
                     <Route path="/" element={<Index />} />
-                </Routes>
-                <Routes>
                     <Route path="/home" element={<Home />} />
-                </Routes>
-                <Routes>
                     <Route path="/payment" element={<Payment />} />
                 </Routes>
             </div>
