@@ -55,7 +55,7 @@ const ButtonCartButton = styled.button<{ active?: boolean }>`
 `;
 
 const CartButton = ({ active, onClick }: buttonProps) => {
-    return <ButtonCartButton active={active} onClick={onClick} />;
+    return <ButtonCartButton data-active={active} onClick={onClick} />;
 };
 
 const ButtonMenuButtonPrimary = styled.button<{ active?: boolean }>`
@@ -83,7 +83,7 @@ const ButtonMenuButtonPrimary = styled.button<{ active?: boolean }>`
 
 const MenuButtonPrimary = ({ children, active, onClick }: buttonProps) => {
     return (
-        <ButtonMenuButtonPrimary active={active} onClick={onClick}>
+        <ButtonMenuButtonPrimary data-active={active} onClick={onClick}>
             {children}
         </ButtonMenuButtonPrimary>
     );
@@ -115,7 +115,7 @@ const ButtonMenuButtonSecondary = styled.button<{ active?: boolean }>`
 
 const MenuButtonSecondary = ({ children, active, onClick }: buttonProps) => {
     return (
-        <ButtonMenuButtonSecondary active={active} onClick={onClick}>
+        <ButtonMenuButtonSecondary data-active={active} onClick={onClick}>
             {children}
         </ButtonMenuButtonSecondary>
     );
