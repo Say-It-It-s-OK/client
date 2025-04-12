@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import fetchMenus from "./api/menu";
@@ -15,9 +16,9 @@ const App = () => {
             console.log("초기 로딩된 메뉴 목록:", menus);
             setMenus(menus);
         };
-        loadMenus();
-    }, []);
-
+        getMenus();
+    }, []); 
+  
     return (
         <Router>
             <div>
