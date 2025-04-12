@@ -32,7 +32,7 @@ interface buttonProps {
     onClick: () => void;
 }
 
-const ButtonCartButton = styled.button<{ active?: boolean }>`
+const ButtonCartButton = styled.button<{ active?: string }>`
     width: 20%;
     height: 75%;
     background-color: var(--primary-color);
@@ -48,17 +48,17 @@ const ButtonCartButton = styled.button<{ active?: boolean }>`
     }
 
     ${({ active }) =>
-        active &&
+        active === "true" &&
         `
         background-color: var(--accent-color);
     `}
 `;
 
 const CartButton = ({ active, onClick }: buttonProps) => {
-    return <ButtonCartButton data-active={active} onClick={onClick} />;
+    return <ButtonCartButton active={active.toString()} onClick={onClick} />;
 };
 
-const ButtonMenuButtonPrimary = styled.button<{ active?: boolean }>`
+const ButtonMenuButtonPrimary = styled.button<{ active?: string }>`
     width: 25%;
     height: 100%;
     background-color: var(--primary-color);
@@ -74,7 +74,7 @@ const ButtonMenuButtonPrimary = styled.button<{ active?: boolean }>`
     }
 
     ${({ active }) =>
-        active &&
+        active === "true" &&
         `
         transform: translateY(-30%);
         background-color: var(--accent-color);
@@ -83,13 +83,13 @@ const ButtonMenuButtonPrimary = styled.button<{ active?: boolean }>`
 
 const MenuButtonPrimary = ({ children, active, onClick }: buttonProps) => {
     return (
-        <ButtonMenuButtonPrimary data-active={active} onClick={onClick}>
+        <ButtonMenuButtonPrimary active={active.toString()} onClick={onClick}>
             {children}
         </ButtonMenuButtonPrimary>
     );
 };
 
-const ButtonMenuButtonSecondary = styled.button<{ active?: boolean }>`
+const ButtonMenuButtonSecondary = styled.button<{ active?: string }>`
     width: 25%;
     height: 100%;
     background-color: var(--secondary-color);
@@ -106,7 +106,7 @@ const ButtonMenuButtonSecondary = styled.button<{ active?: boolean }>`
     }
 
     ${({ active }) =>
-        active &&
+        active === "true" &&
         `
         transform: translateY(-30%);
         background-color: var(--accent-color);
@@ -115,7 +115,7 @@ const ButtonMenuButtonSecondary = styled.button<{ active?: boolean }>`
 
 const MenuButtonSecondary = ({ children, active, onClick }: buttonProps) => {
     return (
-        <ButtonMenuButtonSecondary data-active={active} onClick={onClick}>
+        <ButtonMenuButtonSecondary active={active.toString()} onClick={onClick}>
             {children}
         </ButtonMenuButtonSecondary>
     );

@@ -7,6 +7,7 @@ const DivMenuCardContainer = styled.div`
     width: 25%;
     height: 30%;
     margin-top: 2%;
+    position: relative;
 `;
 
 const DivMenuCard = styled.div`
@@ -18,19 +19,43 @@ const DivMenuCard = styled.div`
     margin-bottom: 5%;
 `;
 
+const DivMenuCardPrice = styled.div`
+    display: flex;
+    width: 55%;
+    height: 12%;
+    background-color: var(--primary-color);
+    border-radius: 15px 0 15px 0;
+    border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 135%;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 13%;
+`;
+
 const DivMenuCardName = styled.div`
+    display: flex;
     width: 85%;
     height: 17%;
     background-color: var(--primary-color);
     border-radius: 15px;
     border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 170%;
+    justify-content: center;
+    align-items: center;
 `;
 
-const MenuCard = () => {
+const MenuCard = ({ menu }) => {
     return (
         <DivMenuCardContainer>
+            <DivMenuCardPrice>{menu.price}원</DivMenuCardPrice>
             <DivMenuCard />
-            <DivMenuCardName />
+            <DivMenuCardName>{menu.name}</DivMenuCardName>
         </DivMenuCardContainer>
     );
 };
