@@ -21,16 +21,9 @@ const DivMenuBackground = styled.div`
     bottom: 43%;
 `;
 
-const categories = [
-    "요구사항",
-    "장바구니",
-    "커피",
-    "음료",
-    "디카페인",
-    "디저트",
-];
+const categories = ["요구사항", "장바구니", "커피", "음료", "티", "디저트"];
 
-const Home = () => {
+const Home = ({ menus }) => {
     const [activeCategory, setActiveCategory] = useState<string>("요구사항");
 
     return (
@@ -46,6 +39,7 @@ const Home = () => {
             <MainContainer
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
+                menus={menus}
             />
         </div>
     );

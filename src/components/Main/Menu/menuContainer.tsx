@@ -11,17 +11,13 @@ const DivMenuContainer = styled.div`
     position: relative;
 `;
 
-const MenuContainer = () => {
+const MenuContainer = ({ menus }) => {
+    console.log(`${menus[0].type} 메뉴 목록`, menus);
     return (
         <DivMenuContainer>
-            <MenuCard />
-            <MenuCard />
-            <MenuCard />
-            <MenuCard />
-            <MenuCard />
-            <MenuCard />
-            <MenuCard />
-            <MenuCard />
+            {menus.map((menu) => (
+                <MenuCard key={menu._id} menu={menu} />
+            ))}
             <Details />
         </DivMenuContainer>
     );

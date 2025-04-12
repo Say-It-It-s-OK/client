@@ -37,11 +37,13 @@ const DivMainContainerBody = styled.div`
 interface CategoryProps {
     activeCategory: string;
     setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
+    menus: any;
 }
 
 const MainContainer = ({
     activeCategory,
     setActiveCategory,
+    menus,
 }: CategoryProps) => {
     const handleCategoryClick = (category) => {
         setActiveCategory(category);
@@ -55,9 +57,15 @@ const MainContainer = ({
                 return <CartContainer />;
             case "커피":
             case "음료":
-            case "디카페인":
+            case "티":
             case "디저트":
-                return <MenuContainer />;
+                return (
+                    <MenuContainer
+                        menus={menus.filter(
+                            (menu) => menu.type === activeCategory
+                        )}
+                    />
+                );
         }
     };
 
@@ -75,9 +83,9 @@ const MainContainer = ({
                     onClick={() => handleCategoryClick("음료")}
                 />
                 <MenuButtonSecondary
-                    children="디카페인"
-                    active={activeCategory === "디카페인"}
-                    onClick={() => handleCategoryClick("디카페인")}
+                    children="티"
+                    active={activeCategory === "티"}
+                    onClick={() => handleCategoryClick("티")}
                 />
                 <MenuButtonPrimary
                     children="디저트"
