@@ -42,6 +42,7 @@ const ButtonCartButton = styled.button<{ active?: string }>`
     border: none;
     border-radius: 0 0 0 15px;
     cursor: pointer;
+    border: 4px solid var(--border-color);
 
     &:hover {
         background-color: var(--accent-color);
@@ -157,7 +158,6 @@ const ButtonAddCartButton = styled.button`
     color: white;
     font-family: var(--font-main);
     font-size: 200%;
-    border: none;
     border-radius: 15px;
     border: 4px solid var(--border-color);
     cursor: pointer;
@@ -189,21 +189,25 @@ const ButtonOptionButtonDouble = styled.button`
     background-color: var(--primary-color);
     color: white;
     font-family: var(--font-main);
-    font-size: 200%;
-    border: none;
+    font-size: 160%;
     border-radius: 15px;
     cursor: pointer;
+    border: 4px solid var(--border-color);
 
     &:hover {
         background-color: var(--accent-color);
     }
 `;
 
-const OptionButtonDouble = () => {
+const OptionButtonDouble = ({ optionValues }) => {
     return (
         <DivOptionButtonContainer>
-            <ButtonOptionButtonDouble />
-            <ButtonOptionButtonDouble />
+            <ButtonOptionButtonDouble>
+                {optionValues[0]}
+            </ButtonOptionButtonDouble>
+            <ButtonOptionButtonDouble>
+                {optionValues[1]}
+            </ButtonOptionButtonDouble>
         </DivOptionButtonContainer>
     );
 };
@@ -214,22 +218,28 @@ const ButtonOptionButtonTriple = styled.button`
     background-color: var(--primary-color);
     color: white;
     font-family: var(--font-main);
-    font-size: 200%;
-    border: none;
+    font-size: 160%;
     border-radius: 15px;
     cursor: pointer;
+    border: 4px solid var(--border-color);
 
     &:hover {
         background-color: var(--accent-color);
     }
 `;
 
-const OptionButtonTriple = () => {
+const OptionButtonTriple = ({ optionValues }) => {
     return (
         <DivOptionButtonContainer>
-            <ButtonOptionButtonTriple />
-            <ButtonOptionButtonTriple />
-            <ButtonOptionButtonTriple />
+            <ButtonOptionButtonTriple>
+                {optionValues[0]}
+            </ButtonOptionButtonTriple>
+            <ButtonOptionButtonTriple>
+                {optionValues[1]}
+            </ButtonOptionButtonTriple>
+            <ButtonOptionButtonTriple>
+                {optionValues[2]}
+            </ButtonOptionButtonTriple>
         </DivOptionButtonContainer>
     );
 };

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {
-    PaymentButton,
     AddCartButton,
     OptionButtonDouble,
     OptionButtonTriple,
@@ -32,6 +31,7 @@ const DivOptionTitle = styled.div`
     position: absolute;
     left: 78%;
     transform: translateX(-50%);
+    border: 4px solid var(--border-color);
 `;
 
 const DivOptionButtonContainer = styled.div`
@@ -47,15 +47,40 @@ const DivOptionButtonContainer = styled.div`
     gap: 4%;
 `;
 
-const OptionContainer = () => {
+const OptionContainer = ({ selectedMenu }) => {
+    const options = selectedMenu?.options || {};
+    const setOptionbButton = () => {
+        return Object.entries(options).map(
+            ([optionName, optionValues], index) => {
+                const selectedCount = Array.isArray(optionValues)
+                    ? optionValues.length
+                    : 0;
+                if (selectedCount === 3) {
+                    return (
+                        <OptionButtonTriple
+                            key={index}
+                            optionValues={optionValues}
+                        ></OptionButtonTriple>
+                    );
+                } else if (selectedCount === 2) {
+                    return (
+                        <OptionButtonDouble
+                            key={index}
+                            optionValues={optionValues}
+                        ></OptionButtonDouble>
+                    );
+                }
+                return null;
+            }
+        );
+    };
+
     return (
         <DivOptionContainer>
             <DivOptionTitle>추가 옵션</DivOptionTitle>
-            <OptionCard />
+            <OptionCard selectedMenu={selectedMenu} />
             <DivOptionButtonContainer>
-                <OptionButtonDouble />
-                <OptionButtonTriple />
-                <OptionButtonTriple />
+                {setOptionbButton()}
             </DivOptionButtonContainer>
             <AddCartButton />
         </DivOptionContainer>

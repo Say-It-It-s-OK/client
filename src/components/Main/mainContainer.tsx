@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { MenuButtonPrimary, MenuButtonSecondary } from "../Buttons/buttons";
 import QueryContainer from "./Query/queryContainer";
@@ -45,6 +45,8 @@ const MainContainer = ({
     setActiveCategory,
     menus,
 }: CategoryProps) => {
+    const [selectedMenu, setSelectedMenu] = useState(null);
+
     const handleCategoryClick = (category) => {
         setActiveCategory(category);
     };
@@ -61,11 +63,15 @@ const MainContainer = ({
             case "디저트":
                 return (
                     <MenuContainer
+                        setActiveCategory={setActiveCategory}
+                        setSelectedMenu={setSelectedMenu}
                         menus={menus.filter(
                             (menu) => menu.type === activeCategory
                         )}
                     />
                 );
+            case "옵션":
+                return <OptionContainer selectedMenu={selectedMenu} />;
         }
     };
 
