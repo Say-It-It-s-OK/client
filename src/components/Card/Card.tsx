@@ -17,6 +17,7 @@ const DivMenuCard = styled.div`
     border: none;
     border-radius: 15px;
     margin-bottom: 5%;
+    cursor: pointer;
 `;
 
 const DivMenuCardPrice = styled.div`
@@ -48,14 +49,22 @@ const DivMenuCardName = styled.div`
     font-size: 170%;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `;
 
-const MenuCard = ({ menu }) => {
+const MenuCard = ({ menu, setActiveCategory, setSelectedMenu }) => {
+    const handleMenuClick = (event) => {
+        setActiveCategory("옵션");
+        setSelectedMenu(menu);
+    };
+
     return (
         <DivMenuCardContainer>
             <DivMenuCardPrice>{menu.price}원</DivMenuCardPrice>
-            <DivMenuCard />
-            <DivMenuCardName>{menu.name}</DivMenuCardName>
+            <DivMenuCard onClick={handleMenuClick} />
+            <DivMenuCardName onClick={handleMenuClick}>
+                {menu.name}
+            </DivMenuCardName>
         </DivMenuCardContainer>
     );
 };
@@ -78,19 +87,44 @@ const DivOptionCard = styled.div`
     margin-bottom: 5%;
 `;
 
+const DivoptionCardPrice = styled.div`
+    display: flex;
+    width: 23%;
+    height: 6%;
+    background-color: var(--primary-color);
+    border-radius: 15px 0 15px 0;
+    border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 180%;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 4.2%;
+    left: 8.5%;
+`;
+
 const DivOptionCardName = styled.div`
+    display: flex;
     width: 85%;
     height: 12%;
     background-color: var(--primary-color);
     border-radius: 15px;
     border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    justify-content: center;
+    align-items: center;
 `;
 
-const OptionCard = () => {
+const OptionCard = ({ selectedMenu }) => {
+    console.log("선택된 메뉴", selectedMenu);
     return (
         <DivOptionCardContainer>
             <DivOptionCard />
-            <DivOptionCardName />
+            <DivoptionCardPrice>{selectedMenu.price}원</DivoptionCardPrice>
+            <DivOptionCardName>{selectedMenu.name}</DivOptionCardName>
         </DivOptionCardContainer>
     );
 };

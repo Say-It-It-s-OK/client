@@ -11,12 +11,18 @@ const DivMenuContainer = styled.div`
     position: relative;
 `;
 
-const MenuContainer = ({ menus }) => {
+const MenuContainer = ({ setActiveCategory, setSelectedMenu, menus }) => {
     console.log(`${menus[0].type} 메뉴 목록`, menus);
+
     return (
         <DivMenuContainer>
             {menus.map((menu) => (
-                <MenuCard key={menu._id} menu={menu} />
+                <MenuCard
+                    key={menu._id}
+                    menu={menu}
+                    setActiveCategory={setActiveCategory}
+                    setSelectedMenu={setSelectedMenu}
+                />
             ))}
             <Details />
         </DivMenuContainer>
