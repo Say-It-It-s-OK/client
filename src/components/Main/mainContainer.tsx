@@ -59,7 +59,7 @@ const MainContainer = ({
                 return <CartContainer />;
             case "커피":
             case "음료":
-            case "티":
+            case "디카페인":
             case "디저트":
                 return (
                     <MenuContainer
@@ -89,9 +89,9 @@ const MainContainer = ({
                     onClick={() => handleCategoryClick("음료")}
                 />
                 <MenuButtonSecondary
-                    children="티"
-                    active={activeCategory === "티"}
-                    onClick={() => handleCategoryClick("티")}
+                    children="디카페인"
+                    active={activeCategory === "디카페인"}
+                    onClick={() => handleCategoryClick("디카페인")}
                 />
                 <MenuButtonPrimary
                     children="디저트"

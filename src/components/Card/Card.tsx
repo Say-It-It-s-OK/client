@@ -46,7 +46,7 @@ const DivMenuCardName = styled.div`
     border: 4px solid var(--border-color);
     color: white;
     font-family: var(--font-main);
-    font-size: 170%;
+    font-size: 130%;
     justify-content: center;
     align-items: center;
     cursor: pointer;
