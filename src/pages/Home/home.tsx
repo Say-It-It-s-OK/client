@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Audio from "../../assets/icons/audio_icon.png";
 import { NavBar } from "../../components/NavBar/navBar";
@@ -24,6 +24,7 @@ const DivMenuBackground = styled.div`
 const categories = [
     "요구사항",
     "장바구니",
+    "장바구니 옵션",
     "커피",
     "음료",
     "디카페인",
@@ -33,12 +34,18 @@ const categories = [
 
 const Home = ({ menus }) => {
     const [activeCategory, setActiveCategory] = useState<string>("요구사항");
+    const [cartItems, setCartItems] = useState<[]>([]);
+
+    useEffect(() => {
+        console.log("장바구니에 담긴 제품", cartItems);
+    }, [cartItems]);
 
     return (
         <div className="container">
             <NavBar
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
+                cartItemsCount={cartItems.length}
             />
             <OutputText />
             <InputText />
@@ -47,6 +54,8 @@ const Home = ({ menus }) => {
             <MainContainer
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
                 menus={menus}
             />
         </div>

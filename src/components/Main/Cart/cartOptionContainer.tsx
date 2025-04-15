@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
-    AddCartButton,
+    ChangeOptionButton,
+    DeleteItemButton,
     OptionButtonDouble,
     OptionButtonTriple,
 } from "../../Buttons/buttons";
@@ -48,26 +49,26 @@ const DivOptionButtonContainer = styled.div`
     gap: 4%;
 `;
 
-const OptionContainer = ({ setActiveCategory, selectedMenu, setCartItems }) => {
+const CartOptionContainer = ({
+    setActiveCategory,
+    selectedMenu,
+    setCartItems,
+}) => {
     const options = selectedMenu?.options || {};
 
-    const createDefaultOptions = (options) => {
+    const createDefaultOptions = () => {
         const defaults = {};
-        Object.entries(options).forEach(([optionName, optionValues]) => {
-            if (Array.isArray(optionValues)) {
-                if (optionValues.length === 2) {
-                    defaults[optionName] = optionValues[0];
-                } else if (optionValues.length === 3) {
-                    defaults[optionName] = optionValues[1];
-                }
+        Object.entries(selectedMenu.selectedOptions).forEach(
+            ([optionName, optionValue]) => {
+                defaults[optionName] = optionValue;
             }
-        });
+        );
         console.log("초기옵션", defaults);
         return defaults;
     };
 
     const [selectedOptions, setSelectedOptions] = useState(() =>
-        createDefaultOptions(options)
+        createDefaultOptions()
     );
 
     const handleOptionSelection = (optionName, optionValue) => {
@@ -83,10 +84,36 @@ const OptionContainer = ({ setActiveCategory, selectedMenu, setCartItems }) => {
         selectedOptions: selectedOptions,
     };
 
-    const handleAddCartItems = () => {
-        console.log("장바구니에 추가된 제품:", cartItem);
-        setCartItems((prevItems) => [...prevItems, cartItem]);
+    const handleChangeOption = () => {
+        console.log("옵션이 변경된 제품:", cartItem);
+
+        const index = cartItem.cartIndex;
+
+        if (typeof index !== "number") {
+            console.error("cartIndex가 없습니다.");
+            return;
+        }
+
+        const updatedItem = { ...cartItem };
+        delete updatedItem.cartIndex;
+
+        setCartItems((prevItems) => {
+            const newItems = [...prevItems];
+            newItems[index] = updatedItem;
+            return newItems;
+        });
         setActiveCategory("장바구니");
+    };
+
+    const handleDeleteItem = () => {
+        console.log("삭제된 제품:", cartItem);
+        const index = cartItem.cartIndex;
+        setCartItems((prevItems) => {
+            const newItems = [...prevItems];
+            newItems.splice(index, 1);
+            return newItems;
+        });
+        setActiveCategory("요구사항");
     };
 
     useEffect(() => {
@@ -127,14 +154,15 @@ const OptionContainer = ({ setActiveCategory, selectedMenu, setCartItems }) => {
 
     return (
         <DivOptionContainer>
-            <DivOptionTitle>추가 옵션</DivOptionTitle>
+            <DivOptionTitle>옵션 변경</DivOptionTitle>
             <OptionCard selectedMenu={selectedMenu} />
             <DivOptionButtonContainer>
                 {setOptionbButton()}
             </DivOptionButtonContainer>
-            <AddCartButton handleAddCartItems={handleAddCartItems} />
+            <ChangeOptionButton handleChangeOption={handleChangeOption} />
+            <DeleteItemButton handleDeleteItem={handleDeleteItem} />
         </DivOptionContainer>
     );
 };
 
-export default OptionContainer;
+export default CartOptionContainer;
