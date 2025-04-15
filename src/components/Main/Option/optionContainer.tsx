@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
     AddCartButton,
@@ -49,6 +50,38 @@ const DivOptionButtonContainer = styled.div`
 
 const OptionContainer = ({ selectedMenu }) => {
     const options = selectedMenu?.options || {};
+
+    const createDefaultOptions = (options) => {
+        const defaults = {};
+        Object.entries(options).forEach(([optionName, optionValues]) => {
+            if (Array.isArray(optionValues)) {
+                if (optionValues.length === 2) {
+                    defaults[optionName] = optionValues[0];
+                } else if (optionValues.length === 3) {
+                    defaults[optionName] = optionValues[1];
+                }
+            }
+        });
+        console.log("초기옵션", defaults);
+        return defaults;
+    };
+
+    const [selectedOptions, setSelectedOptions] = useState(() =>
+        createDefaultOptions(options)
+    );
+
+    const handleOptionSelection = (optionName, optionValue) => {
+        console.log(`변경된 ${optionName}: ${optionValue}`);
+        setSelectedOptions((prevState) => ({
+            ...prevState,
+            [optionName]: optionValue,
+        }));
+    };
+
+    useEffect(() => {
+        console.log("전체옵션", selectedOptions);
+    }, [selectedOptions]);
+
     const setOptionbButton = () => {
         return Object.entries(options).map(
             ([optionName, optionValues], index) => {
@@ -59,14 +92,20 @@ const OptionContainer = ({ selectedMenu }) => {
                     return (
                         <OptionButtonTriple
                             key={index}
+                            optionName={optionName}
                             optionValues={optionValues}
+                            selectedOption={selectedOptions[optionName]}
+                            handleOptionSelection={handleOptionSelection}
                         ></OptionButtonTriple>
                     );
                 } else if (selectedCount === 2) {
                     return (
                         <OptionButtonDouble
                             key={index}
+                            optionName={optionName}
                             optionValues={optionValues}
+                            selectedOption={selectedOptions[optionName]}
+                            handleOptionSelection={handleOptionSelection}
                         ></OptionButtonDouble>
                     );
                 }

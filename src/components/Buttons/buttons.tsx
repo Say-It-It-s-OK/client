@@ -183,61 +183,104 @@ const DivOptionButtonContainer = styled.div`
     height: 13%;
 `;
 
-const ButtonOptionButtonDouble = styled.button`
+interface ButtonProps {
+    selected: boolean;
+}
+
+const ButtonOptionButtonDouble = styled.button<ButtonProps>`
     width: 49%;
     height: 100%;
-    background-color: var(--primary-color);
+    background-color: ${({ selected }) =>
+        selected ? "var(--accent-color)" : "var(--primary-color)"};
     color: white;
     font-family: var(--font-main);
     font-size: 160%;
     border-radius: 15px;
-    cursor: pointer;
+    cursor: ${({ selected }) => (selected ? "default" : "pointer")};
     border: 4px solid var(--border-color);
+    pointer-events: ${({ selected }) => (selected ? "none" : "auto")};
 
     &:hover {
-        background-color: var(--accent-color);
+        background-color: var(--secondary-color);
     }
 `;
 
-const OptionButtonDouble = ({ optionValues }) => {
+const OptionButtonDouble = ({
+    optionName,
+    optionValues,
+    selectedOption,
+    handleOptionSelection,
+}) => {
     return (
         <DivOptionButtonContainer>
-            <ButtonOptionButtonDouble>
+            <ButtonOptionButtonDouble
+                onClick={() =>
+                    handleOptionSelection(optionName, optionValues[0])
+                }
+                selected={selectedOption === optionValues[0]}
+            >
                 {optionValues[0]}
             </ButtonOptionButtonDouble>
-            <ButtonOptionButtonDouble>
+            <ButtonOptionButtonDouble
+                onClick={() =>
+                    handleOptionSelection(optionName, optionValues[1])
+                }
+                selected={selectedOption === optionValues[1]}
+            >
                 {optionValues[1]}
             </ButtonOptionButtonDouble>
         </DivOptionButtonContainer>
     );
 };
 
-const ButtonOptionButtonTriple = styled.button`
+const ButtonOptionButtonTriple = styled.button<ButtonProps>`
     width: 32%;
     height: 100%;
-    background-color: var(--primary-color);
+    background-color: ${({ selected }) =>
+        selected ? "var(--accent-color)" : "var(--primary-color)"};
     color: white;
     font-family: var(--font-main);
     font-size: 160%;
     border-radius: 15px;
-    cursor: pointer;
+    cursor: ${({ selected }) => (selected ? "default" : "pointer")};
     border: 4px solid var(--border-color);
+    pointer-events: ${({ selected }) => (selected ? "none" : "auto")};
 
     &:hover {
-        background-color: var(--accent-color);
+        background-color: var(--secondary-color);
     }
 `;
 
-const OptionButtonTriple = ({ optionValues }) => {
+const OptionButtonTriple = ({
+    optionName,
+    optionValues,
+    selectedOption,
+    handleOptionSelection,
+}) => {
     return (
         <DivOptionButtonContainer>
-            <ButtonOptionButtonTriple>
+            <ButtonOptionButtonTriple
+                onClick={() =>
+                    handleOptionSelection(optionName, optionValues[0])
+                }
+                selected={selectedOption === optionValues[0]}
+            >
                 {optionValues[0]}
             </ButtonOptionButtonTriple>
-            <ButtonOptionButtonTriple>
+            <ButtonOptionButtonTriple
+                onClick={() =>
+                    handleOptionSelection(optionName, optionValues[1])
+                }
+                selected={selectedOption === optionValues[1]}
+            >
                 {optionValues[1]}
             </ButtonOptionButtonTriple>
-            <ButtonOptionButtonTriple>
+            <ButtonOptionButtonTriple
+                onClick={() =>
+                    handleOptionSelection(optionName, optionValues[2])
+                }
+                selected={selectedOption === optionValues[2]}
+            >
                 {optionValues[2]}
             </ButtonOptionButtonTriple>
         </DivOptionButtonContainer>
