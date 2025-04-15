@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Vector from "../../assets/images/Vector.png";
 import { PaymentNav } from "../../components/NavBar/navBar";
-import { CartCard } from "../../components/Card/Card";
+import { ItemCard } from "../../components/Card/Card";
 
 const DivMainContainerBody = styled.div`
     display: flex;
@@ -27,7 +27,7 @@ const DivPaymentContainer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-    padding-top: 2%;
+    padding: 1%;
 `;
 
 const DivPaymentContainerBody = styled.div`
@@ -41,6 +41,18 @@ const DivPaymentContainerBody = styled.div`
     left: 50%;
     bottom: 37%;
     transform: translateX(-50%);
+
+    max-height: 50%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 15px;
+        background: var(--accent-color);
+    }
 `;
 
 const DivPaymentTitle = styled.div`
@@ -141,6 +153,8 @@ const PaymentFin = () => {
 };
 
 const PaymentInit = () => {
+    const location = useLocation();
+    const { cartItems, totalPrice } = location.state || {};
     return (
         <>
             <PaymentNav />
@@ -149,15 +163,16 @@ const PaymentInit = () => {
                 <DivPaymentContainer>
                     <DivPaymentTitle>주문 내역</DivPaymentTitle>
                     <DivPaymentContainerBody>
-                        <CartCard />
-                        <CartCard />
-                        <CartCard />
-                        <CartCard />
+                        {cartItems.map((item, index) => (
+                            <ItemCard key={index} item={{ ...item }} />
+                        ))}
                     </DivPaymentContainerBody>
                     <DivDetailsWholeContainer>
                         <DivDetailsText>결제비용</DivDetailsText>
                         <DivDetailsContainer>
-                            <DivDetailsPayAmount>\ 0</DivDetailsPayAmount>
+                            <DivDetailsPayAmount>
+                                {totalPrice}원
+                            </DivDetailsPayAmount>
                         </DivDetailsContainer>
                     </DivDetailsWholeContainer>
                 </DivPaymentContainer>

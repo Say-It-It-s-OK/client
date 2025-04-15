@@ -48,13 +48,13 @@ const DivDetailsPayAmount = styled.div`
     text-align: center;
 `;
 
-const Details = () => {
+const Details = ({ cartItems, totalPrice }) => {
     return (
         <DivDetailsWholeContainer>
             <DivDetailsText>결제비용</DivDetailsText>
             <DivDetailsContainer>
-                <DivDetailsPayAmount>\ 0</DivDetailsPayAmount>
-                <PaymentButton />
+                <DivDetailsPayAmount>{totalPrice}원</DivDetailsPayAmount>
+                <PaymentButton cartItems={cartItems} totalPrice={totalPrice} />
             </DivDetailsContainer>
         </DivDetailsWholeContainer>
     );

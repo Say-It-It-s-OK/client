@@ -30,6 +30,7 @@ interface buttonProps {
     children?: string;
     active: boolean;
     onClick: () => void;
+    itemsCount?: number;
 }
 
 const ButtonCartButton = styled.button<{ active?: string }>`
@@ -55,8 +56,12 @@ const ButtonCartButton = styled.button<{ active?: string }>`
     `}
 `;
 
-const CartButton = ({ active, onClick }: buttonProps) => {
-    return <ButtonCartButton active={active.toString()} onClick={onClick} />;
+const CartButton = ({ active, onClick, itemsCount }: buttonProps) => {
+    return (
+        <ButtonCartButton active={active.toString()} onClick={onClick}>
+            {itemsCount}
+        </ButtonCartButton>
+    );
 };
 
 const ButtonMenuButtonPrimary = styled.button<{ active?: string }>`
@@ -138,11 +143,16 @@ const ButtonPaymentButton = styled.button`
     }
 `;
 
-const PaymentButton = () => {
+const PaymentButton = ({ cartItems, totalPrice }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate("/payment");
+        navigate("/payment", {
+            state: {
+                cartItems: cartItems,
+                totalPrice: totalPrice,
+            },
+        });
     };
     return (
         <ButtonPaymentButton onClick={handleClick}>
@@ -172,8 +182,71 @@ const ButtonAddCartButton = styled.button`
     transform: translateX(-50%);
 `;
 
-const AddCartButton = () => {
-    return <ButtonAddCartButton>장바구니 담기</ButtonAddCartButton>;
+const AddCartButton = ({ handleAddCartItems }) => {
+    return (
+        <ButtonAddCartButton onClick={() => handleAddCartItems()}>
+            장바구니 담기
+        </ButtonAddCartButton>
+    );
+};
+
+const ButtonChangeoOtionButton = styled.button`
+    width: 40%;
+    height: 8%;
+    background-color: var(--light-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--accent-color);
+    }
+
+    position: absolute;
+    top: 75%;
+    left: 78%;
+    transform: translateX(-50%);
+`;
+
+const ChangeOptionButton = ({ handleChangeOption }) => {
+    return (
+        <ButtonChangeoOtionButton onClick={() => handleChangeOption()}>
+            옵션 변경하기
+        </ButtonChangeoOtionButton>
+    );
+};
+
+const ButtonDeleteItemButton = styled.button`
+    width: 40%;
+    height: 8%;
+    background-color: var(--secondary-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 200%;
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--accent-color);
+    }
+
+    position: absolute;
+
+    top: 85%;
+    left: 78%;
+    transform: translateX(-50%);
+`;
+
+const DeleteItemButton = ({ handleDeleteItem }) => {
+    return (
+        <ButtonDeleteItemButton onClick={() => handleDeleteItem()}>
+            장바구니에서 삭제하기
+        </ButtonDeleteItemButton>
+    );
 };
 
 const DivOptionButtonContainer = styled.div`
@@ -183,11 +256,11 @@ const DivOptionButtonContainer = styled.div`
     height: 13%;
 `;
 
-interface ButtonProps {
+interface optionProps {
     selected: boolean;
 }
 
-const ButtonOptionButtonDouble = styled.button<ButtonProps>`
+const ButtonOptionButtonDouble = styled.button<optionProps>`
     width: 49%;
     height: 100%;
     background-color: ${({ selected }) =>
@@ -233,7 +306,7 @@ const OptionButtonDouble = ({
     );
 };
 
-const ButtonOptionButtonTriple = styled.button<ButtonProps>`
+const ButtonOptionButtonTriple = styled.button<optionProps>`
     width: 32%;
     height: 100%;
     background-color: ${({ selected }) =>
@@ -294,6 +367,8 @@ export {
     MenuButtonSecondary,
     PaymentButton,
     AddCartButton,
+    ChangeOptionButton,
+    DeleteItemButton,
     OptionButtonDouble,
     OptionButtonTriple,
 };

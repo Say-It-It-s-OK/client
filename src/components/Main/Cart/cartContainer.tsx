@@ -9,7 +9,7 @@ const DivCartContainer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-    padding-top: 2%;
+    padding-top: 1%;
 `;
 
 const DivCartTitle = styled.div`
@@ -32,30 +32,49 @@ const DivCartTitle = styled.div`
 const DivCartContainerBody = styled.div`
     display: flex;
     width: 100%;
-    height: 50%;
+    height: 56%;
     align-content: flex-start;
     border: none;
     flex-wrap: wrap;
     position: absolute;
     left: 50%;
-    bottom: 37%;
+    bottom: 33%;
     transform: translateX(-50%);
+    max-height: 56%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 15px;
+        background: var(--accent-color);
+    }
 `;
 
-const CartContainer = () => {
+const CartContainer = ({
+    setActiveCategory,
+    setSelectedMenu,
+    setCartItems,
+    cartItems,
+}) => {
+    const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
     return (
         <DivCartContainer>
             <DivCartTitle>장바구니</DivCartTitle>
             <DivCartContainerBody>
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
-                <CartCard />
+                {cartItems.map((item, index) => (
+                    <CartCard
+                        key={index}
+                        item={{ ...item, cartIndex: index }}
+                        setCartItems={setCartItems}
+                        setActiveCategory={setActiveCategory}
+                        setSelectedMenu={setSelectedMenu}
+                    />
+                ))}
             </DivCartContainerBody>
-            <Details />
+            <Details key={null} cartItems={cartItems} totalPrice={totalPrice} />
         </DivCartContainer>
     );
 };

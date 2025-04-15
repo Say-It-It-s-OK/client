@@ -17,19 +17,24 @@ const ImgNavLogo = styled.img`
 interface CategoryProps {
     activeCategory: string;
     setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
+    cartItemsCount: number;
 }
 
-const NavBar = ({ activeCategory, setActiveCategory }: CategoryProps) => {
+const NavBar = ({
+    activeCategory,
+    setActiveCategory,
+    cartItemsCount,
+}: CategoryProps) => {
     const handleCategoryClick = (category) => {
         setActiveCategory(category);
     };
-
     return (
         <Nav>
             <ImgNavLogo src={Logo} alt="Logo" />
             <CartButton
                 active={activeCategory === "장바구니"}
                 onClick={() => handleCategoryClick("장바구니")}
+                itemsCount={cartItemsCount}
             />
         </Nav>
     );

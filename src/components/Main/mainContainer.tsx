@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { MenuButtonPrimary, MenuButtonSecondary } from "../Buttons/buttons";
 import QueryContainer from "./Query/queryContainer";
 import MenuContainer from "./Menu/menuContainer";
-import OptionContainer from "./Option/optionContainer";
 import CartContainer from "./Cart/cartContainer";
+import CartOptionContainer from "./Cart/cartOptionContainer";
+import OptionContainer from "./Option/optionContainer";
 
 const DivMainContainer = styled.div`
     width: 100%;
@@ -37,12 +38,16 @@ const DivMainContainerBody = styled.div`
 interface CategoryProps {
     activeCategory: string;
     setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
+    cartItems: [];
+    setCartItems: Dispatch<SetStateAction<[] | undefined>>;
     menus: any;
 }
 
 const MainContainer = ({
     activeCategory,
     setActiveCategory,
+    cartItems,
+    setCartItems,
     menus,
 }: CategoryProps) => {
     const [selectedMenu, setSelectedMenu] = useState(null);
@@ -56,7 +61,22 @@ const MainContainer = ({
             case "요구사항":
                 return <QueryContainer />;
             case "장바구니":
-                return <CartContainer />;
+                return (
+                    <CartContainer
+                        setActiveCategory={setActiveCategory}
+                        setSelectedMenu={setSelectedMenu}
+                        cartItems={cartItems}
+                        setCartItems={setCartItems}
+                    />
+                );
+            case "장바구니 옵션":
+                return (
+                    <CartOptionContainer
+                        setActiveCategory={setActiveCategory}
+                        selectedMenu={selectedMenu}
+                        setCartItems={setCartItems}
+                    />
+                );
             case "커피":
             case "음료":
             case "디카페인":
@@ -68,10 +88,17 @@ const MainContainer = ({
                         menus={menus.filter(
                             (menu) => menu.type === activeCategory
                         )}
+                        cartItems={cartItems}
                     />
                 );
             case "옵션":
-                return <OptionContainer selectedMenu={selectedMenu} />;
+                return (
+                    <OptionContainer
+                        setActiveCategory={setActiveCategory}
+                        selectedMenu={selectedMenu}
+                        setCartItems={setCartItems}
+                    />
+                );
         }
     };
 
