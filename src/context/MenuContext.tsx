@@ -7,6 +7,7 @@ import {
 } from "react";
 
 export interface Menu {
+    _id: string;
     id: string;
     name: string;
     price: number;

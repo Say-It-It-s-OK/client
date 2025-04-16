@@ -9,11 +9,11 @@
         "moduleResolution": "Node",
         "jsx": "react-jsx",
         "allowSyntheticDefaultImports": true,
-        "strict": false,
+        "strict": true,
         "noEmit": true,
         "resolveJsonModule": true,
         "isolatedModules": true
     },
-    "include": ["src"],
+    "include": ["src", "src/**/*.tsx", "vite-env.d.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

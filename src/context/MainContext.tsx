@@ -38,17 +38,12 @@ interface MainContextType {
     setCartItems: Dispatch<SetStateAction<CartItem[]>>;
 }
 
-interface SelectedMenuContextType {
-    selectedMenu: Menu | undefined;
-    setSelectedMenu: Dispatch<SetStateAction<Menu | undefined>>;
-}
-
-interface SelectedCartContextType {
-    selectedCart: CartItem | undefined;
-    setSelectedCart: Dispatch<SetStateAction<Menu | undefined>>;
-}
-
-export const MainContext = createContext<MainContextType | null>(null);
+export const MainContext = createContext<MainContextType>({
+    activeCategory: "요구사항",
+    setActiveCategory: () => {},
+    cartItems: [],
+    setCartItems: () => {},
+});
 
 export const MainProvider = ({ children }: ContextProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("요구사항");
@@ -72,8 +67,15 @@ export const MainProvider = ({ children }: ContextProps) => {
     );
 };
 
-export const SelectedMenuContext =
-    createContext<SelectedMenuContextType | null>(null);
+interface SelectedMenuContextType {
+    selectedMenu: Menu | undefined;
+    setSelectedMenu: Dispatch<SetStateAction<Menu | undefined>>;
+}
+
+export const SelectedMenuContext = createContext<SelectedMenuContextType>({
+    selectedMenu: undefined,
+    setSelectedMenu: () => {},
+});
 
 export const SelectedMenuProvider = ({ children }: ContextProps) => {
     const [selectedMenu, setSelectedMenu] = useState<Menu>();
@@ -93,9 +95,15 @@ export const SelectedMenuProvider = ({ children }: ContextProps) => {
         </SelectedMenuContext.Provider>
     );
 };
+interface SelectedCartContextType {
+    selectedCart: CartItem | undefined;
+    setSelectedCart: Dispatch<SetStateAction<CartItem | undefined>>;
+}
 
-export const SelectedCartContext =
-    createContext<SelectedCartContextType | null>(null);
+export const SelectedCartContext = createContext<SelectedCartContextType>({
+    selectedCart: undefined,
+    setSelectedCart: () => {},
+});
 
 export const SelectedCartProvider = ({ children }: ContextProps) => {
     const [selectedCart, setSelectedCart] = useState<CartItem>();

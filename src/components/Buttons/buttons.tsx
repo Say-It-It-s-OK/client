@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { CartItem, MainContext } from "../../context/MainContext";
+import { useContext } from "react";
 
 const ButtonLongButton = styled.button`
     position: absolute;
@@ -18,7 +20,13 @@ const ButtonLongButton = styled.button`
     }
 `;
 
-const LongButton = ({ children, top, left }) => {
+interface LongButtonPropos {
+    children: string;
+    top: string;
+    left: string;
+}
+
+const LongButton = ({ children, top, left }: LongButtonPropos) => {
     return (
         <ButtonLongButton style={{ top: top, left: left }}>
             {children}
@@ -56,10 +64,18 @@ const ButtonCartButton = styled.button<{ active?: string }>`
     `}
 `;
 
-const CartButton = ({ active, onClick, itemsCount }: buttonProps) => {
+const CartButton = () => {
+    const { activeCategory, setActiveCategory, cartItems } =
+        useContext(MainContext);
+    const onClick = () => {
+        setActiveCategory("장바구니");
+    };
     return (
-        <ButtonCartButton active={active.toString()} onClick={onClick}>
-            {itemsCount}
+        <ButtonCartButton
+            active={(activeCategory === "장바구니").toString()}
+            onClick={onClick}
+        >
+            {cartItems.length}
         </ButtonCartButton>
     );
 };
@@ -143,7 +159,12 @@ const ButtonPaymentButton = styled.button`
     }
 `;
 
-const PaymentButton = ({ cartItems, totalPrice }) => {
+interface PaymentButtonProps {
+    cartItems: CartItem[];
+    totalPrice: number;
+}
+
+const PaymentButton = ({ cartItems, totalPrice }: PaymentButtonProps) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -182,7 +203,11 @@ const ButtonAddCartButton = styled.button`
     transform: translateX(-50%);
 `;
 
-const AddCartButton = ({ handleAddCartItems }) => {
+interface AddCartButtonProps {
+    handleAddCartItems: () => void;
+}
+
+const AddCartButton = ({ handleAddCartItems }: AddCartButtonProps) => {
     return (
         <ButtonAddCartButton onClick={() => handleAddCartItems()}>
             장바구니 담기
@@ -211,7 +236,13 @@ const ButtonChangeoOtionButton = styled.button`
     transform: translateX(-50%);
 `;
 
-const ChangeOptionButton = ({ handleChangeOption }) => {
+interface ChangeOptionButtonProps {
+    handleChangeOption: () => void;
+}
+
+const ChangeOptionButton = ({
+    handleChangeOption,
+}: ChangeOptionButtonProps) => {
     return (
         <ButtonChangeoOtionButton onClick={() => handleChangeOption()}>
             옵션 변경하기
@@ -241,7 +272,11 @@ const ButtonDeleteItemButton = styled.button`
     transform: translateX(-50%);
 `;
 
-const DeleteItemButton = ({ handleDeleteItem }) => {
+interface DeleteItemButtonProps {
+    handleDeleteItem: () => void;
+}
+
+const DeleteItemButton = ({ handleDeleteItem }: DeleteItemButtonProps) => {
     return (
         <ButtonDeleteItemButton onClick={() => handleDeleteItem()}>
             장바구니에서 삭제하기
@@ -277,13 +312,23 @@ const ButtonOptionButtonDouble = styled.button<optionProps>`
         background-color: var(--secondary-color);
     }
 `;
+interface OptionType {
+    optionName: string;
+    optionValue: string;
+}
+interface OptionButtonProps {
+    optionName: string;
+    optionValues: string[];
+    selectedOption: string;
+    handleOptionSelection: (optionName: string, optionValue: string) => void;
+}
 
 const OptionButtonDouble = ({
     optionName,
     optionValues,
     selectedOption,
     handleOptionSelection,
-}) => {
+}: OptionButtonProps) => {
     return (
         <DivOptionButtonContainer>
             <ButtonOptionButtonDouble
@@ -329,7 +374,7 @@ const OptionButtonTriple = ({
     optionValues,
     selectedOption,
     handleOptionSelection,
-}) => {
+}: OptionButtonProps) => {
     return (
         <DivOptionButtonContainer>
             <ButtonOptionButtonTriple
