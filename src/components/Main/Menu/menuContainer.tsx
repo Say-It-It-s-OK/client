@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import { MenuCard } from "../../Card/Card";
 import Details from "../../Details/details";
+import { useContext } from "react";
+import {
+    MainContext,
+    SelectedMenuProvider,
+} from "../../../context/MainContext";
+import { MenuContext } from "../../../context/MenuContext";
 
 const DivMenuContainer = styled.div`
     display: flex;
@@ -27,25 +33,19 @@ const DivMenuContainerBody = styled.div`
     }
 `;
 
-const MenuContainer = ({
-    setActiveCategory,
-    setSelectedMenu,
-    menus,
-    cartItems,
-}) => {
-    console.log(`${menus[0].type} 메뉴 목록`, menus);
+const MenuContainer = () => {
+    const { menus } = useContext(MenuContext)!;
+    const { activeCategory, cartItems } = useContext(MainContext);
+    const filteredMenus = menus.filter((menu) => menu.type === activeCategory);
+    console.log(`${filteredMenus[0].type} 메뉴 목록`, filteredMenus);
+
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
     return (
         <DivMenuContainer>
             <DivMenuContainerBody>
-                {menus.map((menu) => (
-                    <MenuCard
-                        key={menu._id}
-                        menu={menu}
-                        setActiveCategory={setActiveCategory}
-                        setSelectedMenu={setSelectedMenu}
-                    />
+                {filteredMenus.map((menu) => (
+                    <MenuCard key={menu.id} menu={menu} />
                 ))}
             </DivMenuContainerBody>
             <Details key={null} cartItems={cartItems} totalPrice={totalPrice} />

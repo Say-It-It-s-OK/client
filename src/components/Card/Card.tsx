@@ -1,4 +1,10 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import {
+    MainContext,
+    SelectedCartContext,
+    SelectedMenuContext,
+} from "../../context/MainContext";
 
 const DivMenuCardContainer = styled.div`
     display: flex;
@@ -52,10 +58,13 @@ const DivMenuCardName = styled.div`
     cursor: pointer;
 `;
 
-const MenuCard = ({ menu, setActiveCategory, setSelectedMenu }) => {
-    const handleMenuClick = (event) => {
-        setActiveCategory("옵션");
+const MenuCard = ({ menu }) => {
+    const { setActiveCategory } = useContext(MainContext);
+    const { setSelectedMenu } = useContext(SelectedMenuContext);
+
+    const handleMenuClick = () => {
         setSelectedMenu(menu);
+        setActiveCategory("옵션");
     };
 
     return (
@@ -119,7 +128,6 @@ const DivOptionCardName = styled.div`
 `;
 
 const OptionCard = ({ selectedMenu }) => {
-    console.log("선택된 메뉴", selectedMenu);
     return (
         <DivOptionCardContainer>
             <DivOptionCard />
@@ -223,15 +231,13 @@ const DivCartCardName = styled.div`
     cursor: pointer;
 `;
 
-const CartCard = ({
-    item,
-    setCartItems,
-    setActiveCategory,
-    setSelectedMenu,
-}) => {
-    const handleMenuClick = (event) => {
+const CartCard = ({ item }) => {
+    const { setActiveCategory, setCartItems } = useContext(MainContext);
+    const { setSelectedCart } = useContext(SelectedCartContext);
+
+    const handleMenuClick = () => {
         setActiveCategory("장바구니 옵션");
-        setSelectedMenu(item);
+        setSelectedCart(item);
     };
 
     const handleAdd = () => {

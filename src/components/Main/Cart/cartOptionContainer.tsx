@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import {
     ChangeOptionButton,
@@ -7,6 +7,11 @@ import {
     OptionButtonTriple,
 } from "../../Buttons/buttons";
 import { OptionCard } from "../../Card/Card";
+import {
+    MainContext,
+    SelectedCartContext,
+    SelectedMenuContext,
+} from "../../../context/MainContext";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -49,16 +54,14 @@ const DivOptionButtonContainer = styled.div`
     gap: 4%;
 `;
 
-const CartOptionContainer = ({
-    setActiveCategory,
-    selectedMenu,
-    setCartItems,
-}) => {
-    const options = selectedMenu?.options || {};
+const CartOptionContainer = () => {
+    const { setActiveCategory, setCartItems } = useContext(MainContext);
+    const { selectedCart } = useContext(SelectedCartContext);
+    const options = selectedCart?.options || {};
 
     const createDefaultOptions = () => {
         const defaults = {};
-        Object.entries(selectedMenu.selectedOptions).forEach(
+        Object.entries(selectedCart.selectedOptions).forEach(
             ([optionName, optionValue]) => {
                 defaults[optionName] = optionValue;
             }
@@ -80,7 +83,7 @@ const CartOptionContainer = ({
     };
 
     const cartItem = {
-        ...selectedMenu,
+        ...selectedCart,
         selectedOptions: selectedOptions,
     };
 
@@ -117,7 +120,7 @@ const CartOptionContainer = ({
     };
 
     useEffect(() => {
-        console.log("전체옵션", selectedOptions);
+        console.log("현재 옵션", selectedOptions);
     }, [selectedOptions]);
 
     const setOptionbButton = () => {
@@ -155,7 +158,7 @@ const CartOptionContainer = ({
     return (
         <DivOptionContainer>
             <DivOptionTitle>옵션 변경</DivOptionTitle>
-            <OptionCard selectedMenu={selectedMenu} />
+            <OptionCard selectedMenu={selectedCart} />
             <DivOptionButtonContainer>
                 {setOptionbButton()}
             </DivOptionButtonContainer>

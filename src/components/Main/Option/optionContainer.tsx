@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { MainContext, SelectedMenuContext } from "../../../context/MainContext";
 import styled from "styled-components";
 import {
     AddCartButton,
@@ -48,7 +49,9 @@ const DivOptionButtonContainer = styled.div`
     gap: 4%;
 `;
 
-const OptionContainer = ({ setActiveCategory, selectedMenu, setCartItems }) => {
+const OptionContainer = () => {
+    const { setActiveCategory, setCartItems } = useContext(MainContext);
+    const { selectedMenu } = useContext(SelectedMenuContext);
     const options = selectedMenu?.options || {};
 
     const createDefaultOptions = (options) => {
@@ -78,19 +81,18 @@ const OptionContainer = ({ setActiveCategory, selectedMenu, setCartItems }) => {
         }));
     };
 
-    const cartItem = {
-        ...selectedMenu,
-        selectedOptions: selectedOptions,
-    };
-
     const handleAddCartItems = () => {
+        const cartItem = {
+            ...selectedMenu,
+            selectedOptions: selectedOptions,
+        };
         console.log("장바구니에 추가된 제품:", cartItem);
         setCartItems((prevItems) => [...prevItems, cartItem]);
         setActiveCategory("장바구니");
     };
 
     useEffect(() => {
-        console.log("전체옵션", selectedOptions);
+        console.log("현재 옵션", selectedOptions);
     }, [selectedOptions]);
 
     const setOptionbButton = () => {
