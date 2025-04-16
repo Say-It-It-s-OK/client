@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Details from "../../Details/details";
 import { CartCard } from "../../Card/Card";
+import { useContext } from "react";
+import { MainContext } from "../../../context/MainContext";
 
 const DivCartContainer = styled.div`
     display: flex;
@@ -53,12 +55,9 @@ const DivCartContainerBody = styled.div`
     }
 `;
 
-const CartContainer = ({
-    setActiveCategory,
-    setSelectedMenu,
-    setCartItems,
-    cartItems,
-}) => {
+const CartContainer = () => {
+    const { cartItems } = useContext(MainContext);
+
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
     return (
         <DivCartContainer>
@@ -68,9 +67,6 @@ const CartContainer = ({
                     <CartCard
                         key={index}
                         item={{ ...item, cartIndex: index }}
-                        setCartItems={setCartItems}
-                        setActiveCategory={setActiveCategory}
-                        setSelectedMenu={setSelectedMenu}
                     />
                 ))}
             </DivCartContainerBody>

@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import styled from "styled-components";
 import Logo from "../../assets/icons/logo_large.png";
 import { CartButton } from "../Buttons/buttons";
+import { MainContext } from "../../context/MainContext";
 
 const Nav = styled.nav`
     display: flex;
@@ -14,27 +15,16 @@ const ImgNavLogo = styled.img`
     margin: 2% 0 0 0;
 `;
 
-interface CategoryProps {
-    activeCategory: string;
-    setActiveCategory: Dispatch<SetStateAction<string | undefined>>;
-    cartItemsCount: number;
-}
-
-const NavBar = ({
-    activeCategory,
-    setActiveCategory,
-    cartItemsCount,
-}: CategoryProps) => {
-    const handleCategoryClick = (category) => {
-        setActiveCategory(category);
-    };
+const NavBar = () => {
+    const { activeCategory, setActiveCategory, cartItems } =
+        useContext(MainContext);
     return (
         <Nav>
             <ImgNavLogo src={Logo} alt="Logo" />
             <CartButton
                 active={activeCategory === "장바구니"}
-                onClick={() => handleCategoryClick("장바구니")}
-                itemsCount={cartItemsCount}
+                onClick={() => setActiveCategory("장바구니")}
+                itemsCount={cartItems.length}
             />
         </Nav>
     );
