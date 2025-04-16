@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { CartItem } from "../../context/MainContext";
 import styled from "styled-components";
 import Vector from "../../assets/images/Vector.png";
 import { PaymentNav } from "../../components/NavBar/navBar";
@@ -163,7 +164,7 @@ const PaymentInit = () => {
                 <DivPaymentContainer>
                     <DivPaymentTitle>주문 내역</DivPaymentTitle>
                     <DivPaymentContainerBody>
-                        {cartItems.map((item, index) => (
+                        {cartItems.map((item: CartItem, index: number) => (
                             <ItemCard key={index} item={{ ...item }} />
                         ))}
                     </DivPaymentContainerBody>

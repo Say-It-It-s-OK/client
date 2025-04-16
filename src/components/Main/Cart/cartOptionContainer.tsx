@@ -1,4 +1,9 @@
 import { useState, useEffect, useContext } from "react";
+import {
+    CartItem,
+    MainContext,
+    SelectedCartContext,
+} from "../../../context/MainContext";
 import styled from "styled-components";
 import {
     ChangeOptionButton,
@@ -6,12 +11,7 @@ import {
     OptionButtonDouble,
     OptionButtonTriple,
 } from "../../Buttons/buttons";
-import { OptionCard } from "../../Card/Card";
-import {
-    MainContext,
-    SelectedCartContext,
-    SelectedMenuContext,
-} from "../../../context/MainContext";
+import { OptionCard, OptionCartCard } from "../../Card/Card";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -59,111 +59,127 @@ const CartOptionContainer = () => {
     const { selectedCart } = useContext(SelectedCartContext);
     const options = selectedCart?.options || {};
 
-    const createDefaultOptions = () => {
-        const defaults = {};
-        Object.entries(selectedCart.selectedOptions).forEach(
-            ([optionName, optionValue]) => {
-                defaults[optionName] = optionValue;
-            }
-        );
+    const createDefaultOptions = (): { [key: string]: string } => {
+        const defaults: { [key: string]: string } = {};
+        if (selectedCart?.selectedOptions) {
+            Object.entries(selectedCart.selectedOptions).forEach(
+                ([optionName, optionValue]) => {
+                    defaults[optionName] = optionValue;
+                }
+            );
+        }
         console.log("초기옵션", defaults);
         return defaults;
     };
 
-    const [selectedOptions, setSelectedOptions] = useState(() =>
-        createDefaultOptions()
-    );
+    const OptionContainer = () => {
+        const [selectedOptions, setSelectedOptions] = useState(() =>
+            createDefaultOptions()
+        );
 
-    const handleOptionSelection = (optionName, optionValue) => {
-        console.log(`변경된 ${optionName}: ${optionValue}`);
-        setSelectedOptions((prevState) => ({
-            ...prevState,
-            [optionName]: optionValue,
-        }));
-    };
+        const handleOptionSelection = (
+            optionName: string,
+            optionValue: string
+        ) => {
+            console.log(`변경된 ${optionName}: ${optionValue}`);
+            setSelectedOptions((prevState) => ({
+                ...prevState,
+                [optionName]: optionValue,
+            }));
+        };
 
-    const cartItem = {
-        ...selectedCart,
-        selectedOptions: selectedOptions,
-    };
+        const cartItem = {
+            ...selectedCart!,
+            selectedOptions: selectedOptions,
+        };
 
-    const handleChangeOption = () => {
-        console.log("옵션이 변경된 제품:", cartItem);
+        const handleChangeOption = () => {
+            console.log("옵션이 변경된 제품:", cartItem);
 
-        const index = cartItem.cartIndex;
+            const index = cartItem.cartIndex;
 
-        if (typeof index !== "number") {
-            console.error("cartIndex가 없습니다.");
-            return;
-        }
-
-        const updatedItem = { ...cartItem };
-        delete updatedItem.cartIndex;
-
-        setCartItems((prevItems) => {
-            const newItems = [...prevItems];
-            newItems[index] = updatedItem;
-            return newItems;
-        });
-        setActiveCategory("장바구니");
-    };
-
-    const handleDeleteItem = () => {
-        console.log("삭제된 제품:", cartItem);
-        const index = cartItem.cartIndex;
-        setCartItems((prevItems) => {
-            const newItems = [...prevItems];
-            newItems.splice(index, 1);
-            return newItems;
-        });
-        setActiveCategory("요구사항");
-    };
-
-    useEffect(() => {
-        console.log("현재 옵션", selectedOptions);
-    }, [selectedOptions]);
-
-    const setOptionbButton = () => {
-        return Object.entries(options).map(
-            ([optionName, optionValues], index) => {
-                const selectedCount = Array.isArray(optionValues)
-                    ? optionValues.length
-                    : 0;
-                if (selectedCount === 3) {
-                    return (
-                        <OptionButtonTriple
-                            key={index}
-                            optionName={optionName}
-                            optionValues={optionValues}
-                            selectedOption={selectedOptions[optionName]}
-                            handleOptionSelection={handleOptionSelection}
-                        ></OptionButtonTriple>
-                    );
-                } else if (selectedCount === 2) {
-                    return (
-                        <OptionButtonDouble
-                            key={index}
-                            optionName={optionName}
-                            optionValues={optionValues}
-                            selectedOption={selectedOptions[optionName]}
-                            handleOptionSelection={handleOptionSelection}
-                        ></OptionButtonDouble>
-                    );
-                }
-                return null;
+            if (typeof index !== "number") {
+                console.error("cartIndex가 없습니다.");
+                return;
             }
+
+            const updatedItem = { ...cartItem };
+            delete updatedItem.cartIndex;
+
+            setCartItems((prevItems) => {
+                const newItems = [...prevItems];
+                newItems[index] = updatedItem;
+                return newItems;
+            });
+            setActiveCategory("장바구니");
+        };
+
+        const handleDeleteItem = () => {
+            console.log("삭제된 제품:", cartItem);
+            const index = cartItem.cartIndex;
+            if (!index) {
+                console.log("cartIndex가 없습니다.");
+                return;
+            }
+            setCartItems((prevItems) => {
+                const newItems = [...prevItems];
+
+                newItems.splice(index, 1);
+                return newItems;
+            });
+            setActiveCategory("요구사항");
+        };
+
+        useEffect(() => {
+            console.log("현재 옵션", selectedOptions);
+        }, [selectedOptions]);
+        const setOptionbButton = () => {
+            return Object.entries(options).map(
+                ([optionName, optionValues], index) => {
+                    const selectedCount = Array.isArray(optionValues)
+                        ? optionValues.length
+                        : 0;
+                    if (selectedCount === 3) {
+                        return (
+                            <OptionButtonTriple
+                                key={index}
+                                optionName={optionName}
+                                optionValues={optionValues}
+                                selectedOption={selectedOptions[optionName]}
+                                handleOptionSelection={handleOptionSelection}
+                            ></OptionButtonTriple>
+                        );
+                    } else if (selectedCount === 2) {
+                        return (
+                            <OptionButtonDouble
+                                key={index}
+                                optionName={optionName}
+                                optionValues={optionValues}
+                                selectedOption={selectedOptions[optionName]}
+                                handleOptionSelection={handleOptionSelection}
+                            ></OptionButtonDouble>
+                        );
+                    }
+                    return null;
+                }
+            );
+        };
+        return (
+            <>
+                <DivOptionButtonContainer>
+                    {setOptionbButton()}
+                </DivOptionButtonContainer>
+                <ChangeOptionButton handleChangeOption={handleChangeOption} />
+                <DeleteItemButton handleDeleteItem={handleDeleteItem} />
+            </>
         );
     };
 
     return (
         <DivOptionContainer>
             <DivOptionTitle>옵션 변경</DivOptionTitle>
-            <OptionCard selectedMenu={selectedCart} />
-            <DivOptionButtonContainer>
-                {setOptionbButton()}
-            </DivOptionButtonContainer>
-            <ChangeOptionButton handleChangeOption={handleChangeOption} />
-            <DeleteItemButton handleDeleteItem={handleDeleteItem} />
+            <OptionCartCard item={selectedCart} />
+            <OptionContainer />
         </DivOptionContainer>
     );
 };

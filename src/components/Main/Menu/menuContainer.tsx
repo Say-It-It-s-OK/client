@@ -2,10 +2,7 @@ import styled from "styled-components";
 import { MenuCard } from "../../Card/Card";
 import Details from "../../Details/details";
 import { useContext } from "react";
-import {
-    MainContext,
-    SelectedMenuProvider,
-} from "../../../context/MainContext";
+import { MainContext } from "../../../context/MainContext";
 import { MenuContext } from "../../../context/MenuContext";
 
 const DivMenuContainer = styled.div`

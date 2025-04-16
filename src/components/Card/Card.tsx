@@ -1,7 +1,9 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import {
+    CartItem,
     MainContext,
+    Menu,
     SelectedCartContext,
     SelectedMenuContext,
 } from "../../context/MainContext";
@@ -58,7 +60,11 @@ const DivMenuCardName = styled.div`
     cursor: pointer;
 `;
 
-const MenuCard = ({ menu }) => {
+interface MenuProps {
+    menu: Menu | undefined;
+}
+
+const MenuCard = ({ menu }: MenuProps) => {
     const { setActiveCategory } = useContext(MainContext);
     const { setSelectedMenu } = useContext(SelectedMenuContext);
 
@@ -66,6 +72,11 @@ const MenuCard = ({ menu }) => {
         setSelectedMenu(menu);
         setActiveCategory("옵션");
     };
+
+    if (!menu) {
+        console.log("제품이 없습니다.");
+        return;
+    }
 
     return (
         <DivMenuCardContainer>
@@ -127,12 +138,16 @@ const DivOptionCardName = styled.div`
     align-items: center;
 `;
 
-const OptionCard = ({ selectedMenu }) => {
+const OptionCard = ({ menu }: MenuProps) => {
+    if (!menu) {
+        console.log("제품이 없습니다.");
+        return;
+    }
     return (
         <DivOptionCardContainer>
             <DivOptionCard />
-            <DivoptionCardPrice>{selectedMenu.price}원</DivoptionCardPrice>
-            <DivOptionCardName>{selectedMenu.name}</DivOptionCardName>
+            <DivoptionCardPrice>{menu.price}원</DivoptionCardPrice>
+            <DivOptionCardName>{menu.name}</DivOptionCardName>
         </DivOptionCardContainer>
     );
 };
@@ -231,7 +246,24 @@ const DivCartCardName = styled.div`
     cursor: pointer;
 `;
 
-const CartCard = ({ item }) => {
+interface ItemProps {
+    item: CartItem | undefined;
+}
+
+const OptionCartCard = ({ item }: ItemProps) => {
+    if (!item) {
+        return <div>제품이 없습니다.</div>;
+    }
+    return (
+        <DivOptionCardContainer>
+            <DivOptionCard />
+            <DivoptionCardPrice>{item.price}원</DivoptionCardPrice>
+            <DivOptionCardName>{item.name}</DivOptionCardName>
+        </DivOptionCardContainer>
+    );
+};
+
+const CartCard = ({ item }: ItemProps) => {
     const { setActiveCategory, setCartItems } = useContext(MainContext);
     const { setSelectedCart } = useContext(SelectedCartContext);
 
@@ -241,6 +273,10 @@ const CartCard = ({ item }) => {
     };
 
     const handleAdd = () => {
+        if (!item) {
+            return console.log("제품이 없습니다.");
+        }
+
         setCartItems((prev) => {
             const index = prev.findIndex(
                 (i) =>
@@ -259,6 +295,9 @@ const CartCard = ({ item }) => {
     };
 
     const handleRemove = () => {
+        if (!item) {
+            return console.log("제품이 없습니다.");
+        }
         setCartItems((prev) => {
             const index = prev.findIndex(
                 (i) =>
@@ -273,6 +312,10 @@ const CartCard = ({ item }) => {
             return prev;
         });
     };
+
+    if (!item) {
+        return <div>제품이 없습니다.</div>;
+    }
 
     return (
         <DivCartCardContainer>
@@ -341,7 +384,11 @@ const DivItemCardName = styled.div`
     cursor: pointer;
 `;
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item }: ItemProps) => {
+    if (!item) {
+        return <div>제품이 없습니다.</div>;
+    }
+
     return (
         <DivItemCardContainer>
             <DivItemCard />
@@ -351,4 +398,4 @@ const ItemCard = ({ item }) => {
     );
 };
 
-export { MenuCard, OptionCard, CartCard, ItemCard };
+export { MenuCard, OptionCard, OptionCartCard, CartCard, ItemCard };

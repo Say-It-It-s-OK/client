@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { PaymentButton } from "../Buttons/buttons";
+import { CartItem } from "../../context/MainContext";
 
 const DivDetailsWholeContainer = styled.div`
     display: flex;
@@ -48,7 +49,12 @@ const DivDetailsPayAmount = styled.div`
     text-align: center;
 `;
 
-const Details = ({ cartItems, totalPrice }) => {
+interface DetailsProps {
+    cartItems: CartItem[];
+    totalPrice: number;
+}
+
+const Details = ({ cartItems, totalPrice }: DetailsProps) => {
     return (
         <DivDetailsWholeContainer>
             <DivDetailsText>결제비용</DivDetailsText>
