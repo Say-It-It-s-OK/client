@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import orderPay from "../../api/orderPay";
 import { CartItem } from "../../context/MainContext";
 import styled from "styled-components";
 import Vector from "../../assets/images/Vector.png";
@@ -42,14 +43,11 @@ const DivPaymentContainerBody = styled.div`
     left: 50%;
     bottom: 37%;
     transform: translateX(-50%);
-
     max-height: 50%;
     overflow-y: auto;
-
     &::-webkit-scrollbar {
         width: 10px;
     }
-
     &::-webkit-scrollbar-thumb {
         border-radius: 15px;
         background: var(--accent-color);
@@ -139,75 +137,105 @@ const InputText = () => {
     return <DivInputTextBar>결제를 진행 하고 있습니다...</DivInputTextBar>;
 };
 
-const InputTextFin = () => {
+const InputTextComplete = () => {
     return <DivInputTextBar>주문이 완료 되었습니다!</DivInputTextBar>;
 };
 
-const PaymentFin = () => {
+const PaymentComplete = () => {
     return (
         <>
             <PaymentNav />
-            <InputTextFin />
+            <InputTextComplete />
             <ImgBackGroundVector src={Vector} />
+        </>
+    );
+};
+
+const PaymentFail = () => {
+    return (
+        <>
+            <PaymentNav />
+            <DivInputTextBar>주문 요청이 실패했습니다.</DivInputTextBar>
         </>
     );
 };
 
 const PaymentInit = () => {
     const location = useLocation();
-    const { cartItems, totalPrice } = location.state || {};
-    return (
-        <>
-            <PaymentNav />
-            <InputText />
-            <DivMainContainerBody>
-                <DivPaymentContainer>
-                    <DivPaymentTitle>주문 내역</DivPaymentTitle>
-                    <DivPaymentContainerBody>
-                        {cartItems.map((item: CartItem, index: number) => (
-                            <ItemCard key={index} item={{ ...item }} />
-                        ))}
-                    </DivPaymentContainerBody>
-                    <DivDetailsWholeContainer>
-                        <DivDetailsText>결제비용</DivDetailsText>
-                        <DivDetailsContainer>
-                            <DivDetailsPayAmount>
-                                {totalPrice}원
-                            </DivDetailsPayAmount>
-                        </DivDetailsContainer>
-                    </DivDetailsWholeContainer>
-                </DivPaymentContainer>
-            </DivMainContainerBody>
-        </>
-    );
-};
-
-const Payment = () => {
-    const [showPaymentFin, setShowPaymentFin] = useState(false);
     const navigate = useNavigate();
+    const { cartItems, totalPrice } = location.state || {};
+    const [paymentComplete, setPaymentComplete] = useState(false);
+    const [paymentFail, setPaymentFail] = useState(false);
 
     useEffect(() => {
-        const timer1 = setTimeout(() => {
-            setShowPaymentFin(true);
-        }, 3000);
-        return () => clearTimeout(timer1);
+        const orderPayment = async () => {
+            try {
+                console.log("주문 요청을 보냈습니다...");
+                const responseData = await orderPay(cartItems);
+                if (responseData.success) {
+                    console.log("주문 요청이 완료되었습니다!:", responseData);
+                    const timer = setTimeout(() => {
+                        setPaymentComplete(true);
+                    }, 3000);
+                    return () => clearTimeout(timer);
+                }
+            } catch (error) {
+                console.error("주문 처리 중 오류 발생:", error);
+                const timer = setTimeout(() => {
+                    setPaymentFail(true);
+                }, 3000);
+                return () => clearTimeout(timer);
+            }
+        };
+        orderPayment();
     }, []);
 
     useEffect(() => {
-        if (showPaymentFin) {
-            const timer2 = setTimeout(() => {
+        if (paymentComplete || paymentFail) {
+            const timer = setTimeout(() => {
                 navigate("/");
             }, 3000);
-
-            return () => clearTimeout(timer2);
+            return () => clearTimeout(timer);
         }
-    }, [showPaymentFin, history]);
+    }, [paymentComplete, paymentFail]);
 
     return (
         <div className="container">
-            {showPaymentFin ? <PaymentFin /> : <PaymentInit />}
+            {paymentComplete ? (
+                <PaymentComplete />
+            ) : paymentFail ? (
+                <PaymentFail />
+            ) : (
+                <>
+                    <PaymentNav />
+                    <InputText />
+                    <DivMainContainerBody>
+                        <DivPaymentContainer>
+                            <DivPaymentTitle>주문 내역</DivPaymentTitle>
+                            <DivPaymentContainerBody>
+                                {cartItems.map(
+                                    (item: CartItem, index: number) => (
+                                        <ItemCard
+                                            key={index}
+                                            item={{ ...item }}
+                                        />
+                                    )
+                                )}
+                            </DivPaymentContainerBody>
+                            <DivDetailsWholeContainer>
+                                <DivDetailsText>결제비용</DivDetailsText>
+                                <DivDetailsContainer>
+                                    <DivDetailsPayAmount>
+                                        {totalPrice}원
+                                    </DivDetailsPayAmount>
+                                </DivDetailsContainer>
+                            </DivDetailsWholeContainer>
+                        </DivPaymentContainer>
+                    </DivMainContainerBody>
+                </>
+            )}
         </div>
     );
 };
 
-export default Payment;
+export default PaymentInit;

@@ -71,7 +71,7 @@ const OptionContainer = () => {
                 }
             }
         });
-        console.log("초기옵션", defaults);
+        console.log("초기 옵션", defaults);
         return defaults;
     };
 

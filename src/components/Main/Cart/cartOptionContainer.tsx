@@ -68,7 +68,7 @@ const CartOptionContainer = () => {
                 }
             );
         }
-        console.log("초기옵션", defaults);
+        console.log("초기 옵션", defaults);
         return defaults;
     };
 
@@ -117,7 +117,8 @@ const CartOptionContainer = () => {
         const handleDeleteItem = () => {
             console.log("삭제된 제품:", cartItem);
             const index = cartItem.cartIndex;
-            if (!index) {
+
+            if (typeof index !== "number") {
                 console.log("cartIndex가 없습니다.");
                 return;
             }

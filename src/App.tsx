@@ -5,7 +5,7 @@ import { MainProvider } from "./context/MainContext";
 import fetchMenus from "./api/menu";
 import Index from "./pages/Init/Init";
 import Home from "./pages/Home/home";
-import Payment from "./pages/Payment/payment";
+import ProgressPayment from "./pages/Payment/payment";
 import "./styles/App.css";
 
 const App = () => {
@@ -33,7 +33,7 @@ const App = () => {
                             </MainProvider>
                         }
                     />
-                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/payment" element={<ProgressPayment />} />
                 </Routes>
             </div>
         </Router>
