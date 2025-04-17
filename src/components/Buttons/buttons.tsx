@@ -41,7 +41,7 @@ interface buttonProps {
     itemsCount?: number;
 }
 
-const ButtonCartButton = styled.button<{ active?: string }>`
+const ButtonCartButton = styled.button<{ $active?: string }>`
     width: 20%;
     height: 75%;
     background-color: var(--primary-color);
@@ -57,8 +57,8 @@ const ButtonCartButton = styled.button<{ active?: string }>`
         background-color: var(--accent-color);
     }
 
-    ${({ active }) =>
-        active === "true" &&
+    ${({ $active }) =>
+        $active === "true" &&
         `
         background-color: var(--accent-color);
     `}
@@ -72,7 +72,7 @@ const CartButton = () => {
     };
     return (
         <ButtonCartButton
-            active={(activeCategory === "장바구니").toString()}
+            $active={(activeCategory === "장바구니").toString()}
             onClick={onClick}
         >
             {cartItems.length}
@@ -80,7 +80,7 @@ const CartButton = () => {
     );
 };
 
-const ButtonMenuButtonPrimary = styled.button<{ active?: string }>`
+const ButtonMenuButtonPrimary = styled.button<{ $active?: string }>`
     width: 25%;
     height: 100%;
     background-color: var(--primary-color);
@@ -95,8 +95,8 @@ const ButtonMenuButtonPrimary = styled.button<{ active?: string }>`
         background-color: var(--accent-color);
     }
 
-    ${({ active }) =>
-        active === "true" &&
+    ${({ $active }) =>
+        $active === "true" &&
         `
         transform: translateY(-30%);
         background-color: var(--accent-color);
@@ -105,13 +105,13 @@ const ButtonMenuButtonPrimary = styled.button<{ active?: string }>`
 
 const MenuButtonPrimary = ({ children, active, onClick }: buttonProps) => {
     return (
-        <ButtonMenuButtonPrimary active={active.toString()} onClick={onClick}>
+        <ButtonMenuButtonPrimary $active={active.toString()} onClick={onClick}>
             {children}
         </ButtonMenuButtonPrimary>
     );
 };
 
-const ButtonMenuButtonSecondary = styled.button<{ active?: string }>`
+const ButtonMenuButtonSecondary = styled.button<{ $active?: string }>`
     width: 25%;
     height: 100%;
     background-color: var(--secondary-color);
@@ -127,8 +127,8 @@ const ButtonMenuButtonSecondary = styled.button<{ active?: string }>`
         background-color: var(--accent-color);
     }
 
-    ${({ active }) =>
-        active === "true" &&
+    ${({ $active }) =>
+        $active === "true" &&
         `
         transform: translateY(-30%);
         background-color: var(--accent-color);
@@ -137,7 +137,10 @@ const ButtonMenuButtonSecondary = styled.button<{ active?: string }>`
 
 const MenuButtonSecondary = ({ children, active, onClick }: buttonProps) => {
     return (
-        <ButtonMenuButtonSecondary active={active.toString()} onClick={onClick}>
+        <ButtonMenuButtonSecondary
+            $active={active.toString()}
+            onClick={onClick}
+        >
             {children}
         </ButtonMenuButtonSecondary>
     );
