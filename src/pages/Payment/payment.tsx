@@ -172,8 +172,8 @@ const PaymentInit = () => {
             try {
                 console.log("주문 요청을 보냈습니다...");
                 const responseData = await orderPay(cartItems);
-                if (responseData.success) {
-                    console.log("주문 요청이 완료되었습니다!:", responseData);
+                if (responseData.response === "query.order.pay") {
+                    console.log("주문 요청이 완료되었습니다!");
                     const timer = setTimeout(() => {
                         setPaymentComplete(true);
                     }, 3000);
