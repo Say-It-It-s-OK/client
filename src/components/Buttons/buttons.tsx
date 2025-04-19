@@ -146,7 +146,7 @@ const MenuButtonSecondary = ({ children, active, onClick }: buttonProps) => {
     );
 };
 
-const ButtonPaymentButton = styled.button`
+const ButtonPaymentButton = styled.button<{ $disabled: string }>`
     width: 90%;
     height: 38%;
     background-color: var(--primary-color);
@@ -155,10 +155,16 @@ const ButtonPaymentButton = styled.button`
     font-size: 200%;
     border-radius: 15px;
     border: 4px solid var(--border-color);
-    cursor: pointer;
+    cursor: ${(props) => (props.$disabled === "true" ? "" : "pointer")};
+    opacity: ${(props) => (props.$disabled === "true" ? 0.5 : 1)};
+    pointer-events: ${(props) =>
+        props.$disabled === "true" ? "none" : "auto"};
 
     &:hover {
-        background-color: var(--accent-color);
+        background-color: ${(props) =>
+            props.$disabled === "true"
+                ? "var(--primary-color)"
+                : "var(--accent-color)"};
     }
 `;
 
@@ -169,7 +175,6 @@ interface PaymentButtonProps {
 
 const PaymentButton = ({ cartItems, totalPrice }: PaymentButtonProps) => {
     const navigate = useNavigate();
-
     const handleClick = () => {
         navigate("/payment", {
             state: {
@@ -179,7 +184,10 @@ const PaymentButton = ({ cartItems, totalPrice }: PaymentButtonProps) => {
         });
     };
     return (
-        <ButtonPaymentButton onClick={handleClick}>
+        <ButtonPaymentButton
+            $disabled={(cartItems.length === 0 && totalPrice === 0).toString()}
+            onClick={handleClick}
+        >
             결제하기
         </ButtonPaymentButton>
     );

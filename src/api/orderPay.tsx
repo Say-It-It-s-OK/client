@@ -1,17 +1,22 @@
 import { CartItem } from "../context/MainContext";
 
-const API_URL: string = import.meta.env.VITE_API_URL + "/query.order.pay";
+const API_URL: string = import.meta.env.VITE_API_URL + "order";
 
 const orderPay = async (orderData: CartItem[]) => {
     console.log("👉 API_URL:", API_URL);
-    console.log("주문한 제품", orderData);
+    const request = "query.order.pay";
+    const orderDataWithRequest = {
+        request,
+        items: orderData,
+    };
+    console.log("주문한 제품", orderDataWithRequest);
     try {
         const res = await fetch(API_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(orderData),
+            body: JSON.stringify(orderDataWithRequest),
         });
         if (!res.ok) {
             throw new Error(`HTTP 오류: ${res.status}`);

@@ -1,4 +1,4 @@
-const API_URL: string = import.meta.env.VITE_API_URL;
+const API_URL: string = import.meta.env.VITE_API_URL + "menus";
 let cachedMenus: any[] = [];
 
 const fetchMenus = async () => {
