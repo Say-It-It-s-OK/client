@@ -24,7 +24,9 @@ const orderPay = async (orderData: CartItem[]) => {
         const responseData = await res.json();
         console.log("주문 성공:", responseData);
         return responseData;
-    } catch (err) {}
+    } catch (err) {
+        console.error("주문 실패:", err);
+    }
 };
 
 export default orderPay;
