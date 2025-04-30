@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import Audio from "../../assets/icons/audio_icon.png";
 import { NavBar } from "../../components/NavBar/navBar";

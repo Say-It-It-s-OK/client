@@ -2,10 +2,11 @@ import { useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MenuContext } from "./context/MenuContext";
 import { MainProvider } from "./context/MainContext";
-import fetchMenus from "./api/menu";
+import { LoadingProvider } from "./context/LoadingContext";
+import fetchMenus from "./api/request/menuLists";
 import Index from "./pages/Init/Init";
 import Home from "./pages/Home/home";
-import ProgressPayment from "./pages/Payment/payment";
+import ProgressPayment from "./pages/Pay/pay";
 import "./styles/App.css";
 
 const App = () => {
@@ -28,9 +29,11 @@ const App = () => {
                     <Route
                         path="/home"
                         element={
-                            <MainProvider>
-                                <Home />
-                            </MainProvider>
+                            <LoadingProvider>
+                                <MainProvider>
+                                    <Home />
+                                </MainProvider>
+                            </LoadingProvider>
                         }
                     />
                     <Route path="/payment" element={<ProgressPayment />} />
