@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Logo from "../../assets/icons/logo_large.png";
 import { CartButton } from "../Buttons/buttons";
+import { useContext } from "react";
+import { LoadingContext } from "../../context/LoadingContext";
 
 const Nav = styled.nav`
     display: flex;
@@ -14,6 +16,8 @@ const ImgNavLogo = styled.img`
 `;
 
 const NavBar = () => {
+    const { isLoading } = useContext(LoadingContext)!;
+
     return (
         <Nav>
             <ImgNavLogo src={Logo} alt="Logo" />

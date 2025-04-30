@@ -1,4 +1,4 @@
-import { CartItem } from "../context/MainContext";
+import { CartItem } from "../../context/MainContext";
 
 const API_URL: string = import.meta.env.VITE_API_URL + "order";
 

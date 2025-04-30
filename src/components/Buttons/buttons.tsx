@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { CartItem, MainContext } from "../../context/MainContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { LoadingContext } from "../../context/LoadingContext";
+import { CartItem, MainContext } from "../../context/MainContext";
+import styled from "styled-components";
 
 const ButtonLongButton = styled.button`
     position: absolute;
@@ -38,6 +39,7 @@ interface buttonProps {
     children?: string;
     active: boolean;
     onClick: () => void;
+    disabled?: boolean;
     itemsCount?: number;
 }
 
@@ -62,18 +64,28 @@ const ButtonCartButton = styled.button<{ $active?: string }>`
         `
         background-color: var(--accent-color);
     `}
+
+    &:disabled:hover {
+        background-color: var(--primary-color);
+        cursor: default;
+    }
 `;
 
 const CartButton = () => {
     const { activeCategory, setActiveCategory, cartItems } =
         useContext(MainContext);
+
+    const { isLoading } = useContext(LoadingContext)!;
+
     const onClick = () => {
         setActiveCategory("장바구니");
     };
+
     return (
         <ButtonCartButton
             $active={(activeCategory === "장바구니").toString()}
             onClick={onClick}
+            disabled={isLoading}
         >
             {cartItems.length}
         </ButtonCartButton>
@@ -101,11 +113,22 @@ const ButtonMenuButtonPrimary = styled.button<{ $active?: string }>`
         transform: translateY(-30%);
         background-color: var(--accent-color);
     `}
+
+    &:disabled:hover {
+        background-color: var(--primary-color);
+        cursor: default;
+    }
 `;
 
 const MenuButtonPrimary = ({ children, active, onClick }: buttonProps) => {
+    const { isLoading } = useContext(LoadingContext)!;
+
     return (
-        <ButtonMenuButtonPrimary $active={active.toString()} onClick={onClick}>
+        <ButtonMenuButtonPrimary
+            $active={active.toString()}
+            onClick={onClick}
+            disabled={isLoading}
+        >
             {children}
         </ButtonMenuButtonPrimary>
     );
@@ -133,13 +156,20 @@ const ButtonMenuButtonSecondary = styled.button<{ $active?: string }>`
         transform: translateY(-30%);
         background-color: var(--accent-color);
     `}
+
+    &:disabled:hover {
+        background-color: var(--secondary-color);
+        cursor: default;
+    }
 `;
 
 const MenuButtonSecondary = ({ children, active, onClick }: buttonProps) => {
+    const { isLoading } = useContext(LoadingContext)!;
     return (
         <ButtonMenuButtonSecondary
             $active={active.toString()}
             onClick={onClick}
+            disabled={isLoading}
         >
             {children}
         </ButtonMenuButtonSecondary>

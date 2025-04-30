@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
     MainContext,
     SelectedCartProvider,
     SelectedMenuProvider,
 } from "../../context/MainContext";
+import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import { MenuButtonPrimary, MenuButtonSecondary } from "../Buttons/buttons";
 import QueryContainer from "./Query/queryContainer";
@@ -42,6 +43,7 @@ const DivMainContainerBody = styled.div`
 
 const MainContainer = () => {
     const { activeCategory, setActiveCategory } = useContext(MainContext);
+    const { isLoading } = useContext(LoadingContext)!;
 
     const renderContent = () => {
         switch (activeCategory) {
@@ -58,8 +60,16 @@ const MainContainer = () => {
                 return <MenuContainer />;
             case "옵션":
                 return <OptionContainer />;
+            case "로딩":
+                return <QueryContainer />;
         }
     };
+
+    useEffect(() => {
+        if (isLoading) {
+            setActiveCategory("로딩");
+        }
+    }, [isLoading]);
 
     return (
         <DivMainContainer>
@@ -68,21 +78,25 @@ const MainContainer = () => {
                     children="커피"
                     active={activeCategory === "커피"}
                     onClick={() => setActiveCategory("커피")}
+                    disabled={isLoading}
                 />
                 <MenuButtonPrimary
                     children="음료"
                     active={activeCategory === "음료"}
                     onClick={() => setActiveCategory("음료")}
+                    disabled={isLoading}
                 />
                 <MenuButtonSecondary
                     children="디카페인"
                     active={activeCategory === "디카페인"}
                     onClick={() => setActiveCategory("디카페인")}
+                    disabled={isLoading}
                 />
                 <MenuButtonPrimary
                     children="디저트"
                     active={activeCategory === "디저트"}
                     onClick={() => setActiveCategory("디저트")}
+                    disabled={isLoading}
                 />
             </DivMenuButtonContainer>
             <SelectedMenuProvider>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import nlp from "../../api/nlp";
+import nlp from "../../api/request/nlp";
 
 const InputTextBar = styled.input`
     display: flex;
