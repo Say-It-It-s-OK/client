@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { PaymentButton } from "../../Buttons/buttons";
-import { CartCard } from "../../Card/Card";
+import { useContext } from "react";
+import { LoadingContext } from "../../../context/LoadingContext";
+import { RecommendCard } from "../../Card/Card";
 
 const DivQueryContainer = styled.div`
     display: flex;
@@ -43,10 +44,20 @@ const DivQueryContainerBody = styled.div`
 `;
 
 const QueryContainer = () => {
+    const { outputText, recommendItems } = useContext(LoadingContext)!;
+
     return (
         <DivQueryContainer>
-            <DivQueryTitle>요구사항</DivQueryTitle>
-            <DivQueryContainerBody></DivQueryContainerBody>
+            <DivQueryTitle>{outputText}</DivQueryTitle>
+            <DivQueryContainerBody>
+                {recommendItems.length === 3
+                    ? recommendItems.map((item) => (
+                          <RecommendCard item={item} />
+                      ))
+                    : recommendItems.map((item) => (
+                          <RecommendCard key={item.id} item={item} />
+                      ))}
+            </DivQueryContainerBody>
         </DivQueryContainer>
     );
 };
