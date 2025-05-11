@@ -7,6 +7,7 @@ import {
     SelectedCartContext,
     SelectedMenuContext,
 } from "../../context/MainContext";
+import { Item } from "../../context/LoadingContext";
 
 const DivMenuCardContainer = styled.div`
     display: flex;
@@ -398,4 +399,81 @@ const ItemCard = ({ item }: ItemProps) => {
     );
 };
 
-export { MenuCard, OptionCard, OptionCartCard, CartCard, ItemCard };
+const DivRecommendCardContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    height: 50%;
+    position: relative;
+    margin-bottom: 20px;
+`;
+
+const DivRecommendCard = styled.div`
+    width: 65%;
+    aspect-ratio: 1 / 1;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 15px;
+    margin-bottom: 5%;
+    cursor: pointer;
+`;
+
+const DivRecommendCardPrice = styled.div`
+    display: flex;
+    width: 40%;
+    height: 12%;
+    background-color: var(--primary-color);
+    border-radius: 15px 0 15px 0;
+    border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 115%;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 17.4%;
+`;
+
+const DivRecommendCardName = styled.div`
+    display: flex;
+    width: 75%;
+    height: 17%;
+    background-color: var(--primary-color);
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 105%;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+`;
+
+interface RecommendProps {
+    item: Item | undefined;
+}
+
+const RecommendCard = ({ item }: RecommendProps) => {
+    if (!item) {
+        return <div>제품이 없습니다.</div>;
+    }
+
+    return (
+        <DivRecommendCardContainer>
+            <DivRecommendCard />
+            <DivRecommendCardPrice>{item.price}</DivRecommendCardPrice>
+            <DivRecommendCardName>{item.name}</DivRecommendCardName>
+        </DivRecommendCardContainer>
+    );
+};
+
+export {
+    MenuCard,
+    OptionCard,
+    OptionCartCard,
+    CartCard,
+    ItemCard,
+    RecommendCard,
+};

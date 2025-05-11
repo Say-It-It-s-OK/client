@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MainContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
@@ -20,7 +21,37 @@ const InputTextBar = styled.input`
 const InputText = () => {
     const { setActiveCategory } = useContext(MainContext);
     const [inputText, setInputText] = useState("");
-    const { setIsLoading, setOutputText } = useContext(LoadingContext)!;
+    const { setIsLoading, setOutputText, setRecommendItems } =
+        useContext(LoadingContext)!;
+    const navigate = useNavigate();
+
+    const handleResponse = (responseData: any) => {
+        if (responseData.response.response === "query.recommend") {
+            setActiveCategory("요구사항");
+            setRecommendItems(responseData.response.items);
+            console.log("추천된 제품:", responseData.response.items);
+        } else if (responseData.response.response === "query.confirm") {
+            if (responseData.response.page === "커피") {
+                setActiveCategory("커피");
+            } else if (responseData.response.page === "음료") {
+                setActiveCategory("음료");
+            } else if (responseData.response.page === "디카페인") {
+                setActiveCategory("디카페인");
+            } else if (responseData.response.page === "디저트") {
+                setActiveCategory("디저트");
+            } else if (responseData.response.page === "menu") {
+                setActiveCategory("요구사항");
+                setRecommendItems(responseData.response.items);
+            }
+        } else if (responseData.response.response === "query.order") {
+            setActiveCategory("장바구니");
+        } else if (responseData.response.response === "query.help") {
+            setActiveCategory("도움");
+        } else if (responseData.response.response === "query.exit") {
+            setActiveCategory("요구사항");
+            navigate("/");
+        }
+    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(event.target.value);
@@ -33,11 +64,12 @@ const InputText = () => {
         try {
             const responseData = await nlp(inputText);
             setOutputText(responseData.response.speech);
+            handleResponse(responseData);
         } catch (error) {
             console.error("자연어 처리 요청 중 오류 발생", error);
+            setActiveCategory("요구사항");
         } finally {
             setIsLoading(false);
-            setActiveCategory("요구사항");
         }
     };
 
