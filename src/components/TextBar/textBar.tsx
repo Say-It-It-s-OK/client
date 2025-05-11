@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MainContext } from "../../context/MainContext";
+import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import nlp from "../../api/request/nlp";
 
@@ -16,18 +18,26 @@ const InputTextBar = styled.input`
 `;
 
 const InputText = () => {
+    const { setActiveCategory } = useContext(MainContext);
     const [inputText, setInputText] = useState("");
+    const { setIsLoading, setOutputText } = useContext(LoadingContext)!;
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(event.target.value);
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
+        setIsLoading(true);
+        setActiveCategory("로딩");
         event.preventDefault();
         try {
             const responseData = await nlp(inputText);
+            setOutputText(responseData.response.speech);
         } catch (error) {
             console.error("자연어 처리 요청 중 오류 발생", error);
+        } finally {
+            setIsLoading(false);
+            setActiveCategory("요구사항");
         }
     };
 
@@ -53,6 +63,7 @@ const InputText = () => {
 
 const DivOutputTextBar = styled.div`
     width: 100%;
+    height: 5%;
     text-align: center;
     margin: 13%;
     font-family: var(--font-main);
@@ -60,7 +71,8 @@ const DivOutputTextBar = styled.div`
 `;
 
 const OutputText = () => {
-    return <DivOutputTextBar>출력 텍스트</DivOutputTextBar>;
+    const { outputText } = useContext(LoadingContext)!;
+    return <DivOutputTextBar>{outputText}</DivOutputTextBar>;
 };
 
 export { InputText, OutputText };

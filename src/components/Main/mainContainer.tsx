@@ -12,6 +12,7 @@ import MenuContainer from "./Menu/menuContainer";
 import CartContainer from "./Cart/cartContainer";
 import CartOptionContainer from "./Cart/cartOptionContainer";
 import OptionContainer from "./Option/optionContainer";
+import LoadingContainer from "./Loading/loadingContainer";
 
 const DivMainContainer = styled.div`
     width: 100%;
@@ -61,7 +62,7 @@ const MainContainer = () => {
             case "옵션":
                 return <OptionContainer />;
             case "로딩":
-                return <QueryContainer />;
+                return <LoadingContainer />;
         }
     };
 
