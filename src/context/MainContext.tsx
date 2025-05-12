@@ -46,7 +46,7 @@ export const MainContext = createContext<MainContextType>({
 });
 
 export const MainProvider = ({ children }: ContextProps) => {
-    const [activeCategory, setActiveCategory] = useState<string>("요구사항");
+    const [activeCategory, setActiveCategory] = useState<string>("커피");
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
     useEffect(() => {

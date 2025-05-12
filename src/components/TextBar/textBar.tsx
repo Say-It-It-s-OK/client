@@ -50,6 +50,8 @@ const InputText = () => {
         } else if (responseData.response.response === "query.exit") {
             setActiveCategory("요구사항");
             navigate("/");
+        } else {
+            setActiveCategory("오류");
         }
     };
 
