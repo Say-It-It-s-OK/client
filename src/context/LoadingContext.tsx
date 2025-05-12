@@ -64,26 +64,106 @@ export const defaultItems: Item[] = [
             temperature: ["ICE", "HOT"],
         },
     },
-    // {
-    //     _id: "item-004",
-    //     id: "lemonade",
-    //     name: "레몬에이드",
-    //     price: 3800,
-    //     type: "drink",
-    //     options: {
-    //         size: ["S", "M", "L"],
-    //     },
-    // },
-    // {
-    //     _id: "item-005",
-    //     id: "cheesecake",
-    //     name: "치즈케이크",
-    //     price: 4500,
-    //     type: "dessert",
-    //     options: {
-    //         sweetness: ["저당", "보통"],
-    //     },
-    // },
+    {
+        _id: "item-004",
+        id: "lemonade",
+        name: "레몬에이드",
+        price: 3800,
+        type: "drink",
+        options: {
+            size: ["S", "M", "L"],
+        },
+    },
+    {
+        _id: "item-005",
+        id: "cheesecake",
+        name: "치즈케이크",
+        price: 4500,
+        type: "dessert",
+        options: {
+            sweetness: ["저당", "보통"],
+        },
+    },
+    {
+        _id: "item-004",
+        id: "lemonade",
+        name: "레몬에이드",
+        price: 3800,
+        type: "drink",
+        options: {
+            size: ["S", "M", "L"],
+        },
+    },
+    {
+        _id: "item-005",
+        id: "cheesecake",
+        name: "치즈케이크",
+        price: 4500,
+        type: "dessert",
+        options: {
+            sweetness: ["저당", "보통"],
+        },
+    },
+    {
+        _id: "item-004",
+        id: "lemonade",
+        name: "레몬에이드",
+        price: 3800,
+        type: "drink",
+        options: {
+            size: ["S", "M", "L"],
+        },
+    },
+    {
+        _id: "item-005",
+        id: "cheesecake",
+        name: "치즈케이크",
+        price: 4500,
+        type: "dessert",
+        options: {
+            sweetness: ["저당", "보통"],
+        },
+    },
+    {
+        _id: "item-004",
+        id: "lemonade",
+        name: "레몬에이드",
+        price: 3800,
+        type: "drink",
+        options: {
+            size: ["S", "M", "L"],
+        },
+    },
+    {
+        _id: "item-005",
+        id: "cheesecake",
+        name: "치즈케이크",
+        price: 4500,
+        type: "dessert",
+        options: {
+            sweetness: ["저당", "보통"],
+        },
+    },
+    {
+        _id: "item-004",
+        id: "lemonade",
+        name: "레몬에이드",
+        price: 3800,
+        type: "drink",
+        options: {
+            size: ["S", "M", "L"],
+        },
+    },
+    {
+        _id: "item-005",
+        id: "cheesecake",
+        name: "치즈케이크",
+        price: 4500,
+        type: "dessert",
+        options: {
+            sweetness: ["저당", "보통"],
+        },
+    },
 ];
 
 export const LoadingContext = createContext<LoadingContextType | null>(null);
@@ -91,7 +171,8 @@ export const LoadingContext = createContext<LoadingContextType | null>(null);
 export const LoadingProvider = ({ children }: LoadingProviderProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [outputText, setOutputText] = useState("");
-    const [recommendItems, setRecommendItems] = useState<Item[]>(defaultItems);
+    // const [recommendItems, setRecommendItems] = useState<Item[]>(defaultItems);
+    const [recommendItems, setRecommendItems] = useState<Item[]>([]);
 
     return (
         <LoadingContext.Provider

@@ -34,8 +34,6 @@ const MenuContainer = () => {
     const { menus } = useContext(MenuContext)!;
     const { activeCategory, cartItems } = useContext(MainContext);
     const filteredMenus = menus.filter((menu) => menu.type === activeCategory);
-    console.log(`${filteredMenus[0].type} 메뉴 목록`, filteredMenus);
-
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
 
     return (

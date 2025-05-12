@@ -456,15 +456,30 @@ interface RecommendProps {
 }
 
 const RecommendCard = ({ item }: RecommendProps) => {
+    const { setActiveCategory } = useContext(MainContext);
+    const { setSelectedMenu } = useContext(SelectedMenuContext);
+
+    const handleMenuClick = () => {
+        setSelectedMenu(item);
+        setActiveCategory("옵션");
+    };
+
+    if (!item) {
+        console.log("제품이 없습니다.");
+        return;
+    }
+
     if (!item) {
         return <div>제품이 없습니다.</div>;
     }
 
     return (
         <DivRecommendCardContainer>
-            <DivRecommendCard />
+            <DivRecommendCard onClick={handleMenuClick} />
             <DivRecommendCardPrice>{item.price}</DivRecommendCardPrice>
-            <DivRecommendCardName>{item.name}</DivRecommendCardName>
+            <DivRecommendCardName onClick={handleMenuClick}>
+                {item.name}
+            </DivRecommendCardName>
         </DivRecommendCardContainer>
     );
 };
