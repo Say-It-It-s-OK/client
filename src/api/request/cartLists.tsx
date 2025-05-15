@@ -1,6 +1,6 @@
 import { CartItem } from "../../context/MainContext";
 
-const API_URL: string = import.meta.env.VITE_API_URL + "query/confirm/cart";
+const API_URL: string = import.meta.env.VITE_API_URL + "cart/fetch"; //주소는 이걸로 바뀜
 
 const fetchCarts = async () => {
     console.log("👉 API_URL:", API_URL);
