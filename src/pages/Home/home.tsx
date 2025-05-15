@@ -1,8 +1,11 @@
+import { useContext, useEffect } from "react";
+import { CartItem, MainContext } from "../../context/MainContext";
 import styled from "styled-components";
 import Audio from "../../assets/icons/audio_icon.png";
 import { NavBar } from "../../components/NavBar/navBar";
 import MainContainer from "../../components/Main/mainContainer";
 import { InputText, OutputText } from "../../components/TextBar/textBar";
+import fetchCarts from "../../api/request/cartLists";
 
 const ImgAudio = styled.img`
     width: 15%;

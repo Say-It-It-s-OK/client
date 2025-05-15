@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MainContext } from "../../context/MainContext";
+import { MainContext, SelectedMenuContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import nlp from "../../api/request/nlp";
@@ -23,13 +23,17 @@ const InputText = () => {
     const [inputText, setInputText] = useState("");
     const { setIsLoading, setOutputText, setRecommendItems } =
         useContext(LoadingContext)!;
+    const { setSelectedMenu } = useContext(SelectedMenuContext);
     const navigate = useNavigate();
 
     const handleResponse = (responseData: any) => {
+        // query.recommend
         if (responseData.response.response === "query.recommend") {
             setActiveCategory("요구사항");
             setRecommendItems(responseData.response.items);
             console.log("추천된 제품:", responseData.response.items);
+
+            // query.confirm
         } else if (responseData.response.response === "query.confirm") {
             if (responseData.response.page === "커피") {
                 setActiveCategory("커피");
@@ -43,13 +47,31 @@ const InputText = () => {
                 setActiveCategory("요구사항");
                 setRecommendItems(responseData.response.items);
             }
-        } else if (responseData.response.response === "query.order") {
-            setActiveCategory("장바구니");
+
+            // query.order
+        } else if (responseData.response.response.startsWith("query.order")) {
+            if (responseData.response.response === "query.order.add") {
+                setSelectedMenu(responseData.response.items);
+            } else if (
+                responseData.response.response === "query.order.update"
+            ) {
+            } else if (
+                responseData.response.response === "query.order.delete"
+            ) {
+            } else if (responseData.response.response === "query.order.pay") {
+            }
+            setActiveCategory("옵션");
+
+            // query.help
         } else if (responseData.response.response === "query.help") {
             setActiveCategory("도움");
+
+            // query.exit
         } else if (responseData.response.response === "query.exit") {
             setActiveCategory("요구사항");
             navigate("/");
+
+            // query.error
         } else {
             setActiveCategory("오류");
         }

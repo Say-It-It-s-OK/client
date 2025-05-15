@@ -7,7 +7,8 @@ import {
     SelectedCartContext,
     SelectedMenuContext,
 } from "../../context/MainContext";
-import { Item } from "../../context/LoadingContext";
+import deleteCart from "../../api/request/deleteCart";
+import addCart from "../../api/request/addCart";
 
 const DivMenuCardContainer = styled.div`
     display: flex;
@@ -277,7 +278,7 @@ const CartCard = ({ item }: ItemProps) => {
         if (!item) {
             return console.log("제품이 없습니다.");
         }
-
+        addCart(item);
         setCartItems((prev) => {
             const index = prev.findIndex(
                 (i) =>
@@ -299,6 +300,7 @@ const CartCard = ({ item }: ItemProps) => {
         if (!item) {
             return console.log("제품이 없습니다.");
         }
+        deleteCart(item);
         setCartItems((prev) => {
             const index = prev.findIndex(
                 (i) =>
@@ -452,7 +454,7 @@ const DivRecommendCardName = styled.div`
 `;
 
 interface RecommendProps {
-    item: Item | undefined;
+    item: Menu | undefined;
 }
 
 const RecommendCard = ({ item }: RecommendProps) => {

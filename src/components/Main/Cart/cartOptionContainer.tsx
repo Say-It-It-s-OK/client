@@ -12,6 +12,8 @@ import {
     OptionButtonTriple,
 } from "../../Buttons/buttons";
 import { OptionCard, OptionCartCard } from "../../Card/Card";
+import updateCart from "../../../api/request/updateCart";
+import deleteCart from "../../../api/request/deleteCart";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -105,7 +107,7 @@ const CartOptionContainer = () => {
 
             const updatedItem = { ...cartItem };
             delete updatedItem.cartIndex;
-
+            updateCart(cartItem);
             setCartItems((prevItems) => {
                 const newItems = [...prevItems];
                 newItems[index] = updatedItem;
@@ -122,13 +124,14 @@ const CartOptionContainer = () => {
                 console.log("cartIndex가 없습니다.");
                 return;
             }
+            deleteCart(cartItem);
             setCartItems((prevItems) => {
                 const newItems = [...prevItems];
 
                 newItems.splice(index, 1);
                 return newItems;
             });
-            setActiveCategory("요구사항");
+            setActiveCategory("장바구니");
         };
 
         useEffect(() => {
