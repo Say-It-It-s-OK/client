@@ -18,7 +18,7 @@ export interface Menu {
 
 export interface CartItem {
     _id: string;
-    id: string;
+    id?: string;
     name: string;
     type: string;
     price: number;

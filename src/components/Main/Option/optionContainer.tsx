@@ -7,6 +7,7 @@ import {
     OptionButtonTriple,
 } from "../../Buttons/buttons";
 import { OptionCard } from "../../Card/Card";
+import addCarts from "../../../api/request/addCart";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -96,7 +97,7 @@ const OptionContainer = () => {
                 ...selectedMenu!,
                 selectedOptions: selectedOptions,
             };
-            console.log("장바구니에 추가된 제품:", cartItem);
+            addCarts(cartItem);
             setCartItems((prevItems) => [...prevItems, cartItem]);
             setActiveCategory("장바구니");
         };
