@@ -84,6 +84,7 @@ const InputText = () => {
                 );
                 navigate("/payment", {
                     state: {
+                        sessionId: cartId,
                         cartItems: cartItems,
                         totalPrice: totalPrice,
                     },

@@ -1,13 +1,14 @@
-import { CartItem } from "../../context/MainContext";
+import { CartId, CartItem } from "../../context/MainContext";
 
 const API_URL: string = import.meta.env.VITE_API_URL + "order";
 
-const orderPay = async (orderData: CartItem[]) => {
+const orderPay = async (sessionid: CartId, orderData: CartItem[]) => {
     console.log("👉 API_URL:", API_URL);
     const request = "query.order.pay";
     const orderDataWithRequest = {
         request,
         payload: {
+            sessionid: sessionid,
             item: orderData,
         },
     };

@@ -163,7 +163,7 @@ const PaymentFail = () => {
 const PaymentInit = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { cartItems, totalPrice } = location.state || {};
+    const { sessionId, cartItems, totalPrice } = location.state || {};
     const [paymentComplete, setPaymentComplete] = useState(false);
     const [paymentFail, setPaymentFail] = useState(false);
 
@@ -171,7 +171,7 @@ const PaymentInit = () => {
         const orderPayment = async () => {
             try {
                 console.log("주문 요청을 보냈습니다...");
-                const responseData = await orderPay(cartItems);
+                const responseData = await orderPay(sessionId, cartItems);
                 if (responseData.response === "query.order.pay") {
                     console.log("주문 요청이 완료되었습니다!");
                     const timer = setTimeout(() => {

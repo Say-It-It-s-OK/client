@@ -208,9 +208,11 @@ interface PaymentButtonProps {
 
 const PaymentButton = ({ cartItems, totalPrice }: PaymentButtonProps) => {
     const navigate = useNavigate();
+    const { cartId } = useContext(MainContext);
     const handleClick = () => {
         navigate("/payment", {
             state: {
+                sessionId: cartId,
                 cartItems: cartItems,
                 totalPrice: totalPrice,
             },
