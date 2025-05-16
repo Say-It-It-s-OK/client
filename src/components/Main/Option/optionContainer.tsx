@@ -8,6 +8,7 @@ import {
 } from "../../Buttons/buttons";
 import { OptionCard } from "../../Card/Card";
 import addCarts from "../../../api/request/addCart";
+import fetchCarts from "../../../api/request/cartLists";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -55,7 +56,7 @@ interface Options {
 }
 
 const OptionContainer = () => {
-    const { setActiveCategory, setCartItems } = useContext(MainContext);
+    const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
     const { selectedMenu } = useContext(SelectedMenuContext);
     const options = selectedMenu?.options || {};
 
@@ -92,13 +93,15 @@ const OptionContainer = () => {
             }));
         };
 
-        const handleAddCartItems = () => {
+        const handleAddCartItems = async () => {
             const cartItem = {
                 ...selectedMenu!,
                 selectedOptions: selectedOptions,
             };
-            addCarts(cartItem);
-            setCartItems((prevItems) => [...prevItems, cartItem]);
+
+            await addCarts(cartId, cartItem);
+            const currentCarts = await fetchCarts(cartId);
+            setCartItems(currentCarts?.items || []);
             setActiveCategory("장바구니");
         };
 

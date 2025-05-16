@@ -9,6 +9,7 @@ import {
 } from "../../context/MainContext";
 import deleteCart from "../../api/request/deleteCart";
 import addCart from "../../api/request/addCart";
+import fetchCarts from "../../api/request/cartLists";
 
 const DivMenuCardContainer = styled.div`
     display: flex;
@@ -266,7 +267,7 @@ const OptionCartCard = ({ item }: ItemProps) => {
 };
 
 const CartCard = ({ item }: ItemProps) => {
-    const { setActiveCategory, setCartItems } = useContext(MainContext);
+    const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
     const { setSelectedCart } = useContext(SelectedCartContext);
 
     const handleMenuClick = () => {
@@ -274,46 +275,22 @@ const CartCard = ({ item }: ItemProps) => {
         setSelectedCart(item);
     };
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         if (!item) {
             return console.log("제품이 없습니다.");
         }
-        addCart(item);
-        setCartItems((prev) => {
-            const index = prev.findIndex(
-                (i) =>
-                    i.id === item.id &&
-                    JSON.stringify(i.options) === JSON.stringify(item.options)
-            );
-
-            if (index === -1) {
-                return [...prev, item];
-            }
-
-            const newItems = [...prev];
-            newItems.splice(index + 1, 0, item);
-            return newItems;
-        });
+        await addCart(cartId, item);
+        const currentCarts = await fetchCarts(cartId);
+        setCartItems(currentCarts?.items || []);
     };
 
-    const handleRemove = () => {
+    const handleRemove = async () => {
         if (!item) {
             return console.log("제품이 없습니다.");
         }
-        deleteCart(item);
-        setCartItems((prev) => {
-            const index = prev.findIndex(
-                (i) =>
-                    i.id === item.id &&
-                    JSON.stringify(i.options) === JSON.stringify(item.options)
-            );
-            if (index !== -1) {
-                const newItems = [...prev];
-                newItems.splice(index, 1);
-                return newItems;
-            }
-            return prev;
-        });
+        await deleteCart(cartId, item);
+        const currentCarts = await fetchCarts(cartId);
+        setCartItems(currentCarts?.items || []);
     };
 
     if (!item) {
