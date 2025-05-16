@@ -1,18 +1,21 @@
-import { CartItem } from "../../context/MainContext";
+import { CartId, CartItem } from "../../context/MainContext";
 
 const API_URL: string = import.meta.env.VITE_API_URL + "cart/add";
 
-const addCarts = async (item: CartItem) => {
+const addCarts = async (sessionId: CartId, item: CartItem) => {
     console.log("👉 API_URL:", API_URL);
+    const addItem = {
+        sessionId: sessionId.sessionId,
+        item: item,
+    };
+    console.log("장바구니에 추가할 메뉴:", addItem);
     try {
         const res = await fetch(API_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                sessionId: "test-session-001", //테스트를 위해 임의 값 부여(섹션마다 발급해서 유지해야됨), 같이 안넘어오면 오류남
-                item}),
+            body: JSON.stringify(addItem),
         });
         if (!res.ok) {
             throw new Error(`HTTP 오류: ${res.status}`);
