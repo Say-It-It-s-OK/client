@@ -4,6 +4,7 @@ import { MainContext, SelectedMenuContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import nlp from "../../api/request/nlp";
+import fetchCarts from "../../api/request/cartLists";
 
 const InputTextBar = styled.input`
     display: flex;
@@ -19,14 +20,15 @@ const InputTextBar = styled.input`
 `;
 
 const InputText = () => {
-    const { setActiveCategory } = useContext(MainContext);
+    const { setActiveCategory, cartItems, setCartItems, cartId } =
+        useContext(MainContext);
     const [inputText, setInputText] = useState("");
     const { setIsLoading, setOutputText, setRecommendItems } =
         useContext(LoadingContext)!;
     const { setSelectedMenu } = useContext(SelectedMenuContext);
     const navigate = useNavigate();
 
-    const handleResponse = (responseData: any) => {
+    const handleResponse = async (responseData: any) => {
         // query.recommend
         if (responseData.response.response === "query.recommend") {
             setActiveCategory("요구사항");
@@ -35,6 +37,7 @@ const InputText = () => {
 
             // query.confirm
         } else if (responseData.response.response === "query.confirm") {
+            console.log("요청한 메뉴:", responseData.response.page);
             if (responseData.response.page === "커피") {
                 setActiveCategory("커피");
             } else if (responseData.response.page === "음료") {
@@ -50,17 +53,42 @@ const InputText = () => {
 
             // query.order
         } else if (responseData.response.response.startsWith("query.order")) {
+            console.log("요청한 제품:", responseData.response.items);
             if (responseData.response.response === "query.order.add") {
-                setSelectedMenu(responseData.response.items);
+                if ((responseData.response.page = "order_add")) {
+                    const currentCarts = await fetchCarts(cartId);
+                    setCartItems(currentCarts?.items || []);
+                    setActiveCategory("장바구니");
+                } else if (
+                    responseData.response.page === "order_optioon_required"
+                ) {
+                    setSelectedMenu(responseData.response.items);
+                    setActiveCategory("옵션");
+                }
             } else if (
                 responseData.response.response === "query.order.update"
             ) {
+                const currentCarts = await fetchCarts(cartId);
+                setCartItems(currentCarts?.items || []);
+                setActiveCategory("장바구니");
             } else if (
                 responseData.response.response === "query.order.delete"
             ) {
+                const currentCarts = await fetchCarts(cartId);
+                setCartItems(currentCarts?.items || []);
+                setActiveCategory("장바구니");
             } else if (responseData.response.response === "query.order.pay") {
+                const totalPrice = cartItems.reduce(
+                    (sum, item) => sum + item.price,
+                    0
+                );
+                navigate("/payment", {
+                    state: {
+                        cartItems: cartItems,
+                        totalPrice: totalPrice,
+                    },
+                });
             }
-            setActiveCategory("옵션");
 
             // query.help
         } else if (responseData.response.response === "query.help") {
@@ -68,7 +96,6 @@ const InputText = () => {
 
             // query.exit
         } else if (responseData.response.response === "query.exit") {
-            setActiveCategory("요구사항");
             navigate("/");
 
             // query.error
@@ -91,7 +118,7 @@ const InputText = () => {
             handleResponse(responseData);
         } catch (error) {
             console.error("자연어 처리 요청 중 오류 발생", error);
-            setActiveCategory("요구사항");
+            setActiveCategory("커피");
         } finally {
             setIsLoading(false);
         }
