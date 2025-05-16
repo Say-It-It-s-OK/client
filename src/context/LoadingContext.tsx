@@ -1,4 +1,4 @@
-import { CartItem } from "./MainContext";
+import { Menu } from "./MainContext";
 import {
     createContext,
     useState,
@@ -12,18 +12,18 @@ interface LoadingContextType {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
     outputText: string;
     setOutputText: Dispatch<SetStateAction<string>>;
-    recommendItems: CartItem[];
-    setRecommendItems: Dispatch<SetStateAction<CartItem[]>>;
+    recommendItems: Menu[];
+    setRecommendItems: Dispatch<SetStateAction<Menu[]>>;
 }
 
 interface LoadingProviderProps {
     children: ReactNode;
 }
 
-export const defaultItems: CartItem[] = [
+export const defaultItems: Menu[] = [
     {
         _id: "item-001",
-        sessionId: "americano",
+        id: "americano",
         name: "아메리카노",
         price: 3000,
         type: "coffee",
@@ -31,11 +31,6 @@ export const defaultItems: CartItem[] = [
             size: ["S", "M", "L"],
             shot: ["연하게", "기본", "진하게"],
             temperature: ["ICE", "HOT"],
-        },
-        selectedOptions: {
-            size: "S",
-            shot: "기본",
-            temperature: "ICE",
         },
     },
 ];
@@ -46,7 +41,7 @@ export const LoadingProvider = ({ children }: LoadingProviderProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [outputText, setOutputText] = useState("");
     // const [recommendItems, setRecommendItems] = useState<Item[]>(defaultItems);
-    const [recommendItems, setRecommendItems] = useState<CartItem[]>([]);
+    const [recommendItems, setRecommendItems] = useState<Menu[]>([]);
 
     return (
         <LoadingContext.Provider

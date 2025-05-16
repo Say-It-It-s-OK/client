@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useContext } from "react";
+import { MainContext } from "../../../context/MainContext";
 import { LoadingContext } from "../../../context/LoadingContext";
 import { RecommendCard } from "../../Card/Card";
 import Details from "../../Details/details";
-import { MainContext } from "../../../context/MainContext";
 
 const DivQueryContainer = styled.div`
     display: flex;

@@ -1,16 +1,21 @@
-import { CartItem } from "../../context/MainContext";
+import { CartId, CartItem } from "../../context/MainContext";
 
-const API_URL: string = import.meta.env.VITE_API_URL + "/order";
+const API_URL: string = import.meta.env.VITE_API_URL + "cart/delete";
 
-const deleteCart = async (item: CartItem) => {
+const deleteCart = async (sessionId: CartId, item: CartItem) => {
     console.log("👉 API_URL:", API_URL);
+    const deleteItem = {
+        sessionId: sessionId.sessionId,
+        index: item.cartIndex,
+        item: item,
+    };
     try {
         const res = await fetch(API_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(item),
+            body: JSON.stringify(deleteItem),
         });
         if (!res.ok) {
             throw new Error(`HTTP 오류: ${res.status}`);

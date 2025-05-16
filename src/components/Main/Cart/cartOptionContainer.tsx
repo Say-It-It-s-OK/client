@@ -14,6 +14,7 @@ import {
 import { OptionCard, OptionCartCard } from "../../Card/Card";
 import updateCart from "../../../api/request/updateCart";
 import deleteCart from "../../../api/request/deleteCart";
+import fetchCarts from "../../../api/request/cartLists";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -57,7 +58,7 @@ const DivOptionButtonContainer = styled.div`
 `;
 
 const CartOptionContainer = () => {
-    const { setActiveCategory, setCartItems } = useContext(MainContext);
+    const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
     const { selectedCart } = useContext(SelectedCartContext);
     const options = selectedCart?.options || {};
 
@@ -95,42 +96,19 @@ const CartOptionContainer = () => {
             selectedOptions: selectedOptions,
         };
 
-        const handleChangeOption = () => {
+        const handleChangeOption = async () => {
             console.log("옵션이 변경된 제품:", cartItem);
-
-            const index = cartItem.cartIndex;
-
-            if (typeof index !== "number") {
-                console.error("cartIndex가 없습니다.");
-                return;
-            }
-
-            const updatedItem = { ...cartItem };
-            delete updatedItem.cartIndex;
-            updateCart(cartItem);
-            setCartItems((prevItems) => {
-                const newItems = [...prevItems];
-                newItems[index] = updatedItem;
-                return newItems;
-            });
+            await updateCart(cartId, cartItem);
+            const currentCarts = await fetchCarts(cartId);
+            setCartItems(currentCarts?.items || []);
             setActiveCategory("장바구니");
         };
 
-        const handleDeleteItem = () => {
+        const handleDeleteItem = async () => {
             console.log("삭제된 제품:", cartItem);
-            const index = cartItem.cartIndex;
-
-            if (typeof index !== "number") {
-                console.log("cartIndex가 없습니다.");
-                return;
-            }
-            deleteCart(cartItem);
-            setCartItems((prevItems) => {
-                const newItems = [...prevItems];
-
-                newItems.splice(index, 1);
-                return newItems;
-            });
+            await deleteCart(cartId, cartItem);
+            const currentCarts = await fetchCarts(cartId);
+            setCartItems(currentCarts?.items || []);
             setActiveCategory("장바구니");
         };
 

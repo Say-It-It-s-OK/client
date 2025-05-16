@@ -27,6 +27,11 @@ export interface CartItem {
     cartIndex?: number;
 }
 
+export interface CartId {
+    sessionId: string;
+    items?: CartItem[];
+}
+
 interface ContextProps {
     children: ReactNode;
 }
@@ -36,6 +41,8 @@ interface MainContextType {
     setActiveCategory: Dispatch<SetStateAction<string>>;
     cartItems: CartItem[];
     setCartItems: Dispatch<SetStateAction<CartItem[]>>;
+    cartId: CartId;
+    setCartId: (id: CartId) => void;
 }
 
 export const MainContext = createContext<MainContextType>({
@@ -43,15 +50,26 @@ export const MainContext = createContext<MainContextType>({
     setActiveCategory: () => {},
     cartItems: [],
     setCartItems: () => {},
+    cartId: {
+        sessionId: "",
+    },
+    setCartId: () => {},
 });
 
 export const MainProvider = ({ children }: ContextProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("커피");
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [cartId, setCartId] = useState<CartId>({
+        sessionId: crypto.randomUUID(),
+    });
 
     useEffect(() => {
         console.log("장바구니에 담긴 제품", cartItems);
     }, [cartItems]);
+
+    useEffect(() => {
+        console.log("장바구니 ID", cartId);
+    }, [cartId]);
 
     return (
         <MainContext.Provider
@@ -60,6 +78,8 @@ export const MainProvider = ({ children }: ContextProps) => {
                 setActiveCategory,
                 cartItems,
                 setCartItems,
+                cartId,
+                setCartId,
             }}
         >
             {children}

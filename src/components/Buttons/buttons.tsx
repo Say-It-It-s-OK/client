@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "../../context/LoadingContext";
 import { CartItem, MainContext } from "../../context/MainContext";
 import styled from "styled-components";
+import fetchCarts from "../../api/request/cartLists";
 
 const ButtonLongButton = styled.button`
     position: absolute;
@@ -72,19 +73,21 @@ const ButtonCartButton = styled.button<{ $active?: string }>`
 `;
 
 const CartButton = () => {
-    const { activeCategory, setActiveCategory, cartItems } =
+    const { activeCategory, setActiveCategory, cartItems, cartId, setCartId } =
         useContext(MainContext);
 
     const { isLoading } = useContext(LoadingContext)!;
 
-    const onClick = () => {
+    const handleCart = () => {
+        fetchCarts(cartId);
+        setCartId(cartId);
         setActiveCategory("장바구니");
     };
 
     return (
         <ButtonCartButton
             $active={(activeCategory === "장바구니").toString()}
-            onClick={onClick}
+            onClick={handleCart}
             disabled={isLoading}
         >
             {cartItems.length}
