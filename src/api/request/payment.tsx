@@ -7,7 +7,9 @@ const orderPay = async (orderData: CartItem[]) => {
     const request = "query.order.pay";
     const orderDataWithRequest = {
         request,
-        items: orderData,
+        payload: {
+            item: orderData,
+        },
     };
     console.log("주문한 제품", orderDataWithRequest);
     try {
