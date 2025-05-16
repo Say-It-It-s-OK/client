@@ -1,8 +1,11 @@
+import { CartId } from "../../context/MainContext";
+
 const NLP_URL: string = import.meta.env.VITE_NLP_URL + "process";
 
-const nlp = async (text: string) => {
+const nlp = async (sessionId: CartId, text: string) => {
     console.log("👉 NLP_URL:", NLP_URL);
     const nlpRequest = {
+        sessionId,
         text,
     };
     try {

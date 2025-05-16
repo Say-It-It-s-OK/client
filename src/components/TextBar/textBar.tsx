@@ -114,7 +114,7 @@ const InputText = () => {
         setActiveCategory("로딩");
         event.preventDefault();
         try {
-            const responseData = await nlp(inputText);
+            const responseData = await nlp(cartId, inputText);
             setOutputText(responseData.response.speech);
             handleResponse(responseData);
         } catch (error) {
