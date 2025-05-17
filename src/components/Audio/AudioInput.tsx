@@ -1,12 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainContext, SelectedMenuContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import nlp from "../../api/request/nlp";
 import fetchCarts from "../../api/request/cartLists";
+import useAutoRecorder from "../../api/audioRecord";
+import sendAudioToServer from "../../api/request/sendAudioToServer";
 
-const InputTextBar = styled.input`
+const InputAudioBar = styled.input`
     display: flex;
     width: 80%;
     text-align: center;
@@ -19,7 +21,7 @@ const InputTextBar = styled.input`
     box-sizing: border-box;
 `;
 
-const InputText = () => {
+const AudioComponent = () => {
     const { setActiveCategory, cartItems, setCartItems, cartId } =
         useContext(MainContext);
     const [inputText, setInputText] = useState("");
@@ -27,6 +29,36 @@ const InputText = () => {
         useContext(LoadingContext)!;
     const { setSelectedMenu } = useContext(SelectedMenuContext);
     const navigate = useNavigate();
+
+    const { audioBlob, recording } = useAutoRecorder();
+    const [transcript, setTranscript] = useState("");
+
+    useEffect(() => {
+        const send = async () => {
+            if (!audioBlob) return;
+            try {
+                const result = await sendAudioToServer(audioBlob);
+                console.log("🎤 서버 응답:", result);
+                setTranscript(result);
+                setInputText(result);
+                try {
+                    const responseData = await nlp(result);
+                    setOutputText(responseData.response.speech);
+                    handleResponse(responseData);
+                } catch (error) {
+                    console.error("자연어 처리 요청 중 오류 발생", error);
+                    setActiveCategory("커피");
+                } finally {
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.error("STT 또는 NLP 처리 중 오류 발생:", error);
+                setActiveCategory("오류");
+                setIsLoading(false);
+            }
+        };
+        send();
+    }, [audioBlob]);
 
     const handleResponse = async (responseData: any) => {
         // query.recommend
@@ -126,22 +158,24 @@ const InputText = () => {
     };
 
     return (
-        <form
-            style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-            }}
-            onSubmit={handleSubmit}
-        >
-            <InputTextBar
-                type="text"
-                value={inputText}
-                onChange={handleInputChange}
-                placeholder="텍스트를 입력하세요"
-            />
-        </form>
+        <>
+            <form
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                }}
+                onSubmit={handleSubmit}
+            >
+                <InputAudioBar
+                    type="text"
+                    value={inputText}
+                    onChange={handleInputChange}
+                    placeholder="텍스트를 입력하세요"
+                />
+            </form>
+        </>
     );
 };
 
@@ -159,4 +193,4 @@ const OutputText = () => {
     return <DivOutputTextBar>{outputText}</DivOutputTextBar>;
 };
 
-export { InputText, OutputText };
+export { AudioComponent, OutputText };
