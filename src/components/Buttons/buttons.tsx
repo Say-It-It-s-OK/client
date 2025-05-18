@@ -16,11 +16,7 @@ const ButtonLongButton = styled.button`
     font-size: 200%;
     border: 4px solid var(--border-color);
     border-radius: 15px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: var(--accent-color);
-    }
+    box-shadow: 0px 0px 10px var(--secondary-color);
 `;
 
 interface LongButtonPropos {
