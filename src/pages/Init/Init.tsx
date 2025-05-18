@@ -4,6 +4,8 @@ import Audio from "../../assets/icons/audio_icon.png";
 import Vector from "../../assets/images/Vector.png";
 import { LongButton } from "../../components/Buttons/buttons";
 import { useNavigate } from "react-router-dom";
+import useAutoRecorder from "../../api/audioRecord";
+import { useEffect } from "react";
 
 const ImgIndexLogo = styled.img`
     width: 65%;
@@ -16,8 +18,23 @@ const DivIndexText = styled.div`
     text-align: center;
 `;
 
+const DivUnderlineBar = styled.div`
+    width: 80%;
+    height: 0.7%;
+    background: linear-gradient(
+        to right,
+        var(--light-color),
+        var(--secondary-color)
+    );
+    margin: 0 auto;
+    border-radius: 20px;
+    transition: height 0.05s ease;
+    box-shadow: 0px 0px 10px var(--secondary-color);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 50% 100%, 0% 40%);
+`;
+
 const ImgAudio = styled.img`
-    width: 15%;
+    width: 12%;
     margin: 5%;
 `;
 
@@ -30,16 +47,18 @@ const ImgBackGroundVector = styled.img`
 
 const Index = () => {
     const navigate = useNavigate();
-
+    const { audioBlob, recording, volume } = useAutoRecorder();
     const handleScreenClick = () => {
         navigate("/home");
     };
+
     return (
         <div className="container" onClick={handleScreenClick}>
             <ImgIndexLogo src={Logo} alt="Logo" />
             <DivIndexText>
                 안녕하세요! 화면을 터치하거나 <br /> 음성으로 주문을 시작하세요!
             </DivIndexText>
+            <DivUnderlineBar />
             <ImgAudio src={Audio} alt="Audio" />
             <ImgBackGroundVector src={Vector} />
             <LongButton
