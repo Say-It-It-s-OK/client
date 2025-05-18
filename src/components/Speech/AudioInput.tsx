@@ -7,21 +7,61 @@ import nlp from "../../api/request/nlp";
 import fetchCarts from "../../api/request/cartLists";
 import useAutoRecorder from "../../api/audioRecord";
 import sendAudioToServer from "../../api/request/sendAudioToServer";
+import sendTextToServer from "../../api/request/sendTextToServer";
 
 const InputAudioBar = styled.input`
     display: flex;
-    width: 80%;
+    width: 95%;
     text-align: center;
     font-family: var(--font-main);
     font-size: 300%;
-    margin-bottom: 5%;
     padding: 10px;
-    border: 4px solid #ccc;
-    border-radius: 15px;
-    box-sizing: border-box;
+    border: none;
 `;
 
-const AudioComponent = () => {
+const DivUnderlineBar = styled.div<{ volume: number; $recording: string }>`
+    width: 80%;
+    height: ${({ volume, $recording }) => {
+        const clamped = Math.min(Math.max(volume, 0), 30);
+        return $recording === "true" ? `${0.7 + clamped / 100}%` : "0.7%";
+    }};
+    background: linear-gradient(
+        to right,
+        var(--light-color),
+        var(--secondary-color)
+    );
+    margin: 0 auto;
+    border-radius: 20px;
+    transition: height 0.05s ease;
+    box-shadow: 0px 0px 10px var(--secondary-color);
+
+    clip-path: ${({ volume, $recording }) => {
+        if ($recording !== "true") {
+            return `
+                polygon(
+                    0% 0%,
+                    100% 0%,
+                    100% 40%,
+                    50% 100%,
+                    0% 40%
+                )
+            `;
+        }
+        const clamped = Math.min(Math.max(volume, 0), 100);
+        const tipY = 100 + clamped / 1.5;
+        return `
+            polygon(
+                0% 0%,
+                100% 0%,
+                100% 40%,
+                50% ${tipY}%,
+                0% 40%
+            )
+        `;
+    }};
+`;
+
+const SpeechComponent = () => {
     const { setActiveCategory, cartItems, setCartItems, cartId } =
         useContext(MainContext);
     const [inputText, setInputText] = useState("");
@@ -30,13 +70,14 @@ const AudioComponent = () => {
     const { setSelectedMenu } = useContext(SelectedMenuContext);
     const navigate = useNavigate();
 
-    const { audioBlob, recording } = useAutoRecorder();
+    const { audioBlob, recording, volume } = useAutoRecorder();
     const [transcript, setTranscript] = useState("");
 
     useEffect(() => {
         const send = async () => {
             if (!audioBlob) return;
             try {
+                setIsLoading(true);
                 const result = await sendAudioToServer(audioBlob);
                 console.log("🎤 서버 응답:", result);
                 setTranscript(result);
@@ -44,6 +85,12 @@ const AudioComponent = () => {
                 try {
                     const responseData = await nlp(result);
                     setOutputText(responseData.response.speech);
+                    try {
+                        await sendTextToServer(responseData.response.speech);
+                    } catch (error) {
+                        console.error("TTS 처리 요청 중 오류 발생", error);
+                        setActiveCategory("커피");
+                    }
                     handleResponse(responseData);
                 } catch (error) {
                     console.error("자연어 처리 요청 중 오류 발생", error);
@@ -53,7 +100,7 @@ const AudioComponent = () => {
                 }
             } catch (error) {
                 console.error("STT 또는 NLP 처리 중 오류 발생:", error);
-                setActiveCategory("오류");
+                setActiveCategory("커피");
                 setIsLoading(false);
             }
         };
@@ -133,7 +180,7 @@ const AudioComponent = () => {
 
             // query.error
         } else {
-            setActiveCategory("오류");
+            setActiveCategory("커피피");
         }
     };
 
@@ -148,6 +195,11 @@ const AudioComponent = () => {
         try {
             const responseData = await nlp(cartId, inputText);
             setOutputText(responseData.response.speech);
+            try {
+                await sendTextToServer(responseData.response.speech);
+            } catch (error) {
+                console.error("TTS 처리 요청 중 오류 발생", error);
+            }
             handleResponse(responseData);
         } catch (error) {
             console.error("자연어 처리 요청 중 오류 발생", error);
@@ -159,6 +211,7 @@ const AudioComponent = () => {
 
     return (
         <>
+            <OutputBar />
             <form
                 style={{
                     display: "flex",
@@ -172,25 +225,37 @@ const AudioComponent = () => {
                     type="text"
                     value={inputText}
                     onChange={handleInputChange}
-                    placeholder="텍스트를 입력하세요"
+                    placeholder="음성으로 주문을 해주세요!"
                 />
             </form>
+            <DivUnderlineBar
+                volume={volume}
+                $recording={recording.toString()}
+            />
         </>
     );
 };
 
 const DivOutputTextBar = styled.div`
-    width: 100%;
-    height: 5%;
-    text-align: center;
-    margin: 13%;
+    display: flex;
+    width: 90%;
+    height: 4%;
+    justify-content: center;
+    align-items: center;
+    margin: 13% auto;
+    padding: 10px;
     font-family: var(--font-main);
-    font-size: 350%;
+    font-size: 250%;
+    background-color: var(--light-color);
+    border-radius: 15px;
+    text-align: center;
+    color: var(--accent-color);
+    box-shadow: 0px 0px 10px var(--secondary-color);
 `;
 
-const OutputText = () => {
+const OutputBar = () => {
     const { outputText } = useContext(LoadingContext)!;
     return <DivOutputTextBar>{outputText}</DivOutputTextBar>;
 };
 
-export { AudioComponent, OutputText };
+export { SpeechComponent, OutputBar };

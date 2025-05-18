@@ -29,6 +29,7 @@ const DivCartTitle = styled.div`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    box-shadow: 0px 0px 10px var(--primary-color);
 `;
 
 const DivCartContainerBody = styled.div`

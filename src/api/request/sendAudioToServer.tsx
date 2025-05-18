@@ -1,4 +1,4 @@
-const API_URL: string = import.meta.env.VITE_STT_URL;
+const API_URL: string = import.meta.env.VITE_STT_URL + "stt";
 
 const sendAudioToServer = async (audioBlob: Blob) => {
     console.log("👉 STT_URL:", API_URL);

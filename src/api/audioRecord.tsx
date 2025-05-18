@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from "react";
 const useAutoRecorder = () => {
     const [recording, setRecording] = useState(false);
     const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+    const [volume, setVolume] = useState(0);
+
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const chunksRef = useRef<Blob[]>([]);
-    const silenceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         const init = async () => {
@@ -50,7 +51,7 @@ const useAutoRecorder = () => {
                 const detectVolume = () => {
                     analyser.getByteTimeDomainData(data);
                     const volume = Math.max(...data) - Math.min(...data);
-
+                    setVolume(volume);
                     if (
                         volume >= 100 &&
                         mediaRecorderRef.current &&
@@ -92,7 +93,7 @@ const useAutoRecorder = () => {
         init();
     }, []);
 
-    return { audioBlob, recording };
+    return { audioBlob, recording, volume };
 };
 
 export default useAutoRecorder;

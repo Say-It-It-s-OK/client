@@ -77,84 +77,75 @@ const OptionContainer = () => {
         return defaults;
     };
 
-    const OptionContainer = () => {
-        const [selectedOptions, setSelectedOptions] = useState(() =>
-            createDefaultOptions(options)
-        );
+    // ✅ 상태 선언은 최상단 컴포넌트에서 1회만
+    const [selectedOptions, setSelectedOptions] = useState(() =>
+        createDefaultOptions(options)
+    );
 
-        const handleOptionSelection = (
-            optionName: string,
-            optionValue: string
-        ) => {
-            console.log(`변경된 ${optionName}: ${optionValue}`);
-            setSelectedOptions((prevState) => ({
-                ...prevState,
-                [optionName]: optionValue,
-            }));
+    const handleOptionSelection = (optionName: string, optionValue: string) => {
+        console.log(`변경된 ${optionName}: ${optionValue}`);
+        setSelectedOptions((prevState) => ({
+            ...prevState,
+            [optionName]: optionValue,
+        }));
+    };
+
+    const handleAddCartItems = async () => {
+        const cartItem = {
+            ...selectedMenu!,
+            selectedOptions: selectedOptions,
         };
 
-        const handleAddCartItems = async () => {
-            const cartItem = {
-                ...selectedMenu!,
-                selectedOptions: selectedOptions,
-            };
+        await addCarts(cartId, cartItem);
+        const currentCarts = await fetchCarts(cartId);
+        setCartItems(currentCarts?.items || []);
+        setActiveCategory("장바구니");
+    };
 
-            await addCarts(cartId, cartItem);
-            const currentCarts = await fetchCarts(cartId);
-            setCartItems(currentCarts?.items || []);
-            setActiveCategory("장바구니");
-        };
-
-        const setOptionbButton = () => {
-            return Object.entries(options).map(
-                ([optionName, optionValues], index) => {
-                    const selectedCount = Array.isArray(optionValues)
-                        ? optionValues.length
-                        : 0;
-                    if (selectedCount === 3) {
-                        return (
-                            <OptionButtonTriple
-                                key={index}
-                                optionName={optionName}
-                                optionValues={optionValues}
-                                selectedOption={selectedOptions[optionName]}
-                                handleOptionSelection={handleOptionSelection}
-                            ></OptionButtonTriple>
-                        );
-                    } else if (selectedCount === 2) {
-                        return (
-                            <OptionButtonDouble
-                                key={index}
-                                optionName={optionName}
-                                optionValues={optionValues}
-                                selectedOption={selectedOptions[optionName]}
-                                handleOptionSelection={handleOptionSelection}
-                            ></OptionButtonDouble>
-                        );
-                    }
-                    return null;
+    const setOptionbButton = () => {
+        return Object.entries(options).map(
+            ([optionName, optionValues], index) => {
+                const selectedCount = Array.isArray(optionValues)
+                    ? optionValues.length
+                    : 0;
+                if (selectedCount === 3) {
+                    return (
+                        <OptionButtonTriple
+                            key={index}
+                            optionName={optionName}
+                            optionValues={optionValues}
+                            selectedOption={selectedOptions[optionName]}
+                            handleOptionSelection={handleOptionSelection}
+                        />
+                    );
+                } else if (selectedCount === 2) {
+                    return (
+                        <OptionButtonDouble
+                            key={index}
+                            optionName={optionName}
+                            optionValues={optionValues}
+                            selectedOption={selectedOptions[optionName]}
+                            handleOptionSelection={handleOptionSelection}
+                        />
+                    );
                 }
-            );
-        };
-
-        useEffect(() => {
-            console.log("현재 옵션", selectedOptions);
-        }, [selectedOptions]);
-        return (
-            <>
-                <DivOptionButtonContainer>
-                    {setOptionbButton()}
-                </DivOptionButtonContainer>
-                <AddCartButton handleAddCartItems={handleAddCartItems} />
-            </>
+                return null;
+            }
         );
     };
+
+    useEffect(() => {
+        console.log("현재 옵션", selectedOptions);
+    }, [selectedOptions]);
 
     return (
         <DivOptionContainer>
             <DivOptionTitle>추가 옵션</DivOptionTitle>
             <OptionCard menu={selectedMenu} />
-            <OptionContainer />
+            <DivOptionButtonContainer>
+                {setOptionbButton()}
+            </DivOptionButtonContainer>
+            <AddCartButton handleAddCartItems={handleAddCartItems} />
         </DivOptionContainer>
     );
 };
