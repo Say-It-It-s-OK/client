@@ -163,26 +163,35 @@ const PaymentFail = () => {
 const PaymentInit = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { sessionId, cartItems, totalPrice } = location.state || {};
+    const { sessionId, cartItems, totalPrice, nlp } = location.state || {};
     const [paymentComplete, setPaymentComplete] = useState(false);
     const [paymentFail, setPaymentFail] = useState(false);
 
     useEffect(() => {
         const orderPayment = async () => {
-            try {
-                console.log("주문 요청을 보냈습니다...");
-                const responseData = await orderPay(sessionId, cartItems);
-                if (responseData.response === "query.order.pay") {
-                    console.log("주문 요청이 완료되었습니다!");
+            if (!nlp) {
+                try {
+                    console.log("주문 요청을 보냈습니다...");
+                    const responseData = await orderPay(sessionId, cartItems);
+                    if (responseData.response === "cart.pay") {
+                        console.log("주문 요청이 완료되었습니다!");
+                        const timer = setTimeout(() => {
+                            setPaymentComplete(true);
+                        }, 3000);
+                        return () => clearTimeout(timer);
+                    }
+                } catch (error) {
+                    console.error("주문 처리 중 오류 발생:", error);
                     const timer = setTimeout(() => {
-                        setPaymentComplete(true);
+                        setPaymentFail(true);
                     }, 3000);
                     return () => clearTimeout(timer);
                 }
-            } catch (error) {
-                console.error("주문 처리 중 오류 발생:", error);
+            } else {
+                console.log("주문 요청을 보냈습니다...");
+                console.log("주문 요청이 완료되었습니다!");
                 const timer = setTimeout(() => {
-                    setPaymentFail(true);
+                    setPaymentComplete(true);
                 }, 3000);
                 return () => clearTimeout(timer);
             }

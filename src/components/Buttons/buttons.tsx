@@ -228,6 +228,7 @@ const PaymentButton = ({ cartItems, totalPrice }: PaymentButtonProps) => {
                 sessionId: cartId,
                 cartItems: cartItems,
                 totalPrice: totalPrice,
+                nlp: false,
             },
         });
     };

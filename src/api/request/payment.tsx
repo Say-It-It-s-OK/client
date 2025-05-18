@@ -1,16 +1,14 @@
 import { CartId, CartItem } from "../../context/MainContext";
 
-const API_URL: string = import.meta.env.VITE_API_URL + "order";
+const API_URL: string = import.meta.env.VITE_API_URL + "cart/pay";
 
 const orderPay = async (sessionid: CartId, orderData: CartItem[]) => {
     console.log("👉 API_URL:", API_URL);
-    const request = "query.order.pay";
+    const request = "cart.pay";
     const orderDataWithRequest = {
         request,
-        payload: {
-            sessionid: sessionid,
-            item: orderData,
-        },
+        sessionId: sessionid,
+        item: orderData,
     };
     console.log("주문한 제품", orderDataWithRequest);
     try {

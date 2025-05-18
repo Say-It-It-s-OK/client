@@ -73,39 +73,39 @@ const SpeechComponent = () => {
     const { audioBlob, recording, volume } = useAutoRecorder();
     const [transcript, setTranscript] = useState("");
 
-    useEffect(() => {
-        const send = async () => {
-            if (!audioBlob) return;
-            try {
-                setIsLoading(true);
-                const result = await sendAudioToServer(audioBlob);
-                console.log("🎤 서버 응답:", result);
-                setTranscript(result);
-                setInputText(result);
-                try {
-                    const responseData = await nlp(result);
-                    setOutputText(responseData.response.speech);
-                    try {
-                        await sendTextToServer(responseData.response.speech);
-                    } catch (error) {
-                        console.error("TTS 처리 요청 중 오류 발생", error);
-                        setActiveCategory("커피");
-                    }
-                    handleResponse(responseData);
-                } catch (error) {
-                    console.error("자연어 처리 요청 중 오류 발생", error);
-                    setActiveCategory("커피");
-                } finally {
-                    setIsLoading(false);
-                }
-            } catch (error) {
-                console.error("STT 또는 NLP 처리 중 오류 발생:", error);
-                setActiveCategory("커피");
-                setIsLoading(false);
-            }
-        };
-        send();
-    }, [audioBlob]);
+    // useEffect(() => {
+    //     const send = async () => {
+    //         if (!audioBlob) return;
+    //         try {
+    //             setIsLoading(true);
+    //             const result = await sendAudioToServer(audioBlob);
+    //             console.log("🎤 서버 응답:", result);
+    //             setTranscript(result);
+    //             setInputText(result);
+    //             try {
+    //                 const responseData = await nlp(cartId, result);
+    //                 setOutputText(responseData.response.speech);
+    //                 try {
+    //                     await sendTextToServer(responseData.response.speech);
+    //                 } catch (error) {
+    //                     console.error("TTS 처리 요청 중 오류 발생", error);
+    //                     setActiveCategory("커피");
+    //                 }
+    //                 handleResponse(responseData);
+    //             } catch (error) {
+    //                 console.error("자연어 처리 요청 중 오류 발생", error);
+    //                 setActiveCategory("커피");
+    //             } finally {
+    //                 setIsLoading(false);
+    //             }
+    //         } catch (error) {
+    //             console.error("STT 또는 NLP 처리 중 오류 발생:", error);
+    //             setActiveCategory("커피");
+    //             setIsLoading(false);
+    //         }
+    //     };
+    //     send();
+    // }, [audioBlob]);
 
     const handleResponse = async (responseData: any) => {
         // query.recommend
@@ -166,6 +166,7 @@ const SpeechComponent = () => {
                         sessionId: cartId,
                         cartItems: cartItems,
                         totalPrice: totalPrice,
+                        nlp: true,
                     },
                 });
             }
@@ -180,7 +181,7 @@ const SpeechComponent = () => {
 
             // query.error
         } else {
-            setActiveCategory("커피피");
+            setActiveCategory("커피");
         }
     };
 
