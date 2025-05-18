@@ -29,6 +29,7 @@ const DivMenuCard = styled.div`
     border-radius: 15px;
     margin-bottom: 5%;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivMenuCardPrice = styled.div`
@@ -46,6 +47,7 @@ const DivMenuCardPrice = styled.div`
     position: absolute;
     top: 0;
     left: 13%;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivMenuCardName = styled.div`
@@ -61,6 +63,7 @@ const DivMenuCardName = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 interface MenuProps {
@@ -108,6 +111,7 @@ const DivOptionCard = styled.div`
     border: none;
     border-radius: 15px;
     margin-bottom: 5%;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivoptionCardPrice = styled.div`
@@ -125,6 +129,7 @@ const DivoptionCardPrice = styled.div`
     position: absolute;
     top: 4.2%;
     left: 8.5%;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivOptionCardName = styled.div`
@@ -139,6 +144,7 @@ const DivOptionCardName = styled.div`
     font-size: 200%;
     justify-content: center;
     align-items: center;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const OptionCard = ({ menu }: MenuProps) => {
@@ -172,6 +178,7 @@ const DivCartCard = styled.div`
     border-radius: 15px;
     margin-bottom: 5%;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivCartCardPrice = styled.div`
@@ -189,6 +196,7 @@ const DivCartCardPrice = styled.div`
     position: absolute;
     top: 0;
     left: 17.4%;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const ButtonCartCardAdd = styled.button`
@@ -207,6 +215,7 @@ const ButtonCartCardAdd = styled.button`
     top: 59%;
     left: 17.4%;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 
     &:hover {
         background-color: var(--accent-color);
@@ -229,6 +238,7 @@ const ButtonCartCardExtract = styled.button`
     top: 59%;
     left: 49.4%;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 
     &:hover {
         background-color: var(--accent-color);
@@ -247,6 +257,7 @@ const DivCartCardName = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 interface ItemProps {
@@ -330,6 +341,7 @@ const DivItemCard = styled.div`
     border-radius: 15px;
     margin-bottom: 5%;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivItemCardPrice = styled.div`
@@ -347,6 +359,7 @@ const DivItemCardPrice = styled.div`
     position: absolute;
     top: 0;
     left: 17.4%;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivItemCardName = styled.div`
@@ -362,6 +375,7 @@ const DivItemCardName = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const ItemCard = ({ item }: ItemProps) => {
@@ -396,6 +410,7 @@ const DivRecommendCard = styled.div`
     border-radius: 15px;
     margin-bottom: 5%;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivRecommendCardPrice = styled.div`
@@ -413,6 +428,7 @@ const DivRecommendCardPrice = styled.div`
     position: absolute;
     top: 0;
     left: 17.4%;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivRecommendCardName = styled.div`
@@ -428,6 +444,7 @@ const DivRecommendCardName = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 interface RecommendProps {

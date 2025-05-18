@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "../../context/LoadingContext";
 import { CartItem, MainContext } from "../../context/MainContext";
 import styled from "styled-components";
+// import Cart from "../../assets/icons/cart.png";
 import fetchCarts from "../../api/request/cartLists";
 
 const ButtonLongButton = styled.button`
@@ -47,29 +48,40 @@ interface buttonProps {
 const ButtonCartButton = styled.button<{ $active?: string }>`
     width: 20%;
     height: 75%;
-    background-color: var(--primary-color);
+    background-color: var(--light-color);
     color: white;
     font-family: var(--font-main);
     font-size: 200%;
     border: none;
     border-radius: 0 0 0 15px;
     cursor: pointer;
-    border: 4px solid var(--border-color);
+    transition: all 0.2s ease;
+    box-shadow: 0px 0px 10px var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 
     &:hover {
-        background-color: var(--accent-color);
+        background-color: var(--primary-color);
     }
 
     ${({ $active }) =>
         $active === "true" &&
         `
-        background-color: var(--accent-color);
+        width: 22%;
+        height: 83%;
+        background-color: var(--primary-color);
     `}
 
     &:disabled:hover {
         background-color: var(--primary-color);
         cursor: default;
     }
+`;
+
+const ImgCartIcon = styled.img`
+    width: 55%;
+    margin: 0 8% 0 0;
 `;
 
 const CartButton = () => {
@@ -90,6 +102,7 @@ const CartButton = () => {
             onClick={handleCart}
             disabled={isLoading}
         >
+            <ImgCartIcon></ImgCartIcon>
             {cartItems.length}
         </ButtonCartButton>
     );
