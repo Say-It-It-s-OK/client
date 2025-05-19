@@ -57,6 +57,37 @@ const DivOptionButtonContainer = styled.div`
     gap: 4%;
 `;
 
+const DivOptionNameContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    height: 60%;
+    align-items: center;
+    position: absolute;
+    top: 15%;
+    left: 53%;
+    transform: translateX(-50%);
+    gap: 4%;
+`;
+
+const DivOptionName = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 53%;
+    height: 12%;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 140%;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--light-color)
+    );
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+`;
+
 const CartOptionContainer = () => {
     const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
     const { selectedCart } = useContext(SelectedCartContext);
@@ -146,6 +177,17 @@ const CartOptionContainer = () => {
         );
     };
 
+    const setOptionName = () => {
+        return Object.entries(options).map(
+            ([optionName, optionValues], index) => {
+                if (index !== 3)
+                    return (
+                        <DivOptionName key={index}>{optionName}</DivOptionName>
+                    );
+            }
+        );
+    };
+
     return (
         <DivOptionContainer>
             <DivOptionTitle>옵션 변경</DivOptionTitle>
@@ -153,6 +195,7 @@ const CartOptionContainer = () => {
             <DivOptionButtonContainer>
                 {renderOptionButtons()}
             </DivOptionButtonContainer>
+            <DivOptionNameContainer>{setOptionName()}</DivOptionNameContainer>
             <ChangeOptionButton handleChangeOption={handleChangeOption} />
             <DeleteItemButton handleDeleteItem={handleDeleteItem} />
         </DivOptionContainer>
