@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MenuContext } from "./context/MenuContext";
-import { MainProvider } from "./context/MainContext";
+import { MainProvider, SelectedMenuProvider } from "./context/MainContext";
 import { LoadingProvider } from "./context/LoadingContext";
 import fetchMenus from "./api/request/menuLists";
 import Index from "./pages/Init/Init";
@@ -24,20 +24,25 @@ const App = () => {
     return (
         <Router>
             <div>
-                <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route
-                        path="/home"
-                        element={
-                            <LoadingProvider>
-                                <MainProvider>
-                                    <Home />
-                                </MainProvider>
-                            </LoadingProvider>
-                        }
-                    />
-                    <Route path="/payment" element={<ProgressPayment />} />
-                </Routes>
+                <LoadingProvider>
+                    <MainProvider>
+                        <Routes>
+                            <Route path="/" element={<Index />} />
+                            <Route
+                                path="/home"
+                                element={
+                                    <SelectedMenuProvider>
+                                        <Home />
+                                    </SelectedMenuProvider>
+                                }
+                            />
+                            <Route
+                                path="/payment"
+                                element={<ProgressPayment />}
+                            />
+                        </Routes>
+                    </MainProvider>
+                </LoadingProvider>
             </div>
         </Router>
     );

@@ -43,6 +43,8 @@ interface MainContextType {
     setCartItems: Dispatch<SetStateAction<CartItem[]>>;
     cartId: CartId;
     setCartId: (id: CartId) => void;
+    inputText: string;
+    setInputText: Dispatch<SetStateAction<string>>;
 }
 
 export const MainContext = createContext<MainContextType>({
@@ -54,6 +56,8 @@ export const MainContext = createContext<MainContextType>({
         sessionId: "",
     },
     setCartId: () => {},
+    inputText: "",
+    setInputText: () => {},
 });
 
 export const MainProvider = ({ children }: ContextProps) => {
@@ -62,6 +66,7 @@ export const MainProvider = ({ children }: ContextProps) => {
     const [cartId, setCartId] = useState<CartId>({
         sessionId: crypto.randomUUID(),
     });
+    const [inputText, setInputText] = useState<string>("");
 
     useEffect(() => {
         console.log("장바구니에 담긴 제품", cartItems);
@@ -80,6 +85,8 @@ export const MainProvider = ({ children }: ContextProps) => {
                 setCartItems,
                 cartId,
                 setCartId,
+                inputText,
+                setInputText,
             }}
         >
             {children}
