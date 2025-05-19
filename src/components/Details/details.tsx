@@ -39,6 +39,7 @@ const DivDetailsContainer = styled.div`
     background-color: var(--light-color);
     border-radius: 15px;
     border: 4px solid var(--border-color);
+    box-shadow: 0px 0px 10px var(--secondary-color);
 `;
 
 const DivDetailsPayAmount = styled.div`

@@ -163,28 +163,42 @@ const OptionCard = ({ menu }: MenuProps) => {
 
 const DivCartCardContainer = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
-    width: 25%;
-    height: 50%;
+    width: 100%;
+    height: 30%;
+    background: linear-gradient(
+        135deg,
+        var(--secondary-color),
+        var(--primary-color)
+    );
+    border: none;
+    border-radius: 15px;
     position: relative;
+    padding: 3.5%;
+    margin: 1%;
+    box-shadow: 0px 0px 15px var(--primary-color);
+    gap: 3%;
+    cursor: pointer;
+    border-radius: 15px;
+    border: 2px solid var(--border-color);
 `;
 
 const DivCartCard = styled.div`
-    width: 65%;
+    width: 19%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
     border: none;
     border-radius: 15px;
-    margin-bottom: 5%;
     cursor: pointer;
     box-shadow: 0px 0px 15px var(--primary-color);
 `;
 
 const DivCartCardPrice = styled.div`
     display: flex;
-    width: 40%;
-    height: 12%;
+    width: 15%;
+    height: 14%;
     background-color: var(--primary-color);
     border-radius: 15px 0 15px 0;
     border: 4px solid var(--border-color);
@@ -194,28 +208,27 @@ const DivCartCardPrice = styled.div`
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 0;
-    left: 17.4%;
-    box-shadow: 0px 0px 15px var(--primary-color);
+    top: 7%;
+    left: 3.5%;
 `;
 
 const ButtonCartCardAdd = styled.button`
     display: flex;
-    width: 33.3%;
-    height: 12%;
-    background-color: var(--primary-color);
-    border-radius: 0 0 0 15px;
+    width: 35%;
+    height: 20%;
+    background-color: var(--light-color);
+    border-radius: 15px;
     border: 4px solid var(--border-color);
     color: white;
     font-family: var(--font-main);
     font-size: 135%;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 59%;
-    left: 17.4%;
     cursor: pointer;
     box-shadow: 0px 0px 15px var(--primary-color);
+    position: absolute;
+    top: 78%;
+    left: 25%;
 
     &:hover {
         background-color: var(--accent-color);
@@ -224,21 +237,21 @@ const ButtonCartCardAdd = styled.button`
 
 const ButtonCartCardExtract = styled.button`
     display: flex;
-    width: 33.3%;
-    height: 12%;
+    width: 35%;
+    height: 20%;
     background-color: var(--secondary-color);
-    border-radius: 0 0 15px 0;
+    border-radius: 15px;
     border: 4px solid var(--border-color);
     color: white;
     font-family: var(--font-main);
     font-size: 135%;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 59%;
-    left: 49.4%;
     cursor: pointer;
     box-shadow: 0px 0px 15px var(--primary-color);
+    position: absolute;
+    top: 78%;
+    left: 60%;
 
     &:hover {
         background-color: var(--accent-color);
@@ -246,8 +259,8 @@ const ButtonCartCardExtract = styled.button`
 `;
 const DivCartCardName = styled.div`
     display: flex;
-    width: 75%;
-    height: 17%;
+    width: 70%;
+    height: 18%;
     background-color: var(--primary-color);
     border-radius: 15px;
     border: 4px solid var(--border-color);
@@ -257,7 +270,56 @@ const DivCartCardName = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    position: absolute;
+    top: 2%;
+    left: 25%;
     box-shadow: 0px 0px 15px var(--primary-color);
+`;
+
+const DivCartContentContainer = styled.div`
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3%;
+`;
+
+const DivOptionContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 2%;
+    gap: 7%;
+`;
+
+const DivOptionName = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    height: 90%;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 140%;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--light-color)
+    );
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+`;
+
+const DivOptionValue = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 90%;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 140%;
 `;
 
 interface ItemProps {
@@ -308,17 +370,36 @@ const CartCard = ({ item }: ItemProps) => {
         return <div>제품이 없습니다.</div>;
     }
 
+    const setOption = () => {
+        return Object.entries(item.selectedOptions).map(
+            ([optionName, optionValues], index) => {
+                if (index !== 3)
+                    return (
+                        <DivOptionContainer>
+                            <DivOptionName key={index}>
+                                {optionName}
+                            </DivOptionName>
+                            <DivOptionValue key={index + 3}>
+                                {optionValues}
+                            </DivOptionValue>
+                        </DivOptionContainer>
+                    );
+            }
+        );
+    };
+
     return (
         <DivCartCardContainer>
             <DivCartCard onClick={handleMenuClick} />
+            <DivCartCardName>{item.name}</DivCartCardName>
             <DivCartCardPrice>{item.price}</DivCartCardPrice>
             <ButtonCartCardAdd onClick={handleAdd}>+</ButtonCartCardAdd>
             <ButtonCartCardExtract onClick={handleRemove}>
                 -
             </ButtonCartCardExtract>
-            <DivCartCardName onClick={handleMenuClick}>
-                {item.name}
-            </DivCartCardName>
+            <DivCartContentContainer onClick={handleMenuClick}>
+                {setOption()}
+            </DivCartContentContainer>
         </DivCartCardContainer>
     );
 };

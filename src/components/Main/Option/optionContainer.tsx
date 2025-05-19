@@ -36,6 +36,7 @@ const DivOptionTitle = styled.div`
     left: 78%;
     transform: translateX(-50%);
     border: 4px solid var(--border-color);
+    box-shadow: 0px 0px 10px var(--secondary-color);
 `;
 
 const DivOptionButtonContainer = styled.div`

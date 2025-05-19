@@ -44,7 +44,7 @@ interface buttonProps {
 const ButtonCartButton = styled.button<{ $active?: string }>`
     width: 20%;
     height: 75%;
-    background-color: var(--light-color);
+    background: linear-gradient(var(--primary-color), var(--light-color));
     color: white;
     font-family: var(--font-main);
     font-size: 200%;
@@ -201,6 +201,7 @@ const ButtonPaymentButton = styled.button<{ $disabled: string }>`
     opacity: ${(props) => (props.$disabled === "true" ? 0.5 : 1)};
     pointer-events: ${(props) =>
         props.$disabled === "true" ? "none" : "auto"};
+    box-shadow: 0px 0px 10px var(--secondary-color);
 
     &:hover {
         background-color: ${(props) =>
@@ -248,6 +249,7 @@ const ButtonAddCartButton = styled.button`
     border-radius: 15px;
     border: 4px solid var(--border-color);
     cursor: pointer;
+    box-shadow: 0px 0px 10px var(--secondary-color);
 
     &:hover {
         background-color: var(--accent-color);
@@ -281,6 +283,7 @@ const ButtonChangeoOtionButton = styled.button`
     border-radius: 15px;
     border: 4px solid var(--border-color);
     cursor: pointer;
+    box-shadow: 0px 0px 10px var(--secondary-color);
 
     &:hover {
         background-color: var(--accent-color);
@@ -316,6 +319,7 @@ const ButtonDeleteItemButton = styled.button`
     border-radius: 15px;
     border: 4px solid var(--border-color);
     cursor: pointer;
+    box-shadow: 0px 0px 10px var(--secondary-color);
 
     &:hover {
         background-color: var(--accent-color);
