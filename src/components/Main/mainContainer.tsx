@@ -100,13 +100,9 @@ const MainContainer = () => {
                     disabled={isLoading}
                 />
             </DivMenuButtonContainer>
-            <SelectedMenuProvider>
-                <SelectedCartProvider>
-                    <DivMainContainerBody>
-                        {renderContent()}
-                    </DivMainContainerBody>
-                </SelectedCartProvider>
-            </SelectedMenuProvider>
+            <SelectedCartProvider>
+                <DivMainContainerBody>{renderContent()}</DivMainContainerBody>
+            </SelectedCartProvider>
         </DivMainContainer>
     );
 };
