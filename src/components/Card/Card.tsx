@@ -99,7 +99,7 @@ const DivOptionCardContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
+    width: 45%;
     height: 70%;
     margin-top: 2%;
 `;
@@ -127,8 +127,8 @@ const DivoptionCardPrice = styled.div`
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 4.2%;
-    left: 8.5%;
+    top: 4.5%;
+    left: 7.5%;
     box-shadow: 0px 0px 15px var(--primary-color);
 `;
 

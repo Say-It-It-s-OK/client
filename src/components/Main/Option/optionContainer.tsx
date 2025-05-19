@@ -51,6 +51,37 @@ const DivOptionButtonContainer = styled.div`
     gap: 4%;
 `;
 
+const DivOptionNameContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    height: 60%;
+    align-items: center;
+    position: absolute;
+    top: 15%;
+    left: 53%;
+    transform: translateX(-50%);
+    gap: 4%;
+`;
+
+const DivOptionName = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 12%;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 140%;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--light-color)
+    );
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+`;
+
 interface Options {
     [key: string]: string[];
 }
@@ -77,7 +108,6 @@ const OptionContainer = () => {
         return defaults;
     };
 
-    // ✅ 상태 선언은 최상단 컴포넌트에서 1회만
     const [selectedOptions, setSelectedOptions] = useState(() =>
         createDefaultOptions(options)
     );
@@ -134,6 +164,17 @@ const OptionContainer = () => {
         );
     };
 
+    const setOptionName = () => {
+        return Object.entries(options).map(
+            ([optionName, optionValues], index) => {
+                if (index !== 3)
+                    return (
+                        <DivOptionName key={index}>{optionName}</DivOptionName>
+                    );
+            }
+        );
+    };
+
     useEffect(() => {
         console.log("현재 옵션", selectedOptions);
     }, [selectedOptions]);
@@ -142,6 +183,7 @@ const OptionContainer = () => {
         <DivOptionContainer>
             <DivOptionTitle>추가 옵션</DivOptionTitle>
             <OptionCard menu={selectedMenu} />
+            <DivOptionNameContainer>{setOptionName()}</DivOptionNameContainer>
             <DivOptionButtonContainer>
                 {setOptionbButton()}
             </DivOptionButtonContainer>
