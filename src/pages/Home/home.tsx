@@ -5,7 +5,7 @@ import MainContainer from "../../components/Main/mainContainer";
 import { SpeechComponent } from "../../components/Speech/AudioInput";
 import useAutoRecorder from "../../api/audioRecord";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import nlp from "../../api/request/nlp";
 import { MainContext, SelectedMenuContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";

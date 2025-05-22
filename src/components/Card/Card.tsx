@@ -169,9 +169,9 @@ const DivCartCardContainer = styled.div`
     width: 100%;
     height: 30%;
     background: linear-gradient(
-        135deg,
-        var(--secondary-color),
-        var(--primary-color)
+        180deg,
+        var(--card-color) 0%,
+        var(--gradient-color) 100%
     );
     border: none;
     border-radius: 15px;
@@ -404,72 +404,36 @@ const CartCard = ({ item }: ItemProps) => {
     );
 };
 
-const DivItemCardContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 25%;
-    height: 50%;
-    position: relative;
-    margin-bottom: 20px;
-`;
-
-const DivItemCard = styled.div`
-    width: 65%;
-    aspect-ratio: 1 / 1;
-    background-color: #ffffff;
-    border: none;
-    border-radius: 15px;
-    margin-bottom: 5%;
-    cursor: pointer;
-    box-shadow: 0px 0px 15px var(--primary-color);
-`;
-
-const DivItemCardPrice = styled.div`
-    display: flex;
-    width: 40%;
-    height: 12%;
-    background-color: var(--primary-color);
-    border-radius: 15px 0 15px 0;
-    border: 4px solid var(--border-color);
-    color: white;
-    font-family: var(--font-main);
-    font-size: 115%;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 17.4%;
-    box-shadow: 0px 0px 15px var(--primary-color);
-`;
-
-const DivItemCardName = styled.div`
-    display: flex;
-    width: 75%;
-    height: 17%;
-    background-color: var(--primary-color);
-    border-radius: 15px;
-    border: 4px solid var(--border-color);
-    color: white;
-    font-family: var(--font-main);
-    font-size: 105%;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0px 0px 15px var(--primary-color);
-`;
-
 const ItemCard = ({ item }: ItemProps) => {
     if (!item) {
         return <div>제품이 없습니다.</div>;
     }
 
+    const setOption = () => {
+        return Object.entries(item.selectedOptions).map(
+            ([optionName, optionValues], index) => {
+                if (index !== 3)
+                    return (
+                        <DivOptionContainer>
+                            <DivOptionName key={index}>
+                                {optionName}
+                            </DivOptionName>
+                            <DivOptionValue key={index + 3}>
+                                {optionValues}
+                            </DivOptionValue>
+                        </DivOptionContainer>
+                    );
+            }
+        );
+    };
+
     return (
-        <DivItemCardContainer>
-            <DivItemCard />
-            <DivItemCardPrice>{item.price}</DivItemCardPrice>
-            <DivItemCardName>{item.name}</DivItemCardName>
-        </DivItemCardContainer>
+        <DivCartCardContainer>
+            <DivCartCard />
+            <DivCartCardName>{item.name}</DivCartCardName>
+            <DivCartCardPrice>{item.price}</DivCartCardPrice>
+            <DivCartContentContainer>{setOption()}</DivCartContentContainer>
+        </DivCartCardContainer>
     );
 };
 
