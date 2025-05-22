@@ -53,7 +53,7 @@ const useAutoRecorder = () => {
                     const volume = Math.max(...data) - Math.min(...data);
                     setVolume(volume);
                     if (
-                        volume >= 100 &&
+                        volume >= 200 &&
                         mediaRecorderRef.current &&
                         mediaRecorderRef.current.state === "inactive"
                     ) {

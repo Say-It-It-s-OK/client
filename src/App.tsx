@@ -25,23 +25,20 @@ const App = () => {
         <Router>
             <div>
                 <LoadingProvider>
-                    <MainProvider>
-                        <Routes>
-                            <Route path="/" element={<Index />} />
-                            <Route
-                                path="/home"
-                                element={
+                    <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route
+                            path="/home"
+                            element={
+                                <MainProvider>
                                     <SelectedMenuProvider>
                                         <Home />
                                     </SelectedMenuProvider>
-                                }
-                            />
-                            <Route
-                                path="/payment"
-                                element={<ProgressPayment />}
-                            />
-                        </Routes>
-                    </MainProvider>
+                                </MainProvider>
+                            }
+                        />
+                        <Route path="/payment" element={<ProgressPayment />} />
+                    </Routes>
                 </LoadingProvider>
             </div>
         </Router>

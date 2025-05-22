@@ -188,7 +188,6 @@ const PaymentInit = () => {
                     return () => clearTimeout(timer);
                 }
             } else {
-                console.log("주문 요청을 보냈습니다...");
                 console.log("주문 요청이 완료되었습니다!");
                 const timer = setTimeout(() => {
                     setPaymentComplete(true);

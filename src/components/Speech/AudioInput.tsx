@@ -78,7 +78,7 @@ const SpeechComponent = () => {
 
     // useEffect(() => {
     //     const send = async () => {
-    //         if (!audioBlob || isLoading) return;
+    //         if ((!audioBlob || isLoading)) return;
     //         try {
     //             setIsLoading(true);
     //             const result = await sendAudioToServer(audioBlob);
