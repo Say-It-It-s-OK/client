@@ -105,16 +105,23 @@ const OptionContainer = () => {
                 }
             }
         });
+        if (selectedMenu?.selectedOptions) {
+            for (const [key, value] of Object.entries(
+                selectedMenu.selectedOptions
+            )) {
+                defaults[key] = value;
+            }
+        }
         console.log("초기 옵션", defaults);
         return defaults;
     };
 
-    const [selectedOptions, setSelectedOptions] = useState(() =>
-        createDefaultOptions(options)
-    );
+    const [selectedOptions, setSelectedOptions] = useState<{
+        [key: string]: string;
+    }>(() => createDefaultOptions(options));
 
     const handleOptionSelection = (optionName: string, optionValue: string) => {
-        console.log(`변경된 ${optionName}: ${optionValue}`);
+        console.log(`선택된 ${optionName}: ${optionValue}`);
         setSelectedOptions((prevState) => ({
             ...prevState,
             [optionName]: optionValue,
