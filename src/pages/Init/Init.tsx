@@ -126,7 +126,7 @@ const Index = () => {
                 setIsLoading(false);
             }
         };
-        
+
         send();
     }, [audioBlob]);
 

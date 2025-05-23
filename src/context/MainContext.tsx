@@ -14,6 +14,7 @@ export interface Menu {
     type: string;
     price: number;
     options: { [key: string]: string[] };
+    selectedOptions?: { [key: string]: string };
 }
 
 export interface CartItem {

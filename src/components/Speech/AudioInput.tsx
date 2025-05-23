@@ -4,17 +4,17 @@ import { MainContext, SelectedMenuContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import nlp from "../../api/request/nlp";
-import fetchCarts from "../../api/request/cartLists";
 import useAutoRecorder from "../../api/audioRecord";
 import sendAudioToServer from "../../api/request/sendAudioToServer";
 import sendTextToServer from "../../api/request/sendTextToServer";
+import { handleNLPResponse } from "../../handlers/handleNLPResponse";
 
 const InputAudioBar = styled.input`
     display: flex;
-    width: 95%;
+    width: 160%;
     text-align: center;
     font-family: var(--font-main);
-    font-size: 300%;
+    font-size: 270%;
     padding: 10px;
     border: none;
 `;
@@ -78,7 +78,7 @@ const SpeechComponent = () => {
 
     // useEffect(() => {
     //     const send = async () => {
-    //         if ((!audioBlob || isLoading)) return;
+    //         if (!audioBlob || isLoading) return;
     //         try {
     //             setIsLoading(true);
     //             const result = await sendAudioToServer(audioBlob);
@@ -96,7 +96,16 @@ const SpeechComponent = () => {
     //                         console.error("TTS 처리 요청 중 오류 발생", error);
     //                         setActiveCategory("커피");
     //                     }
-    //                     handleResponse(responseData);
+    //                     handleNLPResponse(
+    //                         responseData,
+    //                         cartId,
+    //                         setActiveCategory,
+    //                         setRecommendItems,
+    //                         setSelectedMenu,
+    //                         setCartItems,
+    //                         cartItems,
+    //                         navigate
+    //                     );
     //                 } catch (error) {
     //                     console.error("자연어 처리 요청 중 오류 발생", error);
     //                     setActiveCategory("커피");
@@ -117,84 +126,6 @@ const SpeechComponent = () => {
     //     send();
     // }, [audioBlob]);
 
-    const handleResponse = async (responseData: any) => {
-        // query.recommend
-        if (responseData.response.response === "query.recommend") {
-            setActiveCategory("요구사항");
-            setRecommendItems(responseData.response.items);
-            console.log("추천된 제품:", responseData.response.items);
-
-            // query.confirm
-        } else if (responseData.response.response === "query.confirm") {
-            console.log("요청한 메뉴:", responseData.response.page);
-            if (responseData.response.page === "커피") {
-                setActiveCategory("커피");
-            } else if (responseData.response.page === "음료") {
-                setActiveCategory("음료");
-            } else if (responseData.response.page === "디카페인") {
-                setActiveCategory("디카페인");
-            } else if (responseData.response.page === "디저트") {
-                setActiveCategory("디저트");
-            } else if (responseData.response.page === "menu") {
-                setActiveCategory("요구사항");
-                setRecommendItems(responseData.response.items);
-            }
-
-            // query.order
-        } else if (responseData.response.response.startsWith("query.order")) {
-            console.log("요청한 제품:", responseData.response.items);
-            if (responseData.response.response === "query.order.add") {
-                if ((responseData.response.page = "order_add")) {
-                    const currentCarts = await fetchCarts(cartId);
-                    setCartItems(currentCarts?.items || []);
-                    setActiveCategory("장바구니");
-                } else if (
-                    responseData.response.page === "order_optioon_required"
-                ) {
-                    setSelectedMenu(responseData.response.items);
-                    setActiveCategory("옵션");
-                }
-            } else if (
-                responseData.response.response === "query.order.update"
-            ) {
-                const currentCarts = await fetchCarts(cartId);
-                setCartItems(currentCarts?.items || []);
-                setActiveCategory("장바구니");
-            } else if (
-                responseData.response.response === "query.order.delete"
-            ) {
-                const currentCarts = await fetchCarts(cartId);
-                setCartItems(currentCarts?.items || []);
-                setActiveCategory("장바구니");
-            } else if (responseData.response.response === "query.order.pay") {
-                const totalPrice = cartItems.reduce(
-                    (sum, item) => sum + item.price,
-                    0
-                );
-                navigate("/payment", {
-                    state: {
-                        sessionId: cartId,
-                        cartItems: cartItems,
-                        totalPrice: totalPrice,
-                        nlp: true,
-                    },
-                });
-            }
-
-            // query.help
-        } else if (responseData.response.response === "query.help") {
-            setActiveCategory("도움");
-
-            // query.exit
-        } else if (responseData.response.response === "query.exit") {
-            navigate("/");
-
-            // query.error
-        } else {
-            setActiveCategory("커피");
-        }
-    };
-
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(event.target.value);
     };
@@ -205,13 +136,25 @@ const SpeechComponent = () => {
         event.preventDefault();
         try {
             const responseData = await nlp(cartId, inputText);
-            setOutputText(responseData.response.speech);
-            try {
-                await sendTextToServer(responseData.response.speech);
-            } catch (error) {
-                console.error("TTS 처리 요청 중 오류 발생", error);
+            if (responseData.response.results.length === 1) {
+                const result = responseData.response.results[0];
+                setOutputText(result.speech);
+                try {
+                    await sendTextToServer(result.speech);
+                } catch (error) {
+                    console.error("TTS 처리 요청 중 오류 발생", error);
+                }
+                await handleNLPResponse(
+                    result,
+                    cartId,
+                    setActiveCategory,
+                    setRecommendItems,
+                    setSelectedMenu,
+                    setCartItems,
+                    cartItems,
+                    navigate
+                );
             }
-            handleResponse(responseData);
         } catch (error) {
             console.error("자연어 처리 요청 중 오류 발생", error);
             setActiveCategory("커피");
