@@ -9,6 +9,7 @@ import {
     ChangeOptionButton,
     DeleteItemButton,
     OptionButtonDouble,
+    OptionButtonNone,
     OptionButtonTriple,
 } from "../../Buttons/buttons";
 import { OptionCard, OptionCartCard } from "../../Card/Card";
@@ -193,10 +194,18 @@ const CartOptionContainer = () => {
         <DivOptionContainer>
             <DivOptionTitle>옵션 변경</DivOptionTitle>
             <OptionCartCard item={selectedCart} />
-            <DivOptionButtonContainer>
-                {renderOptionButtons()}
-            </DivOptionButtonContainer>
             <DivOptionNameContainer>{setOptionName()}</DivOptionNameContainer>
+            {Object.keys(options).length === 0 ? (
+                <DivOptionButtonContainer>
+                    <OptionButtonNone />
+                </DivOptionButtonContainer>
+            ) : (
+                <>
+                    <DivOptionButtonContainer>
+                        {renderOptionButtons()}
+                    </DivOptionButtonContainer>
+                </>
+            )}
             <ChangeOptionButton handleChangeOption={handleChangeOption} />
             <DeleteItemButton handleDeleteItem={handleDeleteItem} />
         </DivOptionContainer>

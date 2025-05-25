@@ -96,39 +96,37 @@ const ImgBackGroundVector = styled.img`
 
 const Index = () => {
     const navigate = useNavigate();
-    const { setIsLoading, setOutputText, setRecommendItems } =
-        useContext(LoadingContext)!;
-    const { inputText, setInputText } = useContext(MainContext);
+
     const { audioBlob, recording, volume } = useAutoRecorder();
 
     const handleScreenClick = () => {
         navigate("/home");
     };
 
-    useEffect(() => {
-        const send = async () => {
-            if (!audioBlob) return;
-            try {
-                setIsLoading(true);
-                const result = await sendAudioToServer(audioBlob);
-                console.log("🎤 서버 응답:", result);
-                if (result) {
-                    setInputText(result);
-                    navigate("/home", {
-                        state: { fromVoice: true, script: result },
-                    });
-                } else {
-                    console.log("잘못된 음성 입력");
-                    setIsLoading(false);
-                }
-            } catch (error) {
-                console.error("STT 처리 중 오류 발생:", error);
-                setIsLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const send = async () => {
+    //         if (!audioBlob) return;
+    //         try {
+    //             setIsLoading(true);
+    //             const result = await sendAudioToServer(audioBlob);
+    //             console.log("🎤 서버 응답:", result);
+    //             if (result) {
+    //                 setInputText(result);
+    //                 navigate("/home", {
+    //                     state: { fromVoice: true, script: result },
+    //                 });
+    //             } else {
+    //                 console.log("잘못된 음성 입력");
+    //                 setIsLoading(false);
+    //             }
+    //         } catch (error) {
+    //             console.error("STT 처리 중 오류 발생:", error);
+    //             setIsLoading(false);
+    //         }
+    //     };
 
-        send();
-    }, [audioBlob]);
+    //     send();
+    // }, [audioBlob]);
 
     return (
         <div className="container" onClick={handleScreenClick}>
