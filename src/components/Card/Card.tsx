@@ -404,6 +404,16 @@ const CartCard = ({ item }: ItemProps) => {
     );
 };
 
+const DivPayContentContainer = styled.div`
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 4%;
+    gap: 3%;
+`;
+
 const ItemCard = ({ item }: ItemProps) => {
     if (!item) {
         return <div>제품이 없습니다.</div>;
@@ -432,7 +442,7 @@ const ItemCard = ({ item }: ItemProps) => {
             <DivCartCard />
             <DivCartCardName>{item.name}</DivCartCardName>
             <DivCartCardPrice>{item.price}</DivCartCardPrice>
-            <DivCartContentContainer>{setOption()}</DivCartContentContainer>
+            <DivPayContentContainer>{setOption()}</DivPayContentContainer>
         </DivCartCardContainer>
     );
 };

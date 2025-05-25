@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {
     AddCartButton,
     OptionButtonDouble,
+    OptionButtonNone,
     OptionButtonTriple,
 } from "../../Buttons/buttons";
 import { OptionCard } from "../../Card/Card";
@@ -140,7 +141,7 @@ const OptionContainer = () => {
         setActiveCategory("장바구니");
     };
 
-    const setOptionbButton = () => {
+    const renderOptionbButtons = () => {
         return Object.entries(options).map(
             ([optionName, optionValues], index) => {
                 const selectedCount = Array.isArray(optionValues)
@@ -167,7 +168,6 @@ const OptionContainer = () => {
                         />
                     );
                 }
-                return null;
             }
         );
     };
@@ -175,7 +175,7 @@ const OptionContainer = () => {
     const setOptionName = () => {
         return Object.entries(options).map(
             ([optionName, optionValues], index) => {
-                if (index !== 3)
+                if (index !== 3 && optionValues.length >= 2)
                     return (
                         <DivOptionName key={index}>{optionName}</DivOptionName>
                     );
@@ -192,9 +192,17 @@ const OptionContainer = () => {
             <DivOptionTitle>추가 옵션</DivOptionTitle>
             <OptionCard menu={selectedMenu} />
             <DivOptionNameContainer>{setOptionName()}</DivOptionNameContainer>
-            <DivOptionButtonContainer>
-                {setOptionbButton()}
-            </DivOptionButtonContainer>
+            {Object.keys(options).length === 0 ? (
+                <DivOptionButtonContainer>
+                    <OptionButtonNone />
+                </DivOptionButtonContainer>
+            ) : (
+                <>
+                    <DivOptionButtonContainer>
+                        {renderOptionbButtons()}
+                    </DivOptionButtonContainer>
+                </>
+            )}
             <AddCartButton handleAddCartItems={handleAddCartItems} />
         </DivOptionContainer>
     );

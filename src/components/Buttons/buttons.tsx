@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "../../context/LoadingContext";
 import { CartItem, MainContext } from "../../context/MainContext";
 import styled from "styled-components";
-// import Cart from "../../assets/icons/cart.png";
+import Cart from "../../assets/icons/cart_icon.png";
 import fetchCarts from "../../api/request/cartLists";
 
 const ButtonLongButton = styled.button`
@@ -76,8 +76,9 @@ const ButtonCartButton = styled.button<{ $active?: string }>`
 `;
 
 const ImgCartIcon = styled.img`
-    width: 55%;
-    margin: 0 8% 0 0;
+    width: 38%;
+    margin: 0 17% 0 0;
+    padding-left: 10%;
 `;
 
 const CartButton = () => {
@@ -98,7 +99,7 @@ const CartButton = () => {
             onClick={handleCart}
             disabled={isLoading}
         >
-            <ImgCartIcon></ImgCartIcon>
+            <ImgCartIcon src={Cart} />
             {cartItems.length}
         </ButtonCartButton>
     );
@@ -465,6 +466,30 @@ const OptionButtonTriple = ({
     );
 };
 
+const DivOptionButtonNone = styled.div`
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 170%;
+    border-radius: 15px;
+    border: 4px solid var(--border-color);
+`;
+
+const OptionButtonNone = () => {
+    return (
+        <DivOptionButtonContainer>
+            <DivOptionButtonNone>
+                옵션이 제공되지 않는 제품입니다
+            </DivOptionButtonNone>
+        </DivOptionButtonContainer>
+    );
+};
+
 export {
     LongButton,
     CartButton,
@@ -476,4 +501,5 @@ export {
     DeleteItemButton,
     OptionButtonDouble,
     OptionButtonTriple,
+    OptionButtonNone,
 };

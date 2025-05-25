@@ -20,27 +20,11 @@ interface LoadingProviderProps {
     children: ReactNode;
 }
 
-export const defaultItems: Menu[] = [
-    {
-        _id: "item-001",
-        id: "americano",
-        name: "아메리카노",
-        price: 3000,
-        type: "coffee",
-        options: {
-            size: ["S", "M", "L"],
-            shot: ["연하게", "기본", "진하게"],
-            temperature: ["ICE", "HOT"],
-        },
-    },
-];
-
 export const LoadingContext = createContext<LoadingContextType | null>(null);
 
 export const LoadingProvider = ({ children }: LoadingProviderProps) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [outputText, setOutputText] = useState("");
-    // const [recommendItems, setRecommendItems] = useState<Item[]>(defaultItems);
+    const [outputText, setOutputText] = useState("말하면 OK!");
     const [recommendItems, setRecommendItems] = useState<Menu[]>([]);
 
     return (
