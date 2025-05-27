@@ -43,7 +43,13 @@ const DivMainContainerBody = styled.div`
 `;
 
 const MainContainer = () => {
-    const { activeCategory, setActiveCategory } = useContext(MainContext);
+    const {
+        activeCategory,
+        setActiveCategory,
+        multiOrder,
+        setMultiOrder,
+        setMultiResults,
+    } = useContext(MainContext);
     const { isLoading } = useContext(LoadingContext)!;
 
     const renderContent = () => {
@@ -71,6 +77,19 @@ const MainContainer = () => {
             setActiveCategory("로딩");
         }
     }, [isLoading]);
+
+    useEffect(() => {
+        if (
+            multiOrder &&
+            (activeCategory === "커피" ||
+                activeCategory === "음료" ||
+                activeCategory === "디카페인" ||
+                activeCategory === "디저트")
+        ) {
+            setMultiOrder(false);
+            setMultiResults([]);
+        }
+    }, [activeCategory]);
 
     return (
         <DivMainContainer>

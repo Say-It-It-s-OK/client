@@ -82,12 +82,24 @@ const ImgCartIcon = styled.img`
 `;
 
 const CartButton = () => {
-    const { activeCategory, setActiveCategory, cartItems, cartId, setCartId } =
-        useContext(MainContext);
+    const {
+        activeCategory,
+        setActiveCategory,
+        cartItems,
+        cartId,
+        setCartId,
+        multiOrder,
+        setMultiOrder,
+        setMultiResults,
+    } = useContext(MainContext);
 
     const { isLoading } = useContext(LoadingContext)!;
 
     const handleCart = () => {
+        if (multiOrder) {
+            setMultiOrder(false);
+            setMultiResults([]);
+        }
         fetchCarts(cartId);
         setCartId(cartId);
         setActiveCategory("장바구니");

@@ -10,6 +10,7 @@ import {
 import { OptionCard } from "../../Card/Card";
 import addCarts from "../../../api/request/addCart";
 import fetchCarts from "../../../api/request/cartLists";
+import { LoadingContext } from "../../../context/LoadingContext";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -89,8 +90,17 @@ interface Options {
 }
 
 const OptionContainer = () => {
-    const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
-    const { selectedMenu } = useContext(SelectedMenuContext);
+    const {
+        setActiveCategory,
+        setCartItems,
+        cartId,
+        multiOrder,
+        setMultiOrder,
+        multiResults,
+        setMultiResults,
+    } = useContext(MainContext);
+    const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext);
+    const { setOutputText } = useContext(LoadingContext)!;
     const options = selectedMenu?.options || {};
 
     const createDefaultOptions = (
@@ -134,11 +144,31 @@ const OptionContainer = () => {
             ...selectedMenu!,
             selectedOptions: selectedOptions,
         };
+        // 다중 주문이 아닐 시
+        if (!multiOrder) {
+            await addCarts(cartId, cartItem);
+            const currentCarts = await fetchCarts(cartId);
+            setCartItems(currentCarts?.items || []);
+            setActiveCategory("장바구니");
+            setOutputText(`${selectedMenu?.name}가 장바구니에 추가되었습니다`);
+            // 다중 주문이 진행 중일 시
+        } else {
+            await addCarts(cartId, cartItem);
+            const currentCarts = await fetchCarts(cartId);
+            setCartItems(currentCarts?.items || []);
+            // 다중 주문이 끝났을 때
+            if (multiResults.length === 0) {
+                setMultiResults([]);
+                setMultiOrder(false);
+                setActiveCategory("장바구니");
+                setOutputText(`주문하신 상품들이 장바구니에 추가되었습니다`);
 
-        await addCarts(cartId, cartItem);
-        const currentCarts = await fetchCarts(cartId);
-        setCartItems(currentCarts?.items || []);
-        setActiveCategory("장바구니");
+                return;
+            }
+            setOutputText(multiResults[0].speech);
+            setSelectedMenu(multiResults[0].item);
+            setMultiResults(multiResults.slice(1));
+        }
     };
 
     const renderOptionbButtons = () => {
