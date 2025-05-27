@@ -29,13 +29,13 @@ const App = () => {
                     <Route
                         path="/home"
                         element={
-                            <LoadingProvider>
-                                <MainProvider>
+                            <MainProvider>
+                                <LoadingProvider>
                                     <SelectedMenuProvider>
                                         <Home />
                                     </SelectedMenuProvider>
-                                </MainProvider>
-                            </LoadingProvider>
+                                </LoadingProvider>
+                            </MainProvider>
                         }
                     />
                     <Route path="/payment" element={<ProgressPayment />} />

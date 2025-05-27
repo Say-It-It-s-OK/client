@@ -16,6 +16,7 @@ import { OptionCard, OptionCartCard } from "../../Card/Card";
 import updateCart from "../../../api/request/updateCart";
 import deleteCart from "../../../api/request/deleteCart";
 import fetchCarts from "../../../api/request/cartLists";
+import { LoadingContext } from "../../../context/LoadingContext";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -93,6 +94,7 @@ const DivOptionName = styled.div`
 const CartOptionContainer = () => {
     const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
     const { selectedCart } = useContext(SelectedCartContext);
+    const { setOutputText } = useContext(LoadingContext)!;
     const options = selectedCart?.options || {};
 
     const createDefaultOptions = (): { [key: string]: string } => {
@@ -132,6 +134,7 @@ const CartOptionContainer = () => {
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
         setActiveCategory("장바구니");
+        setOutputText(`${cartItem?.name}의 옵션이 변경되었습니다`);
     };
 
     const handleDeleteItem = async () => {
@@ -140,6 +143,7 @@ const CartOptionContainer = () => {
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
         setActiveCategory("장바구니");
+        setOutputText(`${cartItem?.name}가 장바구니에서 삭제되었습니다`);
     };
 
     useEffect(() => {

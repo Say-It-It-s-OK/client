@@ -46,6 +46,10 @@ interface MainContextType {
     setCartId: (id: CartId) => void;
     inputText: string;
     setInputText: Dispatch<SetStateAction<string>>;
+    multiOrder: boolean;
+    setMultiOrder: Dispatch<SetStateAction<boolean>>;
+    multiResults: any[];
+    setMultiResults: Dispatch<SetStateAction<any[]>>;
 }
 
 export const MainContext = createContext<MainContextType>({
@@ -59,6 +63,10 @@ export const MainContext = createContext<MainContextType>({
     setCartId: () => {},
     inputText: "",
     setInputText: () => {},
+    multiOrder: false,
+    setMultiOrder: () => {},
+    multiResults: [],
+    setMultiResults: () => {},
 });
 
 export const MainProvider = ({ children }: ContextProps) => {
@@ -68,6 +76,8 @@ export const MainProvider = ({ children }: ContextProps) => {
         sessionId: crypto.randomUUID(),
     });
     const [inputText, setInputText] = useState<string>("");
+    const [multiOrder, setMultiOrder] = useState<boolean>(false);
+    const [multiResults, setMultiResults] = useState<any[]>([]);
 
     useEffect(() => {
         console.log("장바구니에 담긴 제품", cartItems);
@@ -76,6 +86,15 @@ export const MainProvider = ({ children }: ContextProps) => {
     useEffect(() => {
         console.log("장바구니 ID", cartId);
     }, [cartId]);
+
+    useEffect(() => {
+        if (multiOrder) console.log("다중 주문 활성화");
+        else console.log("다중 주문 비활성화");
+    }, [multiOrder]);
+
+    useEffect(() => {
+        console.log("다중 주문 요청 결과", multiResults);
+    }, [multiResults]);
 
     return (
         <MainContext.Provider
@@ -88,6 +107,10 @@ export const MainProvider = ({ children }: ContextProps) => {
                 setCartId,
                 inputText,
                 setInputText,
+                multiOrder,
+                setMultiOrder,
+                multiResults,
+                setMultiResults,
             }}
         >
             {children}
