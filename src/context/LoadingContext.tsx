@@ -1,5 +1,5 @@
 import sendTextToServer from "../api/request/sendTextToServer";
-import { MainContext, Menu } from "./MainContext";
+import { Menu } from "./MainContext";
 import {
     createContext,
     useState,

@@ -17,6 +17,7 @@ import updateCart from "../../../api/request/updateCart";
 import deleteCart from "../../../api/request/deleteCart";
 import fetchCarts from "../../../api/request/cartLists";
 import { LoadingContext } from "../../../context/LoadingContext";
+import appendSubjectParticle from "../../../handlers/handleAppendSubjectParticle";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -143,7 +144,11 @@ const CartOptionContainer = () => {
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
         setActiveCategory("장바구니");
-        setOutputText(`${cartItem?.name}가 장바구니에서 삭제되었습니다`);
+        setOutputText(
+            `${appendSubjectParticle(
+                cartItem?.name
+            )} 장바구니에서 삭제되었습니다`
+        );
     };
 
     useEffect(() => {

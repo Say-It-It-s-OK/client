@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logo from "../../assets/icons/logo_large.png";
-import { CartButton } from "../Buttons/buttons";
+import { CartButton, InitButton } from "../Buttons/buttons";
 
 const Nav = styled.nav`
     display: flex;
@@ -17,6 +17,7 @@ const NavBar = () => {
     return (
         <Nav>
             <ImgNavLogo src={Logo} alt="Logo" />
+            <InitButton />
             <CartButton />
         </Nav>
     );

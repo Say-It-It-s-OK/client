@@ -11,6 +11,7 @@ import { OptionCard } from "../../Card/Card";
 import addCarts from "../../../api/request/addCart";
 import fetchCarts from "../../../api/request/cartLists";
 import { LoadingContext } from "../../../context/LoadingContext";
+import appendSubjectParticle from "../../../handlers/handleAppendSubjectParticle";
 
 const DivOptionContainer = styled.div`
     display: flex;
@@ -166,7 +167,11 @@ const OptionContainer = () => {
             const currentCarts = await fetchCarts(cartId);
             setCartItems(currentCarts?.items || []);
             setActiveCategory("장바구니");
-            setOutputText(`${selectedMenu?.name}가 장바구니에 추가되었습니다`);
+            setOutputText(
+                `${appendSubjectParticle(
+                    selectedMenu?.name || ""
+                )} 장바구니에 추가되었습니다`
+            );
         }
     };
 
