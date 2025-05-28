@@ -226,8 +226,6 @@ const SpeechComponent = () => {
             ) {
                 console.log("다중 요청 처리 중...");
                 const results = responseData.response.results;
-                setMultiOrder(true);
-                setMultiResults(results);
                 await handleNLPResponse(
                     results[0],
                     cartId,
@@ -243,6 +241,8 @@ const SpeechComponent = () => {
                     setOutputText,
                     navigate
                 );
+                setMultiOrder(true);
+                setMultiResults(results.slice(1));
             }
         } catch (error) {
             console.error("자연어 처리 요청 중 오류 발생", error);

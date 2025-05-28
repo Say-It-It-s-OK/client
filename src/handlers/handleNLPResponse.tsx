@@ -46,11 +46,11 @@ export const handleNLPResponse = async (
     // ---------------------------------------------------------
     else if (result.response.startsWith("query.order")) {
         const page = result.page;
+        if (multiOrder) {
+            setMultiOrder(false);
+            setMultiResults([]);
+        }
         if (result.response === "query.order.add") {
-            if (multiOrder) {
-                setMultiOrder(false);
-                setMultiResults([]);
-            }
             setOutputText(result.speech);
             if (page === "order_add") {
                 const currentCarts = await fetchCarts(cartId);
