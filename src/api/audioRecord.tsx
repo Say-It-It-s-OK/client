@@ -53,7 +53,7 @@ const useAutoRecorder = () => {
                     const volume = Math.max(...data) - Math.min(...data);
                     setVolume(volume);
                     if (
-                        volume >= 200 &&
+                        volume >= 20 &&
                         mediaRecorderRef.current &&
                         mediaRecorderRef.current.state === "inactive"
                     ) {
@@ -68,7 +68,7 @@ const useAutoRecorder = () => {
                     }
 
                     if (
-                        volume < 50 &&
+                        volume < 20 &&
                         mediaRecorderRef.current &&
                         mediaRecorderRef.current.state === "recording"
                     ) {
@@ -89,10 +89,8 @@ const useAutoRecorder = () => {
                 console.error("❌ 마이크 접근 실패:", err);
             }
         };
-
         init();
     }, []);
-
     return { audioBlob, recording, volume };
 };
 

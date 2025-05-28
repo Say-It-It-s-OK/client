@@ -6,7 +6,6 @@ import styled from "styled-components";
 import nlp from "../../api/request/nlp";
 import useAutoRecorder from "../../api/audioRecord";
 import sendAudioToServer from "../../api/request/sendAudioToServer";
-import sendTextToServer from "../../api/request/sendTextToServer";
 import { handleNLPResponse } from "../../handlers/handleNLPResponse";
 
 const InputAudioBar = styled.input`
@@ -80,95 +79,94 @@ const SpeechComponent = () => {
     const navigate = useNavigate();
     const { audioBlob, recording, volume } = useAutoRecorder();
 
-    // useEffect(() => {
-    //     const send = async () => {
-    //         if (!audioBlob || isLoading) return;
-    //         try {
-    //             setIsLoading(true);
-    //             const result = await sendAudioToServer(audioBlob);
-    //             console.log("🎤 서버 응답:", result);
-    //             if (result) {
-    //                 setInputText(result);
-    //                 try {
-    //                     const responseData = await nlp(cartId, result);
-    //                     setOutputText(responseData.response.speech);
-    //                     if (responseData.response.page) {
-    //                         const result = responseData.response;
-    //                         await handleNLPResponse(
-    //                             result,
-    //                             cartId,
-    //                             setActiveCategory,
-    //                             setRecommendItems,
-    //                             setSelectedMenu,
-    //                             setCartItems,
-    //                             cartItems,
-    //                             multiOrder,
-    //                             setMultiOrder,
-    //                             multiResults,
-    //                             setMultiResults,
-    //                             setOutputText,
-    //                             navigate
-    //                         );
-    //                     } else if (responseData.response.results.length === 1) {
-    //                         const result = responseData.response.results[0];
-    //                         await handleNLPResponse(
-    //                             result,
-    //                             cartId,
-    //                             setActiveCategory,
-    //                             setRecommendItems,
-    //                             setSelectedMenu,
-    //                             setCartItems,
-    //                             cartItems,
-    //                             multiOrder,
-    //                             setMultiOrder,
-    //                             multiResults,
-    //                             setMultiResults,
-    //                             setOutputText,
-    //                             navigate
-    //                         );
-    //                     } else if (
-    //                         !multiOrder &&
-    //                         responseData.response.results.length > 1
-    //                     ) {
-    //                         console.log("다중 요청 처리 중...");
-    //                         const results = responseData.response.results;
-    //                         setMultiOrder(true);
-    //                         setMultiResults(results);
-    //                         await handleNLPResponse(
-    //                             results[0],
-    //                             cartId,
-    //                             setActiveCategory,
-    //                             setRecommendItems,
-    //                             setSelectedMenu,
-    //                             setCartItems,
-    //                             cartItems,
-    //                             multiOrder,
-    //                             setMultiOrder,
-    //                             multiResults,
-    //                             setMultiResults,
-    //                             setOutputText,
-    //                             navigate
-    //                         );
-    //                     }
-    //                 } catch (error) {
-    //                     console.error("자연어 처리 요청 중 오류 발생", error);
-    //                     setActiveCategory("커피");
-    //                 } finally {
-    //                     setIsLoading(false);
-    //                 }
-    //             } else {
-    //                 console.log("잘못된 음성 입력");
-    //                 setActiveCategory("커피");
-    //                 setIsLoading(false);
-    //             }
-    //         } catch (error) {
-    //             console.error("STT 또는 NLP 처리 중 오류 발생:", error);
-    //             setActiveCategory("커피");
-    //             setIsLoading(false);
-    //         }
-    //     };
-    //     send();
-    // }, [audioBlob]);
+    useEffect(() => {
+        const send = async () => {
+            if (!audioBlob || isLoading) return;
+            try {
+                setIsLoading(true);
+                const result = await sendAudioToServer(audioBlob);
+                console.log("🎤 서버 응답:", result);
+                if (result) {
+                    setInputText(result);
+                    try {
+                        const responseData = await nlp(cartId, result);
+                        if (responseData.response.page) {
+                            const result = responseData.response;
+                            await handleNLPResponse(
+                                result,
+                                cartId,
+                                setActiveCategory,
+                                setRecommendItems,
+                                setSelectedMenu,
+                                setCartItems,
+                                cartItems,
+                                multiOrder,
+                                setMultiOrder,
+                                multiResults,
+                                setMultiResults,
+                                setOutputText,
+                                navigate
+                            );
+                        } else if (responseData.response.results.length === 1) {
+                            const result = responseData.response.results[0];
+                            await handleNLPResponse(
+                                result,
+                                cartId,
+                                setActiveCategory,
+                                setRecommendItems,
+                                setSelectedMenu,
+                                setCartItems,
+                                cartItems,
+                                multiOrder,
+                                setMultiOrder,
+                                multiResults,
+                                setMultiResults,
+                                setOutputText,
+                                navigate
+                            );
+                        } else if (
+                            !multiOrder &&
+                            responseData.response.results.length > 1
+                        ) {
+                            console.log("다중 요청 처리 중...");
+                            const results = responseData.response.results;
+                            setMultiOrder(true);
+                            setMultiResults(results);
+                            await handleNLPResponse(
+                                results[0],
+                                cartId,
+                                setActiveCategory,
+                                setRecommendItems,
+                                setSelectedMenu,
+                                setCartItems,
+                                cartItems,
+                                multiOrder,
+                                setMultiOrder,
+                                multiResults,
+                                setMultiResults,
+                                setOutputText,
+                                navigate
+                            );
+                        }
+                    } catch (error) {
+                        console.error("자연어 처리 요청 중 오류 발생", error);
+                        setActiveCategory("커피");
+                    } finally {
+                        setIsLoading(false);
+                    }
+                } else {
+                    console.log("잘못된 음성 입력");
+                    setActiveCategory("커피");
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.error("STT 또는 NLP 처리 중 오류 발생:", error);
+                setActiveCategory("커피");
+                setIsLoading(false);
+            }
+        };
+        send();
+    }, [audioBlob]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(event.target.value);
