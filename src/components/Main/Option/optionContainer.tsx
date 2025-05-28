@@ -144,15 +144,8 @@ const OptionContainer = () => {
             ...selectedMenu!,
             selectedOptions: selectedOptions,
         };
-        // 다중 주문이 아닐 시
-        if (!multiOrder) {
-            await addCarts(cartId, cartItem);
-            const currentCarts = await fetchCarts(cartId);
-            setCartItems(currentCarts?.items || []);
-            setActiveCategory("장바구니");
-            setOutputText(`${selectedMenu?.name}가 장바구니에 추가되었습니다`);
-            // 다중 주문이 진행 중일 시
-        } else {
+        // 다중 주문이 진행 중일 시
+        if (multiOrder) {
             await addCarts(cartId, cartItem);
             const currentCarts = await fetchCarts(cartId);
             setCartItems(currentCarts?.items || []);
@@ -162,12 +155,18 @@ const OptionContainer = () => {
                 setMultiOrder(false);
                 setActiveCategory("장바구니");
                 setOutputText(`주문하신 상품들이 장바구니에 추가되었습니다`);
-
-                return;
+            } else {
+                setOutputText(multiResults[0].speech);
+                setSelectedMenu(multiResults[0].item);
+                setMultiResults(multiResults.slice(1));
             }
-            setOutputText(multiResults[0].speech);
-            setSelectedMenu(multiResults[0].item);
-            setMultiResults(multiResults.slice(1));
+            // 다중 주문이 아닐 시
+        } else {
+            await addCarts(cartId, cartItem);
+            const currentCarts = await fetchCarts(cartId);
+            setCartItems(currentCarts?.items || []);
+            setActiveCategory("장바구니");
+            setOutputText(`${selectedMenu?.name}가 장바구니에 추가되었습니다`);
         }
     };
 
