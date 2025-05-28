@@ -283,13 +283,13 @@ const SpeechComponent = () => {
 const DivOutputTextBar = styled.div`
     display: flex;
     width: 90%;
-    height: 4%;
+    height: 8%;
     justify-content: center;
     align-items: center;
-    margin: 13% auto;
-    padding: 10px;
+    margin: 10% auto;
+    padding: 20px;
     font-family: var(--font-main);
-    font-size: 250%;
+    font-size: 220%;
     background: linear-gradient(
         135deg,
         var(--primary-color),

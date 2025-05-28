@@ -502,6 +502,33 @@ const OptionButtonNone = () => {
     );
 };
 
+const ButtonInitButton = styled.button`
+    width: 20%;
+    height: 5%;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 150%;
+    border-radius: 0 0 15px 15px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px var(--secondary-color);
+    &:hover {
+        background-color: var(--accent-color);
+    }
+    position: absolute;
+    left: 22%;
+`;
+
+const InitButton = () => {
+    const navigate = useNavigate();
+    return (
+        <ButtonInitButton onClick={() => navigate("/")}>
+            초기화면으로 가기
+        </ButtonInitButton>
+    );
+};
+
 export {
     LongButton,
     CartButton,
@@ -514,4 +541,5 @@ export {
     OptionButtonDouble,
     OptionButtonTriple,
     OptionButtonNone,
+    InitButton,
 };
