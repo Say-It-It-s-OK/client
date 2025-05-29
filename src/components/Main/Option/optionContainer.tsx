@@ -140,6 +140,16 @@ const OptionContainer = () => {
         }));
     };
 
+    useEffect(() => {
+        setSelectedMenu((prevMenu) => {
+            if (!prevMenu) return prevMenu;
+            return {
+                ...prevMenu,
+                selectedOptions,
+            };
+        });
+    }, [selectedOptions]);
+
     const handleAddCartItems = async () => {
         const cartItem = {
             ...selectedMenu!,

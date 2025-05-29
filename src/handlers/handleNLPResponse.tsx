@@ -1,6 +1,10 @@
 import { act } from "react";
 import fetchCarts from "../api/request/cartLists";
 import { CartId, CartItem } from "../context/MainContext";
+import addCarts from "../api/request/addCart";
+import updateCart from "../api/request/updateCart";
+import deleteCart from "../api/request/deleteCart";
+import appendSubjectParticle from "./handleAppendSubjectParticle";
 
 export const handleNLPResponse = async (
     result: any,
@@ -19,9 +23,11 @@ export const handleNLPResponse = async (
     multiResults: any[],
     setMultiResults: Function,
     setOutputText: Function,
+    setNlpState: Function,
     navigate: Function
 ) => {
     // 요구사항
+    const prevState = activeCategory;
     if (result.response === "query.recommend") {
         if (multiOrder) {
             setMultiOrder(false);
@@ -29,6 +35,7 @@ export const handleNLPResponse = async (
         }
         setOutputText(result.speech);
         setActiveCategory("요구사항");
+
         setRecommendItems(result.items);
         // 메뉴 확인 ---------------------------------------------------------
     } else if (result.response === "query.confirm") {
@@ -42,6 +49,7 @@ export const handleNLPResponse = async (
             setActiveCategory(page);
         } else if (page === "menu") {
             setActiveCategory("요구사항");
+
             setRecommendItems(result.items);
         } else if (page === "confirm_cart") {
             const currentCarts = await fetchCarts(cartId);
@@ -58,6 +66,7 @@ export const handleNLPResponse = async (
                 const currentCarts = await fetchCarts(cartId);
                 setCartItems(currentCarts?.items || []);
                 setActiveCategory("장바구니");
+
                 if (multiOrder) {
                     setMultiOrder(false);
                     setMultiResults([]);
@@ -65,6 +74,7 @@ export const handleNLPResponse = async (
             } else if (page === "order_option_required") {
                 setSelectedMenu(result.item);
                 setActiveCategory("옵션");
+
                 if (multiOrder) {
                     setMultiOrder(false);
                     setMultiResults([]);
@@ -90,7 +100,36 @@ export const handleNLPResponse = async (
                     setOutputText(result.speech);
                     setActiveCategory("장바구니");
                 }
+            } else if (page === "add_menu") {
+                if (activeCategory === "옵션") {
+                    console.log("옵션 선택됨", selectedMenu);
+                    await addCarts(cartId, selectedMenu);
+                    const currentCarts = await fetchCarts(cartId);
+                    setCartItems(currentCarts?.items || []);
+                    if (multiOrder) {
+                        if (multiResults.length === 0) {
+                            setMultiResults([]);
+                            setMultiOrder(false);
+                            setActiveCategory("장바구니");
+                            setOutputText(
+                                "주문하신 상품들이 장바구니에 추가되었습니다"
+                            );
+                        } else {
+                            setOutputText(multiResults[0].speech);
+                            setSelectedMenu(multiResults[0].item);
+                            setMultiResults(multiResults.slice(1));
+                            setActiveCategory("옵션");
+                        }
+                    } else {
+                        setOutputText(result.speech);
+                        setActiveCategory("장바구니");
+                    }
+                } else {
+                    setOutputText("메뉴를 선택해주세요");
+                    setActiveCategory("커피");
+                }
             }
+
             // 메뉴 업데이트 ---------------------------------------------------------
         } else if (result.response === "query.order.update") {
             if (result.page === "option_resolved") {
@@ -141,11 +180,28 @@ export const handleNLPResponse = async (
                         setOutputText("옵션이 선택되었습니다!");
                         setActiveCategory("장바구니 옵션");
                     } else {
-                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요.");
+                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요");
                         setActiveCategory("장바구니 옵션");
                     }
                 } else {
                     setOutputText("메뉴를 선택해 주세요");
+                    setActiveCategory("커피");
+                }
+            } else if (result.page === "update_options") {
+                if (
+                    activeCategory === "장바구니 옵션" &&
+                    selectedCart.options
+                ) {
+                    console.log("옵션이 변경된 제품:", selectedCart);
+                    await updateCart(cartId, selectedCart);
+                    const currentCarts = await fetchCarts(cartId);
+                    setCartItems(currentCarts?.items || []);
+                    setActiveCategory("장바구니");
+                    setOutputText(
+                        `${selectedCart?.name}의 옵션이 변경되었습니다`
+                    );
+                } else {
+                    setOutputText("메뉴를 선택해주세요");
                     setActiveCategory("커피");
                 }
             } else {
@@ -159,14 +215,21 @@ export const handleNLPResponse = async (
                 setActiveCategory("장바구니");
             }
         } else if (result.response === "query.order.delete") {
-            if (multiOrder) {
-                setMultiOrder(false);
-                setMultiResults([]);
+            if (activeCategory === "장바구니 옵션" && selectedCart) {
+                console.log("삭제된 제품:", selectedCart);
+                await deleteCart(cartId, selectedCart);
+                const currentCarts = await fetchCarts(cartId);
+                setCartItems(currentCarts?.items || []);
+                setActiveCategory("장바구니");
+                setOutputText(
+                    `${appendSubjectParticle(
+                        selectedCart?.name
+                    )} 장바구니에서 삭제되었습니다`
+                );
+            } else {
+                setOutputText("메뉴를 선택해주세요");
+                setActiveCategory("커피");
             }
-            setOutputText(result.speech);
-            const currentCarts = await fetchCarts(cartId);
-            setCartItems(currentCarts?.items || []);
-            setActiveCategory("장바구니");
             // ---------------------------------------------------------
         } else if (result.response === "query.order.add.item") {
             // await addCarts(cartId, cartItem);
@@ -229,6 +292,6 @@ export const handleNLPResponse = async (
             setMultiResults([]);
         }
         setOutputText(result.speech);
-        setActiveCategory("커피");
+        setActiveCategory(prevState);
     }
 };

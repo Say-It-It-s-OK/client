@@ -468,7 +468,7 @@ const DivRecommendCardContainer = styled.div`
     margin-bottom: 20px;
 `;
 
-const DivRecommendCard = styled.div`
+const ImgRecommendCard = styled.img`
     width: 65%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
@@ -477,6 +477,7 @@ const DivRecommendCard = styled.div`
     margin-bottom: 5%;
     cursor: pointer;
     box-shadow: 0px 0px 15px var(--primary-color);
+    object-fit: contain;
 `;
 
 const DivRecommendCardPrice = styled.div`
@@ -537,7 +538,11 @@ const RecommendCard = ({ item }: RecommendProps) => {
 
     return (
         <DivRecommendCardContainer>
-            <DivRecommendCard onClick={handleMenuClick} />
+            <ImgRecommendCard
+                src={item.image}
+                alt={item.name}
+                onClick={handleMenuClick}
+            />
             <DivRecommendCardPrice>{item.price}</DivRecommendCardPrice>
             <DivRecommendCardName onClick={handleMenuClick}>
                 {item.name}

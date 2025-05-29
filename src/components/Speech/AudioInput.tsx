@@ -77,6 +77,8 @@ const SpeechComponent = () => {
         setMultiOrder,
         multiResults,
         setMultiResults,
+        nlpState,
+        setNlpState,
     } = useContext(MainContext);
     const { isLoading, setIsLoading, setOutputText, setRecommendItems } =
         useContext(LoadingContext)!;
@@ -115,6 +117,7 @@ const SpeechComponent = () => {
                                 multiResults,
                                 setMultiResults,
                                 setOutputText,
+                                setNlpState,
                                 navigate
                             );
                         } else if (responseData.response.results.length === 1) {
@@ -136,6 +139,7 @@ const SpeechComponent = () => {
                                 multiResults,
                                 setMultiResults,
                                 setOutputText,
+                                setNlpState,
                                 navigate
                             );
                         } else if (
@@ -163,6 +167,7 @@ const SpeechComponent = () => {
                                 multiResults,
                                 setMultiResults,
                                 setOutputText,
+                                setNlpState,
                                 navigate
                             );
                         }
@@ -221,6 +226,7 @@ const SpeechComponent = () => {
                     multiResults,
                     setMultiResults,
                     setOutputText,
+                    setNlpState,
                     navigate
                 );
             } else if (responseData.response.results.length === 1) {
@@ -242,6 +248,7 @@ const SpeechComponent = () => {
                     multiResults,
                     setMultiResults,
                     setOutputText,
+                    setNlpState,
                     navigate
                 );
             } else if (
@@ -267,6 +274,7 @@ const SpeechComponent = () => {
                     multiResults,
                     setMultiResults,
                     setOutputText,
+                    setNlpState,
                     navigate
                 );
                 setMultiOrder(true);
@@ -308,16 +316,23 @@ const SpeechComponent = () => {
     );
 };
 
-const DivOutputTextBar = styled.div`
+const DivOutputTextBar = styled.div<{ $active?: string }>`
     display: flex;
     width: 90%;
     height: 8%;
+
+    ${({ $active }) =>
+        $active === "true" &&
+        `
+        width: 95%;
+        height: 10%;
+    `}
     justify-content: center;
     align-items: center;
     margin: 10% auto;
     padding: 20px;
     font-family: var(--font-main);
-    font-size: 220%;
+    font-size: 190%;
     background: linear-gradient(
         135deg,
         var(--primary-color),
@@ -327,11 +342,31 @@ const DivOutputTextBar = styled.div`
     text-align: center;
     color: var(--accent-color);
     box-shadow: 0px 0px 10px var(--secondary-color);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--primary-color);
+    }
+    transition: all 0.2s ease;
 `;
 
 const OutputBar = () => {
+    const { activeCategory, setActiveCategory, nlpState } =
+        useContext(MainContext);
+
+    const handleCategory = () => {
+        setActiveCategory(nlpState);
+    };
+
     const { outputText } = useContext(LoadingContext)!;
-    return <DivOutputTextBar>{outputText}</DivOutputTextBar>;
+    return (
+        <DivOutputTextBar
+            onClick={handleCategory}
+            $active={(activeCategory === nlpState).toString()}
+        >
+            {outputText}
+        </DivOutputTextBar>
+    );
 };
 
 export { SpeechComponent, OutputBar };

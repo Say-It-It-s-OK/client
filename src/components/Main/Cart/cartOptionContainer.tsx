@@ -94,7 +94,7 @@ const DivOptionName = styled.div`
 
 const CartOptionContainer = () => {
     const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
-    const { selectedCart } = useContext(SelectedCartContext);
+    const { selectedCart, setSelectedCart } = useContext(SelectedCartContext);
     const { setOutputText } = useContext(LoadingContext)!;
     const options = selectedCart?.options || {};
 
@@ -123,6 +123,16 @@ const CartOptionContainer = () => {
             [optionName]: optionValue,
         }));
     };
+
+    useEffect(() => {
+        setSelectedCart((prevMenu) => {
+            if (!prevMenu) return prevMenu;
+            return {
+                ...prevMenu,
+                selectedOptions,
+            };
+        });
+    }, [selectedOptions]);
 
     const cartItem = {
         ...selectedCart!,
