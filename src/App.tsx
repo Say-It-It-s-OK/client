@@ -1,7 +1,11 @@
 import { useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MenuContext } from "./context/MenuContext";
-import { MainProvider, SelectedMenuProvider } from "./context/MainContext";
+import {
+    MainProvider,
+    SelectedCartProvider,
+    SelectedMenuProvider,
+} from "./context/MainContext";
 import { LoadingProvider } from "./context/LoadingContext";
 import fetchMenus from "./api/request/menuLists";
 import Index from "./pages/Init/Init";
@@ -32,7 +36,9 @@ const App = () => {
                             <MainProvider>
                                 <LoadingProvider>
                                     <SelectedMenuProvider>
-                                        <Home />
+                                        <SelectedCartProvider>
+                                            <Home />
+                                        </SelectedCartProvider>
                                     </SelectedMenuProvider>
                                 </LoadingProvider>
                             </MainProvider>

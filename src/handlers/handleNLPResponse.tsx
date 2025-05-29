@@ -1,12 +1,17 @@
+import { act } from "react";
 import fetchCarts from "../api/request/cartLists";
 import { CartId, CartItem } from "../context/MainContext";
 
 export const handleNLPResponse = async (
     result: any,
     cartId: CartId,
+    activeCategory: string,
     setActiveCategory: Function,
     setRecommendItems: Function,
+    selectedMenu: any,
     setSelectedMenu: Function,
+    selectedCart: any,
+    setSelectedCart: Function,
     setCartItems: Function,
     cartItems: CartItem[],
     multiOrder: boolean,
@@ -16,6 +21,7 @@ export const handleNLPResponse = async (
     setOutputText: Function,
     navigate: Function
 ) => {
+    // 요구사항
     if (result.response === "query.recommend") {
         if (multiOrder) {
             setMultiOrder(false);
@@ -24,7 +30,7 @@ export const handleNLPResponse = async (
         setOutputText(result.speech);
         setActiveCategory("요구사항");
         setRecommendItems(result.items);
-        // ---------------------------------------------------------
+        // 메뉴 확인 ---------------------------------------------------------
     } else if (result.response === "query.confirm") {
         if (multiOrder) {
             setMultiOrder(false);
@@ -43,32 +49,115 @@ export const handleNLPResponse = async (
             setActiveCategory("장바구니");
         }
     }
-    // ---------------------------------------------------------
+    // 메뉴 주문 ---------------------------------------------------------
     else if (result.response.startsWith("query.order")) {
         const page = result.page;
-        if (multiOrder) {
-            setMultiOrder(false);
-            setMultiResults([]);
-        }
         if (result.response === "query.order.add") {
             setOutputText(result.speech);
             if (page === "order_add") {
                 const currentCarts = await fetchCarts(cartId);
                 setCartItems(currentCarts?.items || []);
                 setActiveCategory("장바구니");
+                if (multiOrder) {
+                    setMultiOrder(false);
+                    setMultiResults([]);
+                }
             } else if (page === "order_option_required") {
                 setSelectedMenu(result.item);
                 setActiveCategory("옵션");
+                if (multiOrder) {
+                    setMultiOrder(false);
+                    setMultiResults([]);
+                }
+            } else if (page === "options_order_add") {
+                const currentCarts = await fetchCarts(cartId);
+                setCartItems(currentCarts?.items || []);
+                if (multiOrder) {
+                    if (multiResults.length === 0) {
+                        setMultiResults([]);
+                        setMultiOrder(false);
+                        setActiveCategory("장바구니");
+                        setOutputText(
+                            "주문하신 상품들이 장바구니에 추가되었습니다"
+                        );
+                    } else {
+                        setOutputText(multiResults[0].speech);
+                        setSelectedMenu(multiResults[0].item);
+                        setMultiResults(multiResults.slice(1));
+                        setActiveCategory("옵션");
+                    }
+                } else {
+                    setOutputText(result.speech);
+                    setActiveCategory("장바구니");
+                }
             }
+            // 메뉴 업데이트 ---------------------------------------------------------
         } else if (result.response === "query.order.update") {
-            if (multiOrder) {
-                setMultiOrder(false);
-                setMultiResults([]);
+            if (result.page === "option_resolved") {
+                if (activeCategory === "옵션" && selectedMenu.options) {
+                    const isValidOption = Object.entries(
+                        result.selectedOptions
+                    ).every(([key, value]) => {
+                        const validValues = selectedMenu.options[key];
+                        return (
+                            Array.isArray(validValues) &&
+                            validValues.includes(value)
+                        );
+                    });
+
+                    if (isValidOption) {
+                        setSelectedMenu({
+                            ...selectedMenu,
+                            selectedOptions: result.selectedOptions,
+                        });
+                        setOutputText("옵션이 선택되었습니다!");
+                        setActiveCategory("옵션");
+                    } else {
+                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요.");
+                        setActiveCategory("옵션");
+                    }
+                } else if (
+                    activeCategory === "장바구니 옵션" &&
+                    selectedCart.options
+                ) {
+                    const isValidOption = Object.entries(
+                        result.selectedOptions
+                    ).every(([key, value]) => {
+                        const validValues = selectedCart.options[key];
+                        return (
+                            Array.isArray(validValues) &&
+                            validValues.includes(value)
+                        );
+                    });
+
+                    if (isValidOption) {
+                        setSelectedCart({
+                            ...selectedCart,
+                            selectedOptions: {
+                                ...selectedCart.selectedOptions,
+                                ...result.selectedOptions,
+                            },
+                        });
+                        setOutputText("옵션이 선택되었습니다!");
+                        setActiveCategory("장바구니 옵션");
+                    } else {
+                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요.");
+                        setActiveCategory("장바구니 옵션");
+                    }
+                } else {
+                    setOutputText("메뉴를 선택해 주세요");
+                    setActiveCategory("커피");
+                }
+            } else {
+                if (multiOrder) {
+                    setMultiOrder(false);
+                    setMultiResults([]);
+                }
+                setOutputText(result.speech);
+                const currentCarts = await fetchCarts(cartId);
+                setCartItems(currentCarts?.items || []);
+                setActiveCategory("장바구니");
             }
-            setOutputText(result.speech);
-            const currentCarts = await fetchCarts(cartId);
-            setCartItems(currentCarts?.items || []);
-            setActiveCategory("장바구니");
         } else if (result.response === "query.order.delete") {
             if (multiOrder) {
                 setMultiOrder(false);

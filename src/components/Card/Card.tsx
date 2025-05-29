@@ -21,7 +21,7 @@ const DivMenuCardContainer = styled.div`
     position: relative;
 `;
 
-const DivMenuCard = styled.div`
+const ImgMenuCard = styled.img`
     width: 73%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
@@ -30,6 +30,7 @@ const DivMenuCard = styled.div`
     margin-bottom: 5%;
     cursor: pointer;
     box-shadow: 0px 0px 15px var(--primary-color);
+    object-fit: contain;
 `;
 
 const DivMenuCardPrice = styled.div`
@@ -87,7 +88,11 @@ const MenuCard = ({ menu }: MenuProps) => {
     return (
         <DivMenuCardContainer>
             <DivMenuCardPrice>{menu.price}원</DivMenuCardPrice>
-            <DivMenuCard onClick={handleMenuClick} />
+            <ImgMenuCard
+                onClick={handleMenuClick}
+                src={menu.image}
+                alt={menu.name}
+            ></ImgMenuCard>
             <DivMenuCardName onClick={handleMenuClick}>
                 {menu.name}
             </DivMenuCardName>
@@ -104,7 +109,7 @@ const DivOptionCardContainer = styled.div`
     margin-top: 2%;
 `;
 
-const DivOptionCard = styled.div`
+const ImgOptionCard = styled.img`
     width: 73%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
@@ -112,6 +117,7 @@ const DivOptionCard = styled.div`
     border-radius: 15px;
     margin-bottom: 5%;
     box-shadow: 0px 0px 15px var(--primary-color);
+    object-fit: contain;
 `;
 
 const DivoptionCardPrice = styled.div`
@@ -154,7 +160,7 @@ const OptionCard = ({ menu }: MenuProps) => {
     }
     return (
         <DivOptionCardContainer>
-            <DivOptionCard />
+            <ImgOptionCard src={menu.image} alt={menu.name} />
             <DivoptionCardPrice>{menu.price}원</DivoptionCardPrice>
             <DivOptionCardName>{menu.name}</DivOptionCardName>
         </DivOptionCardContainer>
@@ -185,7 +191,7 @@ const DivCartCardContainer = styled.div`
     border: 2px solid var(--border-color);
 `;
 
-const DivCartCard = styled.div`
+const ImgCartCard = styled.img`
     width: 19%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
@@ -193,6 +199,7 @@ const DivCartCard = styled.div`
     border-radius: 15px;
     cursor: pointer;
     box-shadow: 0px 0px 15px var(--primary-color);
+    object-fit: contain;
 `;
 
 const DivCartCardPrice = styled.div`
@@ -332,7 +339,7 @@ const OptionCartCard = ({ item }: ItemProps) => {
     }
     return (
         <DivOptionCardContainer>
-            <DivOptionCard />
+            <ImgOptionCard src={item.image} alt={item.name} />
             <DivoptionCardPrice>{item.price}원</DivoptionCardPrice>
             <DivOptionCardName>{item.name}</DivOptionCardName>
         </DivOptionCardContainer>
@@ -390,7 +397,11 @@ const CartCard = ({ item }: ItemProps) => {
 
     return (
         <DivCartCardContainer>
-            <DivCartCard onClick={handleMenuClick} />
+            <ImgCartCard
+                src={item.image}
+                alt={item.name}
+                onClick={handleMenuClick}
+            />
             <DivCartCardName>{item.name}</DivCartCardName>
             <DivCartCardPrice>{item.price}</DivCartCardPrice>
             <ButtonCartCardAdd onClick={handleAdd}>+</ButtonCartCardAdd>
@@ -439,7 +450,7 @@ const ItemCard = ({ item }: ItemProps) => {
 
     return (
         <DivCartCardContainer>
-            <DivCartCard />
+            <ImgCartCard />
             <DivCartCardName>{item.name}</DivCartCardName>
             <DivCartCardPrice>{item.price}</DivCartCardPrice>
             <DivPayContentContainer>{setOption()}</DivPayContentContainer>

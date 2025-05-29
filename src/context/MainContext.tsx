@@ -15,6 +15,7 @@ export interface Menu {
     price: number;
     options: { [key: string]: string[] };
     selectedOptions?: { [key: string]: string };
+    image: string;
 }
 
 export interface CartItem {
@@ -26,6 +27,7 @@ export interface CartItem {
     options: { [key: string]: string[] };
     selectedOptions: { [key: string]: string };
     cartIndex?: number;
+    image: string;
 }
 
 export interface CartId {
@@ -93,7 +95,9 @@ export const MainProvider = ({ children }: ContextProps) => {
     }, [multiOrder]);
 
     useEffect(() => {
-        console.log("다중 주문 요청 결과", multiResults);
+        if (multiOrder) {
+            console.log("다중 주문 요청 결과", multiResults);
+        }
     }, [multiResults]);
 
     return (
