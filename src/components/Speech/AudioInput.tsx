@@ -1,6 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { act, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MainContext, SelectedMenuContext } from "../../context/MainContext";
+import {
+    MainContext,
+    SelectedCartContext,
+    SelectedMenuContext,
+} from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import nlp from "../../api/request/nlp";
@@ -62,6 +66,7 @@ const DivUnderlineBar = styled.div<{ volume: number; $recording: string }>`
 
 const SpeechComponent = () => {
     const {
+        activeCategory,
         setActiveCategory,
         cartItems,
         setCartItems,
@@ -75,7 +80,8 @@ const SpeechComponent = () => {
     } = useContext(MainContext);
     const { isLoading, setIsLoading, setOutputText, setRecommendItems } =
         useContext(LoadingContext)!;
-    const { setSelectedMenu } = useContext(SelectedMenuContext);
+    const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext);
+    const { selectedCart, setSelectedCart } = useContext(SelectedCartContext);
     const navigate = useNavigate();
     const { audioBlob, recording, volume } = useAutoRecorder();
 
@@ -95,9 +101,13 @@ const SpeechComponent = () => {
                             await handleNLPResponse(
                                 result,
                                 cartId,
+                                activeCategory,
                                 setActiveCategory,
                                 setRecommendItems,
+                                selectedMenu,
                                 setSelectedMenu,
+                                selectedCart,
+                                setSelectedCart,
                                 setCartItems,
                                 cartItems,
                                 multiOrder,
@@ -112,9 +122,13 @@ const SpeechComponent = () => {
                             await handleNLPResponse(
                                 result,
                                 cartId,
+                                activeCategory,
                                 setActiveCategory,
                                 setRecommendItems,
+                                selectedMenu,
                                 setSelectedMenu,
+                                selectedCart,
+                                setSelectedCart,
                                 setCartItems,
                                 cartItems,
                                 multiOrder,
@@ -135,9 +149,13 @@ const SpeechComponent = () => {
                             await handleNLPResponse(
                                 results[0],
                                 cartId,
+                                activeCategory,
                                 setActiveCategory,
                                 setRecommendItems,
+                                selectedMenu,
                                 setSelectedMenu,
+                                selectedCart,
+                                setSelectedCart,
                                 setCartItems,
                                 cartItems,
                                 multiOrder,
@@ -189,9 +207,13 @@ const SpeechComponent = () => {
                 await handleNLPResponse(
                     result,
                     cartId,
+                    activeCategory,
                     setActiveCategory,
                     setRecommendItems,
+                    selectedMenu,
                     setSelectedMenu,
+                    selectedCart,
+                    setSelectedCart,
                     setCartItems,
                     cartItems,
                     multiOrder,
@@ -206,9 +228,13 @@ const SpeechComponent = () => {
                 await handleNLPResponse(
                     result,
                     cartId,
+                    activeCategory,
                     setActiveCategory,
                     setRecommendItems,
+                    selectedMenu,
                     setSelectedMenu,
+                    selectedCart,
+                    setSelectedCart,
                     setCartItems,
                     cartItems,
                     multiOrder,
@@ -227,9 +253,13 @@ const SpeechComponent = () => {
                 await handleNLPResponse(
                     results[0],
                     cartId,
+                    activeCategory,
                     setActiveCategory,
                     setRecommendItems,
+                    selectedMenu,
                     setSelectedMenu,
+                    selectedCart,
+                    setSelectedCart,
                     setCartItems,
                     cartItems,
                     multiOrder,

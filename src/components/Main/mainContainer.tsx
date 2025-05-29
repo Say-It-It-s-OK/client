@@ -1,9 +1,5 @@
 import { useContext, useEffect } from "react";
-import {
-    MainContext,
-    SelectedCartProvider,
-    SelectedMenuProvider,
-} from "../../context/MainContext";
+import { MainContext } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
 import styled from "styled-components";
 import { MenuButtonPrimary, MenuButtonSecondary } from "../Buttons/buttons";
@@ -119,9 +115,7 @@ const MainContainer = () => {
                     disabled={isLoading}
                 />
             </DivMenuButtonContainer>
-            <SelectedCartProvider>
-                <DivMainContainerBody>{renderContent()}</DivMainContainerBody>
-            </SelectedCartProvider>
+            <DivMainContainerBody>{renderContent()}</DivMainContainerBody>
         </DivMainContainer>
     );
 };

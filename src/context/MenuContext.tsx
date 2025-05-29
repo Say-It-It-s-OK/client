@@ -13,6 +13,7 @@ export interface Menu {
     price: number;
     type: string;
     options: { [key: string]: string[] };
+    image: string;
 }
 
 interface MenuContextType {
