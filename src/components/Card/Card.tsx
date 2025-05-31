@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import {
     CartItem,
     MainContext,
@@ -10,6 +10,8 @@ import {
 import deleteCart from "../../api/request/deleteCart";
 import addCart from "../../api/request/addCart";
 import fetchCarts from "../../api/request/cartLists";
+import { LoadingContext } from "../../context/LoadingContext";
+import appendSubjectParticle from "../../handlers/handleAppendSubjectParticle";
 
 const DivMenuCardContainer = styled.div`
     display: flex;
@@ -166,6 +168,14 @@ const OptionCard = ({ menu }: MenuProps) => {
         </DivOptionCardContainer>
     );
 };
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const DivCartCardContainer = styled.div`
     display: flex;
@@ -189,6 +199,7 @@ const DivCartCardContainer = styled.div`
     cursor: pointer;
     border-radius: 15px;
     border: 2px solid var(--border-color);
+    animation: ${fadeIn} 0.5s ease-in-out;
 `;
 
 const ImgCartCard = styled.img`
@@ -204,8 +215,8 @@ const ImgCartCard = styled.img`
 
 const DivCartCardPrice = styled.div`
     display: flex;
-    width: 15%;
-    height: 14%;
+    width: 13%;
+    height: 12%;
     background-color: var(--primary-color);
     border-radius: 15px 0 15px 0;
     border: 4px solid var(--border-color);
@@ -215,7 +226,7 @@ const DivCartCardPrice = styled.div`
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 7%;
+    top: 7.5%;
     left: 3.5%;
 `;
 
@@ -289,7 +300,20 @@ const DivCartContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 3%;
+    gap: 1%;
+`;
+
+const DivCartContentNoneContainer = styled.div`
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 180%;
+    margin-left: 10%;
 `;
 
 const DivOptionContainer = styled.div`
@@ -297,7 +321,7 @@ const DivOptionContainer = styled.div`
     flex-direction: row;
     align-items: center;
     margin-left: 2%;
-    gap: 7%;
+    gap: 5%;
 `;
 
 const DivOptionName = styled.div`
@@ -305,7 +329,7 @@ const DivOptionName = styled.div`
     justify-content: center;
     align-items: center;
     width: 25%;
-    height: 90%;
+    height: 88%;
     color: white;
     font-family: var(--font-main);
     font-size: 140%;
@@ -314,7 +338,7 @@ const DivOptionName = styled.div`
         var(--primary-color),
         var(--light-color)
     );
-    border-radius: 15px;
+    border-radius: 8px;
     border: 4px solid var(--border-color);
 `;
 
@@ -349,6 +373,7 @@ const OptionCartCard = ({ item }: ItemProps) => {
 const CartCard = ({ item }: ItemProps) => {
     const { setActiveCategory, setCartItems, cartId } = useContext(MainContext);
     const { setSelectedCart } = useContext(SelectedCartContext);
+    const { setOutputText } = useContext(LoadingContext)!;
 
     const handleMenuClick = () => {
         setActiveCategory("장바구니 옵션");
@@ -362,6 +387,9 @@ const CartCard = ({ item }: ItemProps) => {
         await addCart(cartId, item);
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
+        setOutputText(
+            `${appendSubjectParticle(item.name)} 장바구니에 추가되었습니다`
+        );
     };
 
     const handleRemove = async () => {
@@ -371,6 +399,9 @@ const CartCard = ({ item }: ItemProps) => {
         await deleteCart(cartId, item);
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
+        setOutputText(
+            `${appendSubjectParticle(item.name)} 장바구니에서 삭제되었습니다`
+        );
     };
 
     if (!item) {
@@ -378,21 +409,29 @@ const CartCard = ({ item }: ItemProps) => {
     }
 
     const setOption = () => {
-        return Object.entries(item.selectedOptions).map(
-            ([optionName, optionValues], index) => {
-                if (index !== 3)
-                    return (
-                        <DivOptionContainer>
-                            <DivOptionName key={index}>
-                                {optionName}
-                            </DivOptionName>
-                            <DivOptionValue key={index + 3}>
-                                {optionValues}
-                            </DivOptionValue>
-                        </DivOptionContainer>
-                    );
+        const entries = Object.entries(item.selectedOptions);
+        const options = entries.map(([optionName, optionValues], index) => {
+            if (index !== 3) {
+                return (
+                    <DivOptionContainer key={optionName + optionValues}>
+                        <DivOptionName>{optionName}</DivOptionName>
+                        <DivOptionValue>{optionValues}</DivOptionValue>
+                    </DivOptionContainer>
+                );
             }
-        );
+            return null;
+        });
+
+        const filtered = options.filter(Boolean);
+        if (filtered.length === 0) {
+            return (
+                <DivCartContentNoneContainer>
+                    옵션이 제공되지 않는 제품입니다
+                </DivCartContentNoneContainer>
+            );
+        }
+
+        return filtered;
     };
 
     return (

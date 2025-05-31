@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import Logo from "../../assets/icons/logo_large.png";
+import Logo from "../../assets/icons/logo_small_icon.png";
 import Audio from "../../assets/icons/audio_icon.png";
 import Vector from "../../assets/images/Vector.png";
 import { LongButton } from "../../components/Buttons/buttons";
 import { useNavigate } from "react-router-dom";
 
 const ImgIndexLogo = styled.img`
-    width: 65%;
-    margin: 10%;
+    width: 50%;
+    margin: 3%;
 `;
 
 const DivIndexText = styled.div`

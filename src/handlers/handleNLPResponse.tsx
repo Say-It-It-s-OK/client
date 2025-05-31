@@ -23,7 +23,6 @@ export const handleNLPResponse = async (
     multiResults: any[],
     setMultiResults: Function,
     setOutputText: Function,
-    setNlpState: Function,
     navigate: Function
 ) => {
     // 요구사항
