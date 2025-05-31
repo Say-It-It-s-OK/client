@@ -1,6 +1,5 @@
 import sendTextToServer from "../api/request/sendTextToServer";
-import MainContainer from "../components/Main/mainContainer";
-import { MainContext, Menu } from "./MainContext";
+import { Menu } from "./MainContext";
 import {
     createContext,
     useState,
@@ -8,8 +7,6 @@ import {
     Dispatch,
     SetStateAction,
     useEffect,
-    act,
-    useContext,
 } from "react";
 
 interface LoadingContextType {
@@ -31,9 +28,16 @@ export const LoadingProvider = ({ children }: LoadingProviderProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [outputText, setOutputText] = useState("말하면 OK!");
     const [recommendItems, setRecommendItems] = useState<Menu[]>([]);
-    const { activeCategory } = useContext(MainContext);
 
     useEffect(() => {
+        if (outputText !== "말하면 OK!") {
+            const timer = setTimeout(() => {
+                setOutputText("말하면 OK!");
+            }, 6000);
+
+            return () => clearTimeout(timer);
+        }
+
         const send = async () => {
             try {
                 await sendTextToServer(outputText);

@@ -52,8 +52,6 @@ interface MainContextType {
     setMultiOrder: Dispatch<SetStateAction<boolean>>;
     multiResults: any[];
     setMultiResults: Dispatch<SetStateAction<any[]>>;
-    nlpState: string;
-    setNlpState: Dispatch<SetStateAction<string>>;
 }
 
 export const MainContext = createContext<MainContextType>({
@@ -71,8 +69,6 @@ export const MainContext = createContext<MainContextType>({
     setMultiOrder: () => {},
     multiResults: [],
     setMultiResults: () => {},
-    nlpState: "요구사항",
-    setNlpState: () => {},
 });
 
 export const MainProvider = ({ children }: ContextProps) => {
@@ -84,7 +80,6 @@ export const MainProvider = ({ children }: ContextProps) => {
     const [inputText, setInputText] = useState<string>("");
     const [multiOrder, setMultiOrder] = useState<boolean>(false);
     const [multiResults, setMultiResults] = useState<any[]>([]);
-    const [nlpState, setNlpState] = useState<string>("요구사항");
 
     useEffect(() => {
         console.log("장바구니에 담긴 제품", cartItems);
@@ -105,10 +100,6 @@ export const MainProvider = ({ children }: ContextProps) => {
         }
     }, [multiResults]);
 
-    useEffect(() => {
-        console.log("NLP 상태:", nlpState);
-    }, [nlpState]);
-
     return (
         <MainContext.Provider
             value={{
@@ -124,8 +115,6 @@ export const MainProvider = ({ children }: ContextProps) => {
                 setMultiOrder,
                 multiResults,
                 setMultiResults,
-                nlpState,
-                setNlpState,
             }}
         >
             {children}

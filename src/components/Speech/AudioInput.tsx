@@ -1,4 +1,4 @@
-import { act, useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     MainContext,
@@ -6,11 +6,12 @@ import {
     SelectedMenuContext,
 } from "../../context/MainContext";
 import { LoadingContext } from "../../context/LoadingContext";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import nlp from "../../api/request/nlp";
 import useAutoRecorder from "../../api/audioRecord";
 import sendAudioToServer from "../../api/request/sendAudioToServer";
 import { handleNLPResponse } from "../../handlers/handleNLPResponse";
+import Logo from "../../assets/icons/logo_small_icon.png";
 
 const InputAudioBar = styled.input`
     display: flex;
@@ -77,8 +78,6 @@ const SpeechComponent = () => {
         setMultiOrder,
         multiResults,
         setMultiResults,
-        nlpState,
-        setNlpState,
     } = useContext(MainContext);
     const { isLoading, setIsLoading, setOutputText, setRecommendItems } =
         useContext(LoadingContext)!;
@@ -117,7 +116,6 @@ const SpeechComponent = () => {
                                 multiResults,
                                 setMultiResults,
                                 setOutputText,
-                                setNlpState,
                                 navigate
                             );
                         } else if (responseData.response.results.length === 1) {
@@ -139,7 +137,6 @@ const SpeechComponent = () => {
                                 multiResults,
                                 setMultiResults,
                                 setOutputText,
-                                setNlpState,
                                 navigate
                             );
                         } else if (
@@ -167,7 +164,6 @@ const SpeechComponent = () => {
                                 multiResults,
                                 setMultiResults,
                                 setOutputText,
-                                setNlpState,
                                 navigate
                             );
                         }
@@ -226,7 +222,6 @@ const SpeechComponent = () => {
                     multiResults,
                     setMultiResults,
                     setOutputText,
-                    setNlpState,
                     navigate
                 );
             } else if (responseData.response.results.length === 1) {
@@ -248,7 +243,6 @@ const SpeechComponent = () => {
                     multiResults,
                     setMultiResults,
                     setOutputText,
-                    setNlpState,
                     navigate
                 );
             } else if (
@@ -274,7 +268,6 @@ const SpeechComponent = () => {
                     multiResults,
                     setMultiResults,
                     setOutputText,
-                    setNlpState,
                     navigate
                 );
                 setMultiOrder(true);
@@ -316,55 +309,53 @@ const SpeechComponent = () => {
     );
 };
 
-const DivOutputTextBar = styled.div<{ $active?: string }>`
+const fadeText = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const DivOutputTextBar = styled.div`
     display: flex;
     width: 90%;
     height: 8%;
-
-    ${({ $active }) =>
-        $active === "true" &&
-        `
-        width: 95%;
-        height: 10%;
-    `}
     justify-content: center;
     align-items: center;
     margin: 10% auto;
     padding: 20px;
     font-family: var(--font-main);
     font-size: 190%;
-    background: linear-gradient(
-        135deg,
-        var(--primary-color),
-        var(--light-color)
-    );
+    background: linear-gradient(100deg, var(--light-color));
     border-radius: 15px;
     text-align: center;
     color: var(--accent-color);
     box-shadow: 0px 0px 10px var(--secondary-color);
-    cursor: pointer;
+`;
 
-    &:hover {
-        background-color: var(--primary-color);
-    }
-    transition: all 0.2s ease;
+const AnimatedText = styled.span`
+    animation: ${fadeText} 0.8s ease-in-out;
+`;
+
+const ImgLogo = styled.img`
+    width: 20%;
+    vertical-align: middle;
+    animation: ${fadeText} 0.8s ease-in-out;
 `;
 
 const OutputBar = () => {
-    const { activeCategory, setActiveCategory, nlpState } =
-        useContext(MainContext);
-
-    const handleCategory = () => {
-        setActiveCategory(nlpState);
-    };
-
     const { outputText } = useContext(LoadingContext)!;
     return (
-        <DivOutputTextBar
-            onClick={handleCategory}
-            $active={(activeCategory === nlpState).toString()}
-        >
-            {outputText}
+        <DivOutputTextBar>
+            {outputText === "말하면 OK!" ? (
+                <ImgLogo src={Logo} alt="logo" />
+            ) : (
+                <AnimatedText key={outputText}>{outputText}</AnimatedText>
+            )}
         </DivOutputTextBar>
     );
 };
