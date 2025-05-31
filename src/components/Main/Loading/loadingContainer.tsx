@@ -1,10 +1,18 @@
-import styled from "styled-components";
-import Loading from "../../../assets/images/loading.gif";
+import styled, { keyframes } from "styled-components";
+
+const spin = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+`;
 
 const DivLoadingContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-center;
+    align-items: center;
     width: 100%;
     height: 100%;
     position: relative;
@@ -15,25 +23,28 @@ const DivLoadingContainerBody = styled.div`
     display: flex;
     width: 100%;
     height: 50%;
-    align-content: center;
     justify-content: center;
-    border: none;
-    flex-wrap: wrap;
+    align-items: center;
     position: absolute;
     left: 50%;
     bottom: 37%;
     transform: translateX(-50%);
 `;
 
-const ImgLoading = styled.img`
-    width: 20%;
+const Spinner = styled.div`
+    width: 200px;
+    height: 200px;
+    border: 30px solid var(--light-color);
+    border-top: 30px solid var(--primary-color);
+    border-radius: 50%;
+    animation: ${spin} 1s linear infinite;
 `;
 
 const LoadingContainer = () => {
     return (
         <DivLoadingContainer>
             <DivLoadingContainerBody>
-                <ImgLoading src={Loading} />
+                <Spinner />
             </DivLoadingContainerBody>
         </DivLoadingContainer>
     );
