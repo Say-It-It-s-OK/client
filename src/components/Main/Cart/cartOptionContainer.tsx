@@ -199,9 +199,9 @@ const CartOptionContainer = () => {
     };
 
     const setOptionName = () => {
-        return Object.entries(options).map(
+        return Object.entries(selectedOptions).map(
             ([optionName, optionValues], index) => {
-                if (index !== 3)
+                if (index !== 3 && optionValues)
                     return (
                         <DivOptionName key={index}>{optionName}</DivOptionName>
                     );

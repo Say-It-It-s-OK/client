@@ -63,7 +63,7 @@ const QueryContainer = () => {
 
     return (
         <DivQueryContainer>
-            <DivQueryTitle>{outputText}</DivQueryTitle>
+            <DivQueryTitle>추천 메뉴</DivQueryTitle>
             <DivQueryContainerBody>
                 {recommendItems.map((item) => (
                     <RecommendCard key={item.id} item={item} />
