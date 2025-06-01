@@ -110,20 +110,18 @@ const OptionContainer = () => {
         const defaults: { [key: string]: string } = {};
         Object.entries(options).forEach(([optionName, optionValues]) => {
             if (Array.isArray(optionValues)) {
-                if (optionValues.length === 2) {
-                    defaults[optionName] = optionValues[0];
-                } else if (optionValues.length === 3) {
-                    defaults[optionName] = optionValues[1];
+                if (!selectedMenu?.selectedOptions?.[optionName]) {
+                    if (optionValues.length === 2) {
+                        defaults[optionName] = optionValues[0];
+                    } else if (optionValues.length === 3) {
+                        defaults[optionName] = optionValues[1];
+                    }
+                } else {
+                    defaults[optionName] =
+                        selectedMenu.selectedOptions[optionName];
                 }
             }
         });
-        if (selectedMenu?.selectedOptions) {
-            for (const [key, value] of Object.entries(
-                selectedMenu.selectedOptions
-            )) {
-                defaults[key] = value;
-            }
-        }
         console.log("초기 옵션", defaults);
         return defaults;
     };
@@ -156,9 +154,9 @@ const OptionContainer = () => {
             selectedOptions: selectedOptions,
         };
         // 다중 주문이 진행 중일 시
+        await addCarts(cartId, cartItem);
+        const currentCarts = await fetchCarts(cartId);
         if (multiOrder) {
-            await addCarts(cartId, cartItem);
-            const currentCarts = await fetchCarts(cartId);
             setCartItems(currentCarts?.items || []);
             // 다중 주문이 끝났을 때
             if (multiResults.length === 0) {
@@ -173,8 +171,6 @@ const OptionContainer = () => {
             }
             // 다중 주문이 아닐 시
         } else {
-            await addCarts(cartId, cartItem);
-            const currentCarts = await fetchCarts(cartId);
             setCartItems(currentCarts?.items || []);
             setActiveCategory("장바구니");
             setOutputText(

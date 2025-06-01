@@ -95,12 +95,12 @@ const CartButton = () => {
 
     const { isLoading } = useContext(LoadingContext)!;
 
-    const handleCart = () => {
+    const handleCart = async () => {
         if (multiOrder) {
             setMultiOrder(false);
             setMultiResults([]);
         }
-        fetchCarts(cartId);
+        await fetchCarts(cartId);
         setCartId(cartId);
         setActiveCategory("장바구니");
     };

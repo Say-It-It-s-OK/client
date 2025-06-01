@@ -1,4 +1,3 @@
-import { act } from "react";
 import fetchCarts from "../api/request/cartLists";
 import { CartId, CartItem } from "../context/MainContext";
 import addCarts from "../api/request/addCart";
@@ -146,12 +145,15 @@ export const handleNLPResponse = async (
                     if (isValidOption) {
                         setSelectedMenu({
                             ...selectedMenu,
-                            selectedOptions: result.selectedOptions,
+                            selectedOptions: {
+                                ...selectedMenu.selectedOptions,
+                                ...result.selectedOptions,
+                            },
                         });
                         setOutputText("옵션이 선택되었습니다!");
                         setActiveCategory("옵션");
                     } else {
-                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요.");
+                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요");
                         setActiveCategory("옵션");
                     }
                 } else if (

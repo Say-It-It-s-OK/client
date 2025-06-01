@@ -300,7 +300,6 @@ const DivCartContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1%;
 `;
 
 const DivCartContentNoneContainer = styled.div`
@@ -321,7 +320,7 @@ const DivOptionContainer = styled.div`
     flex-direction: row;
     align-items: center;
     margin-left: 2%;
-    gap: 5%;
+    gap: 2%;
 `;
 
 const DivOptionName = styled.div`
@@ -332,7 +331,7 @@ const DivOptionName = styled.div`
     height: 88%;
     color: white;
     font-family: var(--font-main);
-    font-size: 140%;
+    font-size: 130%;
     background: linear-gradient(
         135deg,
         var(--primary-color),

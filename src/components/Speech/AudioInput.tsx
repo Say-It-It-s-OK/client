@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+    CartItem,
     MainContext,
     SelectedCartContext,
     SelectedMenuContext,
@@ -12,6 +13,7 @@ import useAutoRecorder from "../../api/audioRecord";
 import sendAudioToServer from "../../api/request/sendAudioToServer";
 import { handleNLPResponse } from "../../handlers/handleNLPResponse";
 import Logo from "../../assets/icons/logo_small_icon.png";
+import fetchCarts from "../../api/request/cartLists";
 
 const InputAudioBar = styled.input`
     display: flex;
@@ -144,9 +146,19 @@ const SpeechComponent = () => {
                             responseData.response.results.length > 1
                         ) {
                             console.log("다중 요청 처리 중...");
-                            const results = responseData.response.results;
-                            setMultiOrder(true);
-                            setMultiResults(results);
+                            let results = responseData.response.results;
+                            results = handelNoneOptions(results);
+                            if (results.length === 0) {
+                                setMultiResults([]);
+                                setMultiOrder(false);
+                                const currentCarts = await fetchCarts(cartId);
+                                setCartItems(currentCarts?.items || []);
+                                setOutputText(
+                                    "주문하신 메뉴가 장바구니에 추가되었습니다다"
+                                );
+                                setActiveCategory("장바구니");
+                                return;
+                            }
                             await handleNLPResponse(
                                 results[0],
                                 cartId,
@@ -250,7 +262,19 @@ const SpeechComponent = () => {
                 responseData.response.results.length > 1
             ) {
                 console.log("다중 요청 처리 중...");
-                const results = responseData.response.results;
+                let results = responseData.response.results;
+                results = handelNoneOptions(results);
+                if (results.length === 0) {
+                    setMultiResults([]);
+                    setMultiOrder(false);
+                    const currentCarts = await fetchCarts(cartId);
+                    setCartItems(currentCarts?.items || []);
+                    setOutputText(
+                        "주문하신 메뉴가 장바구니에 추가되었습니다다"
+                    );
+                    setActiveCategory("장바구니");
+                    return;
+                }
                 await handleNLPResponse(
                     results[0],
                     cartId,
@@ -282,6 +306,14 @@ const SpeechComponent = () => {
         }
     };
 
+    const handelNoneOptions = (results: any[]) => {
+        const filteredResults = results.filter(
+            (result) => result.page !== "order_add"
+        );
+        console.log("옵션이 없는 주문 처리 후 결과:", filteredResults);
+
+        return filteredResults;
+    };
     return (
         <>
             <OutputBar />
