@@ -114,7 +114,11 @@ const OptionContainer = () => {
                     if (optionValues.length === 2) {
                         defaults[optionName] = optionValues[0];
                     } else if (optionValues.length === 3) {
-                        defaults[optionName] = optionValues[1];
+                        if (optionName === "샷") {
+                            defaults[optionName] = optionValues[1];
+                        } else {
+                            defaults[optionName] = optionValues[0];
+                        }
                     }
                 } else {
                     defaults[optionName] =
