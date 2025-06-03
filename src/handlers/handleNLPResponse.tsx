@@ -228,7 +228,7 @@ export const handleNLPResponse = async (
                     )} 장바구니에서 삭제되었습니다`
                 );
             } else if (activeCategory === "장바구니") {
-                if (result.item) {
+                if (result.page === "cart_delete") {
                     setOutputText(result.speech);
                     const currentCarts = await fetchCarts(cartId);
                     setCartItems(currentCarts?.items || []);
