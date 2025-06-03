@@ -2,12 +2,14 @@ import { CartId } from "../../context/MainContext";
 
 const NLP_URL: string = import.meta.env.VITE_NLP_URL + "process";
 
-const nlp = async (sessionId: CartId, text: string) => {
+const nlp = async (sessionId: CartId, text: string, page: string) => {
     console.log("👉 NLP_URL:", NLP_URL);
     const nlpRequest = {
         sessionId: sessionId.sessionId,
         text: text,
+        page: page,
     };
+    console.log("NLP 요청 데이터:", nlpRequest);
     try {
         const res = await fetch(NLP_URL, {
             method: "POST",
