@@ -463,6 +463,23 @@ const DivPayContentContainer = styled.div`
     gap: 3%;
 `;
 
+const DivPayCardPrice = styled.div`
+    display: flex;
+    width: 13%;
+    height: 12%;
+    background-color: var(--primary-color);
+    border-radius: 15px 0 15px 0;
+    border: 4px solid var(--border-color);
+    color: white;
+    font-family: var(--font-main);
+    font-size: 115%;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 5.5%;
+    left: 3.5%;
+`;
+
 const ItemCard = ({ item }: ItemProps) => {
     if (!item) {
         return <div>제품이 없습니다.</div>;
@@ -488,9 +505,9 @@ const ItemCard = ({ item }: ItemProps) => {
 
     return (
         <DivCartCardContainer>
-            <ImgCartCard />
+            <ImgCartCard src={item.image} alt={item.name} />
             <DivCartCardName>{item.name}</DivCartCardName>
-            <DivCartCardPrice>{item.price}</DivCartCardPrice>
+            <DivPayCardPrice>{item.price}</DivPayCardPrice>
             <DivPayContentContainer>{setOption()}</DivPayContentContainer>
         </DivCartCardContainer>
     );
