@@ -98,7 +98,11 @@ const SpeechComponent = () => {
                 if (result) {
                     setInputText(result);
                     try {
-                        const responseData = await nlp(cartId, result);
+                        const responseData = await nlp(
+                            cartId,
+                            result,
+                            activeCategory
+                        );
                         if (responseData.response.page) {
                             const result = responseData.response;
                             await handleNLPResponse(
@@ -214,7 +218,7 @@ const SpeechComponent = () => {
         setActiveCategory("로딩");
         event.preventDefault();
         try {
-            const responseData = await nlp(cartId, inputText);
+            const responseData = await nlp(cartId, inputText, activeCategory);
             if (responseData.response.page) {
                 const result = responseData.response;
                 await handleNLPResponse(
