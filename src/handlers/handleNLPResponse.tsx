@@ -216,7 +216,7 @@ export const handleNLPResponse = async (
                 setActiveCategory("장바구니");
             }
         } else if (result.response === "query.order.delete") {
-            if (activeCategory === "장바구니 옵션" && selectedCart) {
+            if (activeCategory === "장바구니 옵션") {
                 console.log("삭제된 제품:", selectedCart);
                 await deleteCart(cartId, selectedCart);
                 const currentCarts = await fetchCarts(cartId);
@@ -227,6 +227,16 @@ export const handleNLPResponse = async (
                         selectedCart?.name
                     )} 장바구니에서 삭제되었습니다`
                 );
+            } else if (activeCategory === "장바구니") {
+                if (result.item) {
+                    setOutputText(result.speech);
+                    const currentCarts = await fetchCarts(cartId);
+                    setCartItems(currentCarts?.items || []);
+                    setActiveCategory("장바구니");
+                } else {
+                    setOutputText("삭제하실 메뉴를 선택해주세요");
+                    setActiveCategory("장바구니");
+                }
             } else {
                 setOutputText("메뉴를 선택해주세요");
                 setActiveCategory("커피");
