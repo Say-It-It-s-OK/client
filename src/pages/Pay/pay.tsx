@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import orderPay from "../../api/request/payment";
 import { CartItem } from "../../context/MainContext";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Vector from "../../assets/images/Vector.png";
 import { PaymentNav } from "../../components/NavBar/navBar";
 import { ItemCard } from "../../components/Card/Card";
+import Logo from "../../assets/icons/logo_small_icon.png";
 
 const DivMainContainerBody = styled.div`
     display: flex;
@@ -17,6 +18,7 @@ const DivMainContainerBody = styled.div`
         var(--light-color) 0%,
         var(--secondary-color) 100%
     );
+    border-radius: 15px 15px 0 0;
     border: none;
     position: absolute;
     bottom: 0;
@@ -25,8 +27,9 @@ const DivMainContainerBody = styled.div`
 const DivPaymentContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-center;
+    align-items: center;
     width: 100%;
+    border-radius: 15px 15px 0 0;
     height: 100%;
     position: relative;
     padding: 1%;
@@ -94,7 +97,7 @@ const DivDetailsText = styled.div`
     font-family: var(--font-main);
     font-size: 150%;
     border: 4px solid var(--border-color);
-    border-bottom: none; /* 하단 보더 제외 */
+    border-bottom: none;
     border-radius: 15px 15px 0 0;
     margin-left: 5%;
 `;
@@ -114,7 +117,6 @@ const DivDetailsPayAmount = styled.div`
     color: var(--accent-color);
     font-family: var(--font-main);
     font-size: 250%;
-    margin-bottom: 5%;
     text-align: center;
 `;
 
@@ -130,7 +132,45 @@ const DivInputTextBar = styled.div`
     text-align: center;
     font-family: var(--font-main);
     font-size: 300%;
-    margin-top: 20%;
+`;
+
+const DivUnderlineBar = styled.div`
+    width: 80%;
+    height: 0.7%;
+    background: linear-gradient(
+        to right,
+        var(--light-color),
+        var(--secondary-color)
+    );
+    margin: 0 auto;
+    border-radius: 20px;
+    transition: height 0.05s ease;
+    box-shadow: 0px 0px 10px var(--secondary-color);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 50% 100%, 0% 40%);
+`;
+
+const spin = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+`;
+
+const Spinner = styled.div`
+    width: 100px;
+    height: 100px;
+    border: 30px solid var(--light-color);
+    border-top: 30px solid var(--primary-color);
+    border-radius: 50%;
+    animation: ${spin} 1s linear infinite;
+    margin-top: 3%;
+`;
+
+const ImgIndexLogo = styled.img`
+    width: 50%;
+    margin: 3%;
 `;
 
 const InputText = () => {
@@ -145,7 +185,9 @@ const PaymentComplete = () => {
     return (
         <>
             <PaymentNav />
+            <ImgIndexLogo src={Logo} />
             <InputTextComplete />
+            <DivUnderlineBar />
             <ImgBackGroundVector src={Vector} />
         </>
     );
@@ -202,7 +244,7 @@ const PaymentInit = () => {
         if (paymentComplete || paymentFail) {
             const timer = setTimeout(() => {
                 navigate("/");
-            }, 3000);
+            }, 30000);
             return () => clearTimeout(timer);
         }
     }, [paymentComplete, paymentFail]);
@@ -216,7 +258,10 @@ const PaymentInit = () => {
             ) : (
                 <>
                     <PaymentNav />
+                    <ImgIndexLogo src={Logo} />
                     <InputText />
+                    <DivUnderlineBar />
+                    <Spinner />
                     <DivMainContainerBody>
                         <DivPaymentContainer>
                             <DivPaymentTitle>주문 내역</DivPaymentTitle>
