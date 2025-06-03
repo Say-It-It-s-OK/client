@@ -59,23 +59,53 @@ export const handleNLPResponse = async (
     else if (result.response.startsWith("query.order")) {
         const page = result.page;
         if (result.response === "query.order.add") {
-            setOutputText(result.speech);
             if (page === "order_add") {
+                setOutputText(result.speech);
                 const currentCarts = await fetchCarts(cartId);
                 setCartItems(currentCarts?.items || []);
                 setActiveCategory("장바구니");
-
                 if (multiOrder) {
                     setMultiOrder(false);
                     setMultiResults([]);
                 }
             } else if (page === "order_option_required") {
+                setOutputText(result.speech);
                 setSelectedMenu(result.item);
                 setActiveCategory("옵션");
-
                 if (multiOrder) {
                     setMultiOrder(false);
                     setMultiResults([]);
+                }
+            } else if (page === "order_option_resolved") {
+                if (multiOrder) {
+                    if (multiResults.length === 0) {
+                        setMultiResults([]);
+                        setMultiOrder(false);
+                        setActiveCategory("장바구니");
+                        setOutputText(
+                            "주문하신 상품들이 장바구니에 추가되었습니다"
+                        );
+                    } else {
+                        if (result.needOptions) {
+                            setOutputText(result.speech);
+                            setSelectedMenu(result.item);
+                            setActiveCategory("옵션");
+                        } else {
+                            setOutputText(multiResults[0].speech);
+                            setSelectedMenu(multiResults[0].item);
+                            setMultiResults(multiResults.slice(1));
+                            setActiveCategory("옵션");
+                        }
+                    }
+                } else if (result.needOptions) {
+                    setOutputText(result.speech);
+                    setSelectedMenu(result.item);
+                    setActiveCategory("옵션");
+                } else {
+                    setOutputText(result.speech);
+                    const currentCarts = await fetchCarts(cartId);
+                    setCartItems(currentCarts?.items || []);
+                    setActiveCategory("장바구니");
                 }
             } else if (page === "options_order_add") {
                 const currentCarts = await fetchCarts(cartId);
