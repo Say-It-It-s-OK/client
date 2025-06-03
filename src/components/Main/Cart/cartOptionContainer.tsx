@@ -145,7 +145,7 @@ const CartOptionContainer = () => {
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
         setActiveCategory("장바구니");
-        setOutputText(`${cartItem?.name}의 옵션이 변경되었습니다`);
+        setOutputText(`${cartItem?.name}의 옵션을 변경했어요.`);
     };
 
     const handleDeleteItem = async () => {
@@ -155,9 +155,7 @@ const CartOptionContainer = () => {
         setCartItems(currentCarts?.items || []);
         setActiveCategory("장바구니");
         setOutputText(
-            `${appendSubjectParticle(
-                cartItem?.name
-            )} 장바구니에서 삭제되었습니다`
+            `${appendSubjectParticle(cartItem?.name)} 장바구니에서 삭제했어요.`
         );
     };
 

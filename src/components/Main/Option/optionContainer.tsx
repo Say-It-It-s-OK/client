@@ -167,7 +167,7 @@ const OptionContainer = () => {
                 setMultiResults([]);
                 setMultiOrder(false);
                 setActiveCategory("장바구니");
-                setOutputText(`주문하신 상품들이 장바구니에 추가되었습니다`);
+                setOutputText(`주문하신 상품들을 장바구니에 추가했어요.`);
             } else {
                 setOutputText(multiResults[0].speech);
                 setSelectedMenu(multiResults[0].item);
@@ -180,7 +180,7 @@ const OptionContainer = () => {
             setOutputText(
                 `${appendSubjectParticle(
                     selectedMenu?.name || ""
-                )} 장바구니에 추가되었습니다`
+                )} 장바구니에 추가했어요.`
             );
         }
     };

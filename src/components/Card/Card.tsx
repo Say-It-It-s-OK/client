@@ -387,7 +387,7 @@ const CartCard = ({ item }: ItemProps) => {
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
         setOutputText(
-            `${appendSubjectParticle(item.name)} 장바구니에 추가되었습니다`
+            `${appendSubjectParticle(item.name)} 장바구니에 추가했어요.`
         );
     };
 
@@ -399,7 +399,7 @@ const CartCard = ({ item }: ItemProps) => {
         const currentCarts = await fetchCarts(cartId);
         setCartItems(currentCarts?.items || []);
         setOutputText(
-            `${appendSubjectParticle(item.name)} 장바구니에서 삭제되었습니다`
+            `${appendSubjectParticle(item.name)} 장바구니에서 삭제했어요.`
         );
     };
 

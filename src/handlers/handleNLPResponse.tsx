@@ -83,7 +83,7 @@ export const handleNLPResponse = async (
                         setMultiOrder(false);
                         setActiveCategory("장바구니");
                         setOutputText(
-                            "주문하신 상품들이 장바구니에 추가되었습니다"
+                            "주문하신 상품들을 장바구니에 추가했어요."
                         );
                     } else {
                         if (result.needOptions) {
@@ -115,9 +115,7 @@ export const handleNLPResponse = async (
                         setMultiResults([]);
                         setMultiOrder(false);
                         setActiveCategory("장바구니");
-                        setOutputText(
-                            "주문하신 상품들이 장바구니에 추가되었습니다"
-                        );
+                        setOutputText("상품들을 장바구니에 추가했어요.");
                     } else {
                         setOutputText(multiResults[0].speech);
                         setSelectedMenu(multiResults[0].item);
@@ -140,7 +138,7 @@ export const handleNLPResponse = async (
                             setMultiOrder(false);
                             setActiveCategory("장바구니");
                             setOutputText(
-                                "주문하신 상품들이 장바구니에 추가되었습니다"
+                                "주문하신 상품들이 장바구니에 추가했어요."
                             );
                         } else {
                             setOutputText(multiResults[0].speech);
@@ -153,7 +151,7 @@ export const handleNLPResponse = async (
                         setActiveCategory("장바구니");
                     }
                 } else {
-                    setOutputText("메뉴를 선택해주세요");
+                    setOutputText("메뉴를 선택해주세요.");
                     setActiveCategory("커피");
                 }
             }
@@ -183,7 +181,9 @@ export const handleNLPResponse = async (
                         setOutputText("옵션이 선택되었습니다!");
                         setActiveCategory("옵션");
                     } else {
-                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요");
+                        setOutputText(
+                            "그런 옵션은 없어요. 다시 선택해 주세요."
+                        );
                         setActiveCategory("옵션");
                     }
                 } else if (
@@ -211,11 +211,11 @@ export const handleNLPResponse = async (
                         setOutputText("옵션이 선택되었습니다!");
                         setActiveCategory("장바구니 옵션");
                     } else {
-                        setOutputText("잘못된 옵션입니다. 다시 선택해 주세요");
+                        setOutputText("그런 옵션은 없어요. 다시 선택해 주세요");
                         setActiveCategory("장바구니 옵션");
                     }
                 } else {
-                    setOutputText("메뉴를 선택해 주세요");
+                    setOutputText("메뉴를 선택해 주세요.");
                     setActiveCategory("커피");
                 }
             } else if (result.page === "update_options") {
@@ -228,9 +228,7 @@ export const handleNLPResponse = async (
                     const currentCarts = await fetchCarts(cartId);
                     setCartItems(currentCarts?.items || []);
                     setActiveCategory("장바구니");
-                    setOutputText(
-                        `${selectedCart?.name}의 옵션이 변경되었습니다`
-                    );
+                    setOutputText(`${selectedCart?.name}의 옵션을 변경했어요.`);
                 } else {
                     setOutputText("메뉴를 선택해주세요");
                     setActiveCategory("커피");
@@ -255,7 +253,7 @@ export const handleNLPResponse = async (
                 setOutputText(
                     `${appendSubjectParticle(
                         selectedCart?.name
-                    )} 장바구니에서 삭제되었습니다`
+                    )}를 장바구니에서 삭제하였어요.`
                 );
             } else if (activeCategory === "장바구니") {
                 if (result.page === "cart_delete") {
@@ -264,7 +262,7 @@ export const handleNLPResponse = async (
                     setCartItems(currentCarts?.items || []);
                     setActiveCategory("장바구니");
                 } else {
-                    setOutputText("삭제하실 메뉴를 선택해주세요");
+                    setOutputText("삭제하실 메뉴를 선택해주세요.");
                     setActiveCategory("장바구니");
                 }
             } else {
@@ -281,9 +279,7 @@ export const handleNLPResponse = async (
                     setMultiResults([]);
                     setMultiOrder(false);
                     setActiveCategory("장바구니");
-                    setOutputText(
-                        "주문하신 상품들이 장바구니에 추가되었습니다"
-                    );
+                    setOutputText("주문하신 상품들을 장바구니에 추가했어요.");
                 } else {
                     setOutputText(multiResults[0].speech);
                     setSelectedMenu(multiResults[0].item);
