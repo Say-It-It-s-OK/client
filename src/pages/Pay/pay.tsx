@@ -244,7 +244,7 @@ const PaymentInit = () => {
         if (paymentComplete || paymentFail) {
             const timer = setTimeout(() => {
                 navigate("/");
-            }, 30000);
+            }, 3000);
             return () => clearTimeout(timer);
         }
     }, [paymentComplete, paymentFail]);

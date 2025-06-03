@@ -188,6 +188,7 @@ const SpeechComponent = () => {
                         setActiveCategory("커피");
                     } finally {
                         setIsLoading(false);
+                        setInputText("");
                     }
                 } else {
                     console.log("잘못된 음성 입력");
