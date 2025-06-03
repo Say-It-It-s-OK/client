@@ -30,23 +30,23 @@ export const LoadingProvider = ({ children }: LoadingProviderProps) => {
     const [recommendItems, setRecommendItems] = useState<Menu[]>([]);
 
     useEffect(() => {
-        if (outputText !== "말하면 OK!") {
-            const timer = setTimeout(() => {
-                setOutputText("말하면 OK!");
-            }, 6000);
+        if (outputText === "말하면 OK!") return;
 
-            return () => clearTimeout(timer);
-        }
+        const timer = setTimeout(() => {
+            setOutputText("말하면 OK!");
+        }, 6000);
 
         const send = async () => {
             try {
+                console.log("TTS 처리 요청: ", outputText);
                 await sendTextToServer(outputText);
             } catch (error) {
                 console.error("TTS 처리 요청 중 오류 발생", error);
             }
         };
-        if (outputText === "말하면 OK!") return;
         send();
+
+        return () => clearTimeout(timer);
     }, [outputText]);
 
     return (

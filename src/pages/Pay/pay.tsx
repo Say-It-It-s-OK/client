@@ -7,6 +7,7 @@ import Vector from "../../assets/images/Vector.png";
 import { PaymentNav } from "../../components/NavBar/navBar";
 import { ItemCard } from "../../components/Card/Card";
 import Logo from "../../assets/icons/logo_small_icon.png";
+import sendTextToServer from "../../api/request/sendTextToServer";
 
 const DivMainContainerBody = styled.div`
     display: flex;
@@ -248,6 +249,18 @@ const PaymentInit = () => {
             return () => clearTimeout(timer);
         }
     }, [paymentComplete, paymentFail]);
+
+    useEffect(() => {
+        const send = async () => {
+            try {
+                console.log("TTS 처리 요청: ", "결제를 진행 하고 있습니다...");
+                await sendTextToServer("결제를 진행 하고 있습니다...");
+            } catch (error) {
+                console.error("TTS 처리 요청 중 오류 발생", error);
+            }
+        };
+        send();
+    }, []);
 
     return (
         <div className="container">
